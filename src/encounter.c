@@ -666,13 +666,18 @@ void update_encounters_neutral(void) {
                 continue;
             }
             do {
-                if (!(enemy->flags & ENEMY_FLAG_IGNORE_PARTNER) && partner_test_enemy_collision(npc)) {
-                    currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
-                    enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
-                    currentEncounter->currentEncounter = encounter;
-                    currentEncounter->currentEnemy = enemy;
-                    currentEncounter->firstStrikeType = FIRST_STRIKE_PLAYER;
-                    goto START_BATTLE;
+                // PUT BULLET CODE HERE
+                if (!(enemy->flags & ENEMY_FLAG_IGNORE_PARTNER) && test_bullet_first_strike(npc)) {
+                    // currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
+                    // enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
+                    // currentEncounter->currentEncounter = encounter;
+                    // currentEncounter->currentEnemy = enemy;
+                    // currentEncounter->firstStrikeType = FIRST_STRIKE_PLAYER;
+                    // goto START_BATTLE;
+                    enemy->curHP--;
+                    if (enemy->curHP <= 0) {
+                        kill_enemy(enemy);
+                    }
                 }
             } while (0);
 
@@ -936,7 +941,10 @@ void update_encounters_neutral(void) {
                 }
                 currentEncounter->firstStrikeType = firstStrikeType;
             }
-            goto START_BATTLE;
+            // goto START_BATTLE;
+            // PUT PLAYER DAMAGE CODE HERE
+            gPlayerData.curHP--;
+            return;
         }
     }
 
@@ -2513,6 +2521,8 @@ void create_encounters(void) {
                     enemy->flags |= npcData->flags;
                     enemy->unk_64 = NULL;
                     enemy->tattleMsg = npcData->tattle;
+                    enemy->maxHP = 3;
+                    enemy->curHP = 3;
                     if (npcData->initVarCount != 0) {
                         if (npcData->initVarCount == 1) {
                             enemy->varTable[0] = npcData->initVar.value;

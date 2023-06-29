@@ -194,6 +194,8 @@ s32* N(UnknownLists)[] = {
 };
 
 EvtScript N(EVS_Scene_BeginGame) = {
+    EVT_SET(GB_StoryProgress, STORY_CH0_DEFEATED_JR_TROOPA)
+    EVT_CALL(GotoMap, "kmr_09", 0)
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_THREAD
         EVT_WAIT(5 * DT)

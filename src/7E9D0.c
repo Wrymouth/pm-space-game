@@ -6,6 +6,7 @@
 #include "npc.h"
 #include "effects.h"
 #include "ld_addrs.h"
+#include "world/action/bullet.h"
 
 #ifdef SHIFT
 #define PLAYER_ACTION_VRAM_DEF texture_memory_VRAM_END
@@ -510,7 +511,7 @@ s32 check_input_jump(void) {
         }
     }
 
-    set_action_state(ACTION_STATE_JUMP);
+    use_bullet();
     return TRUE;
 }
 

@@ -81,6 +81,8 @@ segments:
     - [auto, c, npc]
     - [auto, c, encounter]
     - [auto, c, encounter_api]
+    - [auto,   c, world/action/bullet]
+    - [auto, .data, world/action/bullet]
     - [auto, c, status_icons]
     - [auto, c, 23680]
     - [auto, c, 25AF0]

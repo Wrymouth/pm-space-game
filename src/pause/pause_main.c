@@ -768,7 +768,7 @@ void pause_handle_input(s32 pressed, s32 held) {
             gPauseDescTextMaxPos = 0;
         }
     }
-    if (gPauseHeldButtons & BUTTON_C_UP) {
+    if (gPauseHeldButtons & BUTTON_C_UP || TRUE) {
         gPauseDescTextPos -= 2;
         if (gPauseDescTextPos < 0) {
             gPauseDescTextPos = 0;

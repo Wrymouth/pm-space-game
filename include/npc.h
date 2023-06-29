@@ -354,6 +354,8 @@ typedef struct Enemy {
     /* 0xDC */ s32 unk_DC;
     /* 0xE0 */ s16 savedNpcYaw;
     /* 0xE2 */ char unk_E2[6];
+               s8 curHP;
+               s8 maxHP;
     #ifdef _DEAD_H_
     /* 0x0DC */ char unk_E8[32];
     /* 0x108 */ Vec3f unk_108; // Associated NPC Pos?

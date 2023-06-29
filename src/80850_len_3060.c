@@ -1315,7 +1315,7 @@ void func_800E9900(void) {
 }
 
 s32 is_status_bar_visible(void) {
-    return !gUIStatus.hidden;
+    return TRUE;
 }
 
 void status_bar_start_blinking_hp(void) {

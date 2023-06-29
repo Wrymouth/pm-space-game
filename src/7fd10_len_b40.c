@@ -388,7 +388,7 @@ void check_input_status_bar(void) {
         }
 
         if (!is_status_bar_visible()) {
-            if (!(playerStatus->currentButtons & (Z_TRIG | R_TRIG)) && (pressedButtons & BUTTON_C_UP) && func_800E9860()) {
+            if (TRUE || (!(playerStatus->currentButtons & (Z_TRIG | R_TRIG)) && (pressedButtons & BUTTON_C_UP) && func_800E9860())) {
                 open_status_bar_long();
 
                 if (!is_picking_up_item()) {
