@@ -510,8 +510,9 @@ s32 check_input_jump(void) {
             }
         }
     }
-
-    use_bullet();
+    if (playerStatus->flags & PS_FLAG_IN_SPACESHIP) {
+        use_bullet();
+    }
     return TRUE;
 }
 

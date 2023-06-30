@@ -1,4 +1,6 @@
 #include "spc_00.h"
+#include "../src/world/common/atomic/TexturePan.inc.c"
+
 
 s32 N(map_init)(void) {
     sprintf(wMapTexName, "hos_tex");
@@ -17,31 +19,44 @@ MapSettings N(settings) = {
     .tattle = { MSG_MapTattle_kmr_20 },
 };
 
+API_CALLABLE(N(CheckStickInput)) {
+    Bytecode* args = script->ptrReadPos;
+    s8 joystickX = gGameStatusPtr->stickX[0];
+    s8 joystickY = gGameStatusPtr->stickY[0];
+    evt_set_variable(script, *args++, joystickX);
+    evt_set_variable(script, *args++, joystickY);
+    return ApiStatus_DONE2;
+};
+
+API_CALLABLE(N(EnableSpaceShipMode)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 enable = args++;
+    if (enable) {
+        gPlayerStatus.flags |=  PS_FLAG_IN_SPACESHIP;
+    } else {
+        gPlayerStatus.flags &= ~PS_FLAG_IN_SPACESHIP;
+    }
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_MARIOS_HOUSE) // pause_map.c
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()
     EVT_CALL(SetMusicTrack, 0, SONG_TOAD_TOWN, 0, 8)
+    EVT_EXEC(spc_00_SetupTexturePan)
     EVT_EXEC(spc_00_GameLoop)
     EVT_RETURN
     EVT_END
 };
 
-API_CALLABLE(N(CheckButtonInput)) {
-    Bytecode* args = script->ptrReadPos;
-    s8 joystickX = gGameStatusPtr->stickX;
-    s8 joystickY = gGameStatusPtr->stickY;
-    evt_set_variable(script, *args++, joystickX);
-    evt_set_variable(script, *args++, joystickY);
-    return ApiStatus_DONE2;
-};
 
 EvtScript N(GameLoop) = {
-    EVT_CALL(DisablePlayerInput, TRUE)
+    // EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(DisablePlayerPhysics, TRUE)
+    EVT_CALL(spc_00_EnableSpaceShipMode, TRUE)
     EVT_LOOP(0)
-        EVT_CALL(spc_00_CheckButtonInput, LVar0, LVar1)
+        EVT_CALL(spc_00_CheckStickInput, LVar0, LVar1)
         EVT_DIV(LVar0, 8)
         EVT_DIV(LVar1, 8)
         EVT_ADD(MapVar(0), LVar0)
@@ -58,5 +73,11 @@ EvtScript N(GameLoop) = {
     EVT_RETURN
     EVT_END
 };
+
+EvtScript N(SetupTexturePan) = {
+    EVT_RETURN
+    EVT_END  
+};
+
 
 

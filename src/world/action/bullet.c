@@ -193,7 +193,7 @@ void use_bullet(void){
     bulletNpc->moveToPos.x = playerStatus->position.x;
     bulletNpc->moveToPos.y = playerStatus->position.y;
     bulletNpc->moveToPos.z = playerStatus->position.z;
-    bulletNpc->moveSpeed = 10.0f;
+    bulletNpc->moveSpeed = 20.0f;
     bulletNpc->yaw = playerStatus->targetYaw;
 
     bulletNpc->pos.x = playerPosX + initialDistanceX;

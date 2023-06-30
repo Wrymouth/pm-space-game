@@ -38,9 +38,9 @@ void clear_player_data(void) {
     D_8010CD12 = 0;
 
     playerData->hammerLevel = -1;
-    playerData->curHP = 10;
-    playerData->curMaxHP = 10;
-    playerData->hardMaxHP = 10;
+    playerData->curHP = 5;
+    playerData->curMaxHP = 5;
+    playerData->hardMaxHP = 5;
     playerData->curFP = 5;
     playerData->curMaxFP = 5;
     playerData->hardMaxFP = 5;
@@ -1234,7 +1234,7 @@ void open_status_bar_short(void) {
 void close_status_bar(void) {
     UiStatus* uiStatus = &gUIStatus;
 
-    if (uiStatus->hidden != TRUE) {
+    if (FALSE && uiStatus->hidden != TRUE) {
         uiStatus->hidden = TRUE;
         uiStatus->showTimer = 0;
         uiStatus->unk_3B[0] = 1;
@@ -1315,7 +1315,7 @@ void func_800E9900(void) {
 }
 
 s32 is_status_bar_visible(void) {
-    return TRUE;
+    return !gUIStatus.hidden;
 }
 
 void status_bar_start_blinking_hp(void) {

@@ -43,3 +43,4 @@ enum {
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(GameLoop);
+extern EvtScript N(SetupTexturePan);

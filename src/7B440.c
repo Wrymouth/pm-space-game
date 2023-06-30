@@ -35,9 +35,9 @@ void update_player_input(void) {
     if (playerStatus->flags & (PS_FLAG_INPUT_DISABLED | PS_FLAG_NO_STATIC_COLLISION)) {
         playerStatus->stickAxis[0] = 0;
         playerStatus->stickAxis[1] = 0;
-        playerStatus->currentButtons = 0;
-        playerStatus->pressedButtons = 0;
-        playerStatus->heldButtons = 0;
+        // playerStatus->currentButtons = 0;
+        // playerStatus->pressedButtons = 0;
+        // playerStatus->heldButtons = 0;
     }
 
     if (playerStatus->animFlags & PA_FLAG_FORCE_USE_PARTNER) {

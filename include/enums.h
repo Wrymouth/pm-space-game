@@ -3306,6 +3306,8 @@ enum PlayerStatusFlags {
     PS_FLAG_CUTSCENE_MOVEMENT                = 0x00004000,
     /* Either outta sight with Bow, or temporarily damage boosted - makes Mario ignore fire bars */
     PS_FLAG_HAZARD_INVINCIBILITY             = 0x00008000,
+    /* In spaceship */ 
+    PS_FLAG_IN_SPACESHIP                     = 0x00010000,
     /* Spinning either through pressing Z or the tornado jump - causes a ghost trail to render */
     PS_FLAG_SPINNING                         = 0x00020000,
     /* Slows Mario's physics and animations to half speed - responsible for the dramatic slowdown when starting an encounter by jumping on an enemy.
