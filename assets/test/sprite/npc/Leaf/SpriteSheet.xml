@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpriteSheet maxComponents="1" paletteGroups="1">
+	<PaletteList>
+		<Palette id="0" src="Default.png"/>
+	</PaletteList>
+	<RasterList>
+		<Raster id="0" palette="0" src="Still.png"/>
+	</RasterList>
+	<AnimationList>
+		<Animation name="Pivot">
+			<Component name="Comp_0" xyz="0,0,0">
+				<SetRaster raster="0"/>
+				<Wait duration="2"/>
+				<Goto pos="0"/>
+			</Component>
+		</Animation>
+	</AnimationList>
+</SpriteSheet>

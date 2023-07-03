@@ -83,6 +83,10 @@ segments:
     - [auto, c, encounter_api]
     - [auto,   c, world/action/bullet]
     - [auto, .data, world/action/bullet]
+    - [auto, c, world/action/damage_system]
+    - [auto, .data, world/action/damage_system]
+    - [auto, c, menu/menu]
+    - [auto, .data, menu/menu]
     - [auto, c, status_icons]
     - [auto, c, 23680]
     - [auto, c, 25AF0]
@@ -15688,8 +15692,29 @@ segments:
       - 2C_QuizQuestions
       - 2D_QuizChoices
       - 2E_Credits
+      - 2F_Space
   - [0x1C84D30, bin] # junk(?)
   - [0x1E00000, bin] # junk (player sprite data; can be zeroed out with no effect)
   - [0x1E40000, pm_map_data, mapfs]
   - { type: bin, start: 0x27FEE22, subalign: 2 }
   - [0x2800000]
+
+
+  # Space!!
+  - name: spc_00
+    dir: world/area_spc/spc_00
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+    - [auto, c, npcs]
+  - name: spc_01
+    dir: world/area_spc/spc_01
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+    - [auto, c, npcs]
+  - [0xDEADBEEF] # end

@@ -875,6 +875,13 @@ MapConfig gv_maps[] = {
     { MAP(gv_01) },
 };
 
+// Space Region
+#include "area_spc/spc.h"
+MapConfig spc_maps[] = {
+    { MAP_WITH_INIT(spc_00) },
+    { MAP_WITH_INIT(spc_01) },
+};
+
 AreaConfig gAreas[] = {
     AREA(kmr, "クリむら"),  // kuri mura [kuribou village, Goomba Village]
     AREA(mac, "まち"),  // machi [town, Toad Town]

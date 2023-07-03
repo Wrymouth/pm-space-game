@@ -2,15 +2,14 @@
 #include "world/common/atomic/TexturePan.inc.c"
 
 
+EntryList N(Entrances) = {
+    [spc_00_Entry0]    { -246.0,   -144.0,  -105.0,   90.0 },
+};
 
 s32 N(map_init)(void) {
     sprintf(wMapTexName, "hos_tex");
     return FALSE;
 }
-
-EntryList N(Entrances) = {
-    [spc_00_ENTRY_0]    { -246.0,   -144.0,  -105.0,   90.0 },
-};
 
 MapSettings N(settings) = {
     .main = &N(EVS_Main),
@@ -45,6 +44,7 @@ EvtScript N(EVS_Main) = {
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()
     EVT_CALL(SetMusicTrack, 0, SONG_TOAD_TOWN, 0, 8)
+    EVT_CALL(MakeNpcs, FALSE, EVT_PTR(N(DefaultNpcs)))
     EVT_EXEC(spc_00_SetupTexturePan)
     EVT_EXEC(spc_00_GameLoop)
     EVT_RETURN
@@ -53,20 +53,19 @@ EvtScript N(EVS_Main) = {
 
 
 EvtScript N(GameLoop) = {
-    // EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(spc_00_EnableSpaceShipMode, TRUE)
     EVT_LOOP(0)
         EVT_CALL(spc_00_CheckStickInput, LVar0, LVar1)
         EVT_DIV(LVar0, 8)
         EVT_DIV(LVar1, 8)
-        EVT_ADD(MapVar(0), LVar0)
-        EVT_ADD(MapVar(1), LVar1)
-        EVT_CALL(TranslateGroup, Model_Spaceship, MapVar(0), MapVar(1), 0)
+        EVT_ADD(MV_ShipPosX, LVar0)
+        EVT_ADD(MV_ShipPosY, LVar1)
+        EVT_CALL(TranslateGroup, Model_Spaceship, MV_ShipPosX, MV_ShipPosY, 0)
         EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
-        EVT_SET(LVar0, MapVar(0))
+        EVT_SET(LVar0, MV_ShipPosX)
         EVT_SUB(LVar0, 12) 
-        EVT_SET(LVar1, MapVar(1))
+        EVT_SET(LVar1, MV_ShipPosY)
         EVT_ADD(LVar1, 20) 
         EVT_CALL(SetPlayerPos, LVar0, LVar1, 12)
         EVT_WAIT(1)
@@ -76,7 +75,6 @@ EvtScript N(GameLoop) = {
 };
 
 EvtScript N(SetupTexturePan) = {
-    // EVT_CALL(EnableTexPanning, Model_ScrollingBG, TRUE)
     EVT_CALL(SetTexPanner, Model_ScrollingBG, TEX_PANNER_0)
     EVT_THREAD
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)

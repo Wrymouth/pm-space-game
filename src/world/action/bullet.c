@@ -2,19 +2,35 @@
 #include "variables.h"
 #include "npc.h"
 #include "world/partners.h"
-#include "sprite/npc/Fire.h"
+#include "sprite/npc/Leaf.h"
 #include "sprite/player.h"
 #include "world/action/bullet.h"
 
-typedef struct BulletStatus{
+const s32 MAX_BULLETS  = 3;
+const s32 BULLET_DECAY = 50;
+const s32 BULLET_EMPTY = -1;
+
+typedef struct BulletStatus {
+    s32 npcID;
     s32 activeBulletIndex;
     s32 activeBulletTime;
-    s8 facingLeft;
+    s8  facingLeft;
 } BulletStatus;
 
-BulletStatus bulletStatus = {0,0};
+BulletStatus bullets[] = { { 0, -1 }, { 0, -1 }, { 0, -1 } };
 
-const s32 BULLET_DECAY = 30;
+
+s32       bulletCount  = 0;
+
+s32 get_bullet_index_by_npc_id(s32 npcId) {
+    s32 i;
+    for (i = 0; i < ARRAY_COUNT(bullets); i++) {
+        if (npcId == bullets[i].npcID) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 // This function seems overcomplicated but it's almost identical to kooper first strike test so I know it works
 s32 test_bullet_first_strike(Npc* enemy) {
@@ -29,181 +45,197 @@ s32 test_bullet_first_strike(Npc* enemy) {
     f32 distToEnemy;
 
     Npc* bullet;
+    s32  i;
 
-    if (!bulletStatus.activeBulletIndex) {
+    if (!bulletCount) {
         return FALSE;
     }
 
-    bullet = get_npc_by_index(bulletStatus.activeBulletIndex);
-
-    enemyX = enemy->pos.x;
-    enemyY = enemy->pos.y;
-    enemyZ = enemy->pos.z;
-
-    bulletX = bullet->pos.x;
-    bulletY = bullet->pos.y;
-    bulletZ = bullet->pos.z;
-
+    enemyX          = enemy->pos.x;
+    enemyY          = enemy->pos.y;
+    enemyZ          = enemy->pos.z;
     enemyCollHeight = enemy->collisionHeight;
     enemyCollRadius = enemy->collisionDiameter * 0.55;
 
-    bulletCollHeight = bullet->collisionHeight;
-    bulletCollHeight = bullet->collisionDiameter * 0.8;
+    for (i = 0; i < bulletCount; i++) {
 
-    angleToEnemy = atan2(enemyX, enemyZ, bulletX, bulletZ);
-    distToEnemy = dist2D(enemyX, enemyZ, bulletX, bulletZ);
+        if (bullets[i].activeBulletIndex == BULLET_EMPTY) {
+            continue;
+        }
 
-    xTemp = bullet->pos.x;
-    yTemp = bullet->pos.y;
-    zTemp = bullet->pos.z;
+        bullet = get_npc_by_index(bullets[i].activeBulletIndex);
 
-    if (npc_test_move_taller_with_slipping(0, &xTemp, &yTemp, &zTemp, distToEnemy, angleToEnemy,
-        bulletCollHeight, bulletCollRadius + enemyCollRadius)
-    ) {
-        return FALSE;
-    }
+        bulletX = bullet->pos.x;
+        bulletY = bullet->pos.y;
+        bulletZ = bullet->pos.z;
 
-    if (bulletY > enemyY + enemyCollHeight) {
-        return FALSE;
-    }
+        bulletCollHeight = bullet->collisionHeight;
+        bulletCollHeight = bullet->collisionDiameter * 0.8;
 
-    if (enemyY > bulletY + bulletCollHeight) {
-        return FALSE;
-    }
+        angleToEnemy = atan2(enemyX, enemyZ, bulletX, bulletZ);
+        distToEnemy  = dist2D(enemyX, enemyZ, bulletX, bulletZ);
 
-    bulletX = enemyX - bulletX;
-    bulletZ = enemyZ - bulletZ;
-    distToEnemy = SQ(bulletX) + SQ(bulletZ);
+        xTemp = bullet->pos.x;
+        yTemp = bullet->pos.y;
+        zTemp = bullet->pos.z;
 
-    if (!(SQ(bulletCollRadius) + SQ(enemyCollRadius) <= distToEnemy)) {
-        free_npc_by_index(bulletStatus.activeBulletIndex);
-        bulletStatus.activeBulletIndex = NULL;
-        return TRUE;
+        if (npc_test_move_taller_with_slipping(
+                0, &xTemp, &yTemp, &zTemp, distToEnemy, angleToEnemy, bulletCollHeight,
+                bulletCollRadius + enemyCollRadius
+            ))
+        {
+            continue;
+        }
+
+        if (bulletY > enemyY + enemyCollHeight) {
+            continue;
+        }
+
+        if (enemyY > bulletY + bulletCollHeight) {
+            continue;
+        }
+
+        bulletX     = enemyX - bulletX;
+        bulletZ     = enemyZ - bulletZ;
+        distToEnemy = SQ(bulletX) + SQ(bulletZ);
+
+        if (!(SQ(bulletCollRadius) + SQ(enemyCollRadius) <= distToEnemy)) {
+            free_npc_by_index(bullets[i].activeBulletIndex);
+            bullets[i].activeBulletIndex = BULLET_EMPTY;
+            bulletCount--;
+            return TRUE;
+        }
     }
     return FALSE;
 }
 
-void bullet_hit_entity(void) {
+void bullet_hit_entity(Npc* bulletNpc, s32 bulletIndex) {
     Entity* entity;
-    Npc* bulletNpc = get_npc_by_index(bulletStatus.activeBulletIndex);
 
     if (NpcHitQueryColliderID < 0 || !(NpcHitQueryColliderID & COLLISION_WITH_ENTITY_BIT)) {
         bulletNpc->moveSpeed = 0.0f;
         return;
     }
 
-    bulletStatus.activeBulletTime = BULLET_DECAY; // Kill bullet on next render
-    entity = get_entity_by_index(NpcHitQueryColliderID & ~COLLISION_WITH_ENTITY_BIT);
-    entity->flags |= ENTITY_FLAG_PARTNER_COLLISION;
-    
+    bullets[bulletIndex].activeBulletTime  = BULLET_DECAY; // Kill bullet on next render
+    entity                                 = get_entity_by_index(NpcHitQueryColliderID & ~COLLISION_WITH_ENTITY_BIT);
+    entity->flags                         |= ENTITY_FLAG_PARTNER_COLLISION;
 }
 
-void update_collision(Npc* bulletNpc) {
+void update_collision(Npc* bulletNpc, s32 bulletIndex) {
     f32 posX, posY, posZ;
-    // check the forward collision for bullet
-    #define TEST_COLLISION_AT_ANGLE(testAngle) \
-        ( \
-        posX = bulletNpc->pos.x, \
-        posY = bulletNpc->pos.y, \
-        posZ = bulletNpc->pos.z, \
-        npc_test_move_taller_with_slipping(COLLISION_CHANNEL_8000, \
-            &posX, &posY, &posZ, bulletNpc->moveSpeed, testAngle,  \
-            bulletNpc->collisionHeight, bulletNpc->collisionDiameter / 2) \
-        )
+// check the forward collision for bullet
+#define TEST_COLLISION_AT_ANGLE(testAngle)                                                                             \
+    (posX = bulletNpc->pos.x, posY = bulletNpc->pos.y, posZ = bulletNpc->pos.z,                                        \
+     npc_test_move_taller_with_slipping(                                                                               \
+         COLLISION_CHANNEL_8000, &posX, &posY, &posZ, bulletNpc->moveSpeed, testAngle, bulletNpc->collisionHeight,     \
+         bulletNpc->collisionDiameter / 2                                                                              \
+     ))
 
     if (TEST_COLLISION_AT_ANGLE(bulletNpc->yaw - 20.0f)) {
-        bullet_hit_entity();
+        bullet_hit_entity(bulletNpc, bulletIndex);
     }
 
     if (TEST_COLLISION_AT_ANGLE(bulletNpc->yaw + 20.0f)) {
-        bullet_hit_entity();
+        bullet_hit_entity(bulletNpc, bulletIndex);
     }
 
     if (TEST_COLLISION_AT_ANGLE(bulletNpc->yaw)) {
-        bullet_hit_entity();
+        bullet_hit_entity(bulletNpc, bulletIndex);
     }
-
 }
 
 void on_bullet_render(Npc* bulletNpc) {
-    if(bulletStatus.activeBulletTime < BULLET_DECAY) {
-        bulletStatus.activeBulletTime++;
-        update_collision(bulletNpc);
-        npc_move_heading(bulletNpc, bulletNpc->moveSpeed, bulletNpc->yaw);
+    s32 bulletIndex = get_bullet_index_by_npc_id(bulletNpc->npcID);
+    if (bulletIndex == -1) {
+        return;
     }
-    else {
-        free_npc_by_index(bulletStatus.activeBulletIndex);
-        bulletStatus.activeBulletIndex = NULL;
-
+    if (bullets[bulletIndex].activeBulletTime > BULLET_DECAY || bulletNpc->pos.x > 340) {
+        free_npc_by_index(bullets[bulletIndex].activeBulletIndex);
+        bullets[bulletIndex].activeBulletIndex = BULLET_EMPTY;
+        bulletCount--;
     }
+    bullets[bulletIndex].activeBulletTime++;
+    update_collision(bulletNpc, bulletIndex);
+    npc_move_heading(bulletNpc, bulletNpc->moveSpeed, bulletNpc->yaw);
 }
 
-void use_bullet(void){
-    NpcBlueprint sp10;
+void use_bullet(void) {
+    NpcBlueprint  sp10;
     NpcBlueprint* bp = &sp10;
-    Npc* bulletNpc;
-    NpcSettings npcSettings;
-    NpcData npcData;
+    Npc*          bulletNpc;
+    NpcSettings   npcSettings;
+    NpcData       npcData;
 
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     f32 playerPosX, playerPosY, playerPosZ, initialDistanceX, moveAngle;
 
-    if (bulletStatus.activeBulletIndex) {
+    s32 i;
+
+    if (bulletCount >= MAX_BULLETS) {
         return;
     }
+
+    // find empty bullet index
+    for (i = 0; i < ARRAY_COUNT(bullets); i++) {
+        if (bullets[i].activeBulletIndex == -1) {
+            break;
+        }
+    }
+
+    bulletCount++;
 
     playerPosX = playerStatus->position.x;
     playerPosY = playerStatus->position.y;
     playerPosZ = playerStatus->position.z;
 
-    npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
-    npcSettings.height = 12;
-    npcSettings.radius = 32;
+    npcSettings.defaultAnim = ANIM_Leaf_Pivot;
+    npcSettings.height      = 12;
+    npcSettings.radius      = 32;
 
-    npcData.id = 69;
-    npcData.init = (void*) 0x00004003;
+    npcData.id       = 69 + i;
+    npcData.init     = (void*)0x00004003;
     npcData.settings = &npcSettings;
-    //npcData.animations = {};
+    // npcData.animations = {};
 
-     // create the new NPC
-    bp->flags = 0;
+    // create the new NPC
+    bp->flags       = 0;
     bp->initialAnim = npcSettings.defaultAnim;
-    bp->onRender = on_bullet_render;
-    bp->onUpdate = NULL;
+    bp->onRender    = on_bullet_render;
+    bp->onUpdate    = NULL;
 
-    bulletStatus.activeBulletTime = 0;
-    bulletStatus.activeBulletIndex = create_basic_npc(bp);
-    bulletStatus.facingLeft = partner_force_player_flip_done();
+    bullets[i].activeBulletTime  = 0;
+    bullets[i].activeBulletIndex = create_basic_npc(bp);
+    bullets[i].facingLeft        = FALSE;
+    bullets[i].npcID             = npcData.id;
 
-    bulletNpc = get_npc_by_index(bulletStatus.activeBulletIndex);
+    bulletNpc = get_npc_by_index(bullets[i].activeBulletIndex);
     disable_npc_shadow(bulletNpc);
-    bulletNpc->scale.x = 0.7f;
-    bulletNpc->scale.y = 0.7f;
-    bulletNpc->scale.x = 0.7f;
-    bulletNpc->npcID = npcData.id;
+    bulletNpc->scale.x           = 0.7f;
+    bulletNpc->scale.y           = 0.7f;
+    bulletNpc->scale.x           = 0.7f;
+    bulletNpc->npcID             = npcData.id;
     bulletNpc->collisionDiameter = npcSettings.radius;
-    bulletNpc->collisionHeight = npcSettings.height;
-    bulletNpc->unk_96 = 0;
-    bulletNpc->planarFlyDist = 0.0f;
-    bulletNpc->flags = NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_8;
+    bulletNpc->collisionHeight   = npcSettings.height;
+    bulletNpc->unk_96            = 0;
+    bulletNpc->planarFlyDist     = 0.0f;
+    bulletNpc->flags             = NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_8;
 
-    initialDistanceX = bulletStatus.facingLeft ? -25.0f : 25.0f;
+    initialDistanceX = bullets[i].facingLeft ? -25.0f : 25.0f;
 
     bulletNpc->moveToPos.x = playerStatus->position.x;
     bulletNpc->moveToPos.y = playerStatus->position.y;
     bulletNpc->moveToPos.z = playerStatus->position.z;
-    bulletNpc->moveSpeed = 20.0f;
-    bulletNpc->yaw = playerStatus->targetYaw;
+    bulletNpc->moveSpeed   = 30.0f;
+    bulletNpc->yaw         = 90.0f;
 
     bulletNpc->pos.x = playerPosX + initialDistanceX;
     bulletNpc->pos.y = playerPosY + 10.0f;
     bulletNpc->pos.z = playerPosZ;
 
-    bulletNpc->rotation.z = 0.0f;
+    bulletNpc->rotation.z           = 0.0f;
     bulletNpc->rotationPivotOffsetY = 10.0f;
 
     sfx_play_sound_at_player(0x17, SOUND_SPACE_MODE_0);
 }
-
-

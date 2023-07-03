@@ -4925,7 +4925,7 @@ enum MapRoomNotifications {
 
 enum EnemyFlags {
     ENEMY_FLAG_PASSIVE                  = 0x00000001, // Not hostile; collision does not trigger battle
-    ENEMY_FLAG_2                        = 0x00000002, // Unused
+    ENEMY_FLAG_INVINCIBLE               = 0x00000002, // Unused
     ENEMY_FLAG_4                        = 0x00000004,
     ENEMY_FLAG_ENABLE_HIT_SCRIPT        = 0x00000008,
     ENEMY_FLAG_FLED                     = 0x00000010,

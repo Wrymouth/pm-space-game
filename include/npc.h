@@ -285,6 +285,8 @@ typedef struct NpcData {
     /* 0x1E4 */ u32 aiFlags;
     /* 0x1E8 */ AnimID* extraAnimations;
     /* 0x1EC */ s32 tattle;
+                s8 maxHP;
+                s16 invFrames;
 } NpcData; // size = 0x1F0
 
 /// Zero-terminated.
@@ -356,6 +358,8 @@ typedef struct Enemy {
     /* 0xE2 */ char unk_E2[6];
                s8 curHP;
                s8 maxHP;
+               s16 invFrames;
+               s16 invTimer;
     #ifdef _DEAD_H_
     /* 0x0DC */ char unk_E8[32];
     /* 0x108 */ Vec3f unk_108; // Associated NPC Pos?

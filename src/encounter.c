@@ -8,6 +8,7 @@
 #include "sprite/npc/BattleMerlee.h"
 #include "sprite/player.h"
 #include "model.h"
+#include "world/action/damage_system.h"
 
 ApiStatus ShowMerleeCoinMessage(Evt* script, s32 isInitialCall);
 ApiStatus ShowMerleeRanOutMessage(Evt* script, s32 isInitialCall);
@@ -668,15 +669,24 @@ void update_encounters_neutral(void) {
             do {
                 // PUT BULLET CODE HERE
                 if (!(enemy->flags & ENEMY_FLAG_IGNORE_PARTNER) && test_bullet_first_strike(npc)) {
-                    // currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
+                    currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
                     // enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
                     // currentEncounter->currentEncounter = encounter;
                     // currentEncounter->currentEnemy = enemy;
                     // currentEncounter->firstStrikeType = FIRST_STRIKE_PLAYER;
                     // goto START_BATTLE;
-                    enemy->curHP--;
+                    enemy_take_damage(enemy, 1);
                     if (enemy->curHP <= 0) {
                         kill_enemy(enemy);
+                    }
+                    if (enemy->hitBytecode != NULL) {
+                        enemy->encountered = ENCOUNTER_TRIGGER_NONE;
+                        script = start_script(enemy->hitBytecode, EVT_PRIORITY_A, 0);
+                        enemy->hitScript = script;
+                        enemy->hitScriptID = script->id;
+                        script->owner1.enemy = enemy;
+                        script->owner2.npcID = enemy->npcID;
+                        script->groupFlags = enemy->scriptGroup;
                     }
                 }
             } while (0);
@@ -943,10 +953,11 @@ void update_encounters_neutral(void) {
             }
             // goto START_BATTLE;
             // PUT PLAYER DAMAGE CODE HERE
-            gPlayerData.curHP--;
+            player_take_damage(1);
             return;
         }
     }
+    return;
 
 START_BATTLE:
     switch (currentEncounter->hitType) {
@@ -2521,8 +2532,10 @@ void create_encounters(void) {
                     enemy->flags |= npcData->flags;
                     enemy->unk_64 = NULL;
                     enemy->tattleMsg = npcData->tattle;
-                    enemy->maxHP = 3;
-                    enemy->curHP = 3;
+                    enemy->maxHP = npcData->maxHP;
+                    enemy->curHP = npcData->maxHP;
+                    enemy->invFrames = 0;
+                    enemy->invTimer = npcData->invFrames;
                     if (npcData->initVarCount != 0) {
                         if (npcData->initVarCount == 1) {
                             enemy->varTable[0] = npcData->initVar.value;

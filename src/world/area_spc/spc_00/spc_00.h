@@ -1,5 +1,5 @@
 /// @file spc_00.h
-/// @brief Space Region - Mario's House
+/// @brief Space Region - Test Area
 
 #include "common.h"
 #include "message_ids.h"
@@ -8,32 +8,10 @@
 #include "../spc.h"
 #include "mapfs/spc_00.h"
 
-/*
-#include "sprite/npc/Luigi.h"
-#include "sprite/npc/Toad.h"
-#include "sprite/npc/WorldParakarry.h"
-#include "sprite/npc/ShyGuy.h"
-
 enum {
-    NPC_Scene_Parakarry         = 0,
-    NPC_Scene_Luigi             = 1,
-
-    NPC_Luigi_0                 = 0,
-    NPC_Luigi_1                 = 1,
-    NPC_ShyGuy                  = 2,
+    MV_ShipPosX = MapVar(0),
+    MV_ShipPosY = MapVar(1),
 };
-
-enum {
-    MV_RecordsDataPtr       = MapVar(10),
-};
-
-enum {
-    MF_LuigiWaiting         = MapFlag(10),
-    MF_ReadyForPlayerEntry  = MapFlag(11),
-    MF_Unk_0C               = MapFlag(12),
-    MF_LuigiInBasement      = MapFlag(13),
-};
-*/
 
 enum {
     spc_00_ENTRY_0
@@ -44,3 +22,6 @@ enum {
 extern EvtScript N(EVS_Main);
 extern EvtScript N(GameLoop);
 extern EvtScript N(SetupTexturePan);
+extern EvtScript N(NpcInit_Bowser);
+extern EvtScript N(NpcIdle_Bowser);
+extern NpcGroupList N(DefaultNpcs);
