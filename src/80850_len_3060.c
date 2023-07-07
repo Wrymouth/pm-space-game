@@ -1234,7 +1234,7 @@ void open_status_bar_short(void) {
 void close_status_bar(void) {
     UiStatus* uiStatus = &gUIStatus;
 
-    if (FALSE && uiStatus->hidden != TRUE) {
+    if (uiStatus->hidden != TRUE) {
         uiStatus->hidden = TRUE;
         uiStatus->showTimer = 0;
         uiStatus->unk_3B[0] = 1;

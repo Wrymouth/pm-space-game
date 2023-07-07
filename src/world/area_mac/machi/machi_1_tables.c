@@ -53,7 +53,7 @@ GameVarRange N(GameByteTable)[] = {
 }
 
 GameVarRange N(GameFlagTable)[] = {
-    VAR_RANGE_FLAG("GSWF EVT",   GF_Unused_EVT_00,                GF_KMR04_Tree3_Dolly,            GF_Unused_EVT_0A),
+    VAR_RANGE_FLAG("GSWF EVT",   GF_Unused_EVT_00,                GF_KMR04_Tree3_Dolly,            GF_Credits_Displayed),
     VAR_RANGE_FLAG("GSWF KMR",   GF_KMR04_Tree3_Dolly,            GF_Unused_MAC_00,                GF_Unused_KMR_51),
     VAR_RANGE_FLAG("GSWF MAC",   GF_Unused_MAC_00,                GF_Unused_TIK_00,                GF_Unused_MAC_EF),
     VAR_RANGE_FLAG("GSWF TIK",   GF_Unused_TIK_00,                GF_Unused_KGR_00,                GF_Unused_TIK_33),

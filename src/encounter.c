@@ -679,15 +679,6 @@ void update_encounters_neutral(void) {
                     if (enemy->curHP <= 0) {
                         kill_enemy(enemy);
                     }
-                    if (enemy->hitBytecode != NULL) {
-                        enemy->encountered = ENCOUNTER_TRIGGER_NONE;
-                        script = start_script(enemy->hitBytecode, EVT_PRIORITY_A, 0);
-                        enemy->hitScript = script;
-                        enemy->hitScriptID = script->id;
-                        script->owner1.enemy = enemy;
-                        script->owner2.npcID = enemy->npcID;
-                        script->groupFlags = enemy->scriptGroup;
-                    }
                 }
             } while (0);
 
@@ -931,7 +922,7 @@ void update_encounters_neutral(void) {
                 testX = playerStatus->position.x + ((npc->pos.x - playerStatus->position.x) * 0.5f);
                 testY = playerStatus->position.y + (((npc->pos.y + npc->collisionHeight) - (playerStatus->position.y + playerStatus->colliderHeight)) * 0.5f);
                 testZ = playerStatus->position.z + ((npc->pos.z - playerStatus->position.z) * 0.5f);
-                fx_damage_stars(3, testX, testY, testZ, 0.0f, -1.0f, 0.0f, 3);
+                // fx_damage_stars(3, testX, testY, testZ, 0.0f, -1.0f, 0.0f, 3);
                 // if the hitbox is active, trigger a first strike
                 firstStrikeType = FIRST_STRIKE_NONE;
                 if (enemy->hitboxIsActive) {

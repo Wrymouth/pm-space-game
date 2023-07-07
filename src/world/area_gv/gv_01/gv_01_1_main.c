@@ -7,6 +7,8 @@
 
 #include "world/common/atomic/TexturePan.inc.c"
 
+#include "world/action/damage_system.h"
+
 s32 N(DropLetterYCurve)[] = {
     200, 170, 140, 110, 80, 50, 20, 10,
     26, 29, 30, 29, 26, 10, 0, 12,
@@ -154,8 +156,14 @@ EvtScript N(EVS_E8CA04) = {
 };
 #endif
 
+API_CALLABLE(N(DoCleanup)) {
+    game_over_cleanup();
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_Main) = {
     EVT_CALL(DisablePlayerInput, TRUE)
+    EVT_CALL(N(DoCleanup))
     EVT_CALL(ModifyGlobalOverrideFlags, 0, GLOBAL_OVERRIDES_20000)
     EVT_SETUP_CAMERA_NO_LEAD()
     EVT_THREAD

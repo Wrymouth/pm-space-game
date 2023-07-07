@@ -14,5 +14,7 @@ enum {
 
 #define NAMESPACE spc_01
 
-extern EvtScript N(EVS_Main);
+extern EvtScript N(ShowTitle);
 extern NpcGroupList N(DefaultNpcs);
+extern EvtScript N(EVS_Main);
+extern EvtScript N(SetupTexturePan);

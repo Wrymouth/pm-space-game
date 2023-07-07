@@ -5,10 +5,10 @@
 #include "sprite/npc/Leaf.h"
 #include "sprite/player.h"
 #include "world/action/bullet.h"
+#define BULLET_EMPTY -1
 
 const s32 MAX_BULLETS  = 3;
 const s32 BULLET_DECAY = 50;
-const s32 BULLET_EMPTY = -1;
 
 typedef struct BulletStatus {
     s32 npcID;
@@ -17,10 +17,11 @@ typedef struct BulletStatus {
     s8  facingLeft;
 } BulletStatus;
 
-BulletStatus bullets[] = { { 0, -1 }, { 0, -1 }, { 0, -1 } };
+BulletStatus bullets[] = { { 0, BULLET_EMPTY }, { 0, BULLET_EMPTY }, { 0, BULLET_EMPTY } };
 
 
 s32       bulletCount  = 0;
+f32 bulletSpeed = 30.0f;
 
 s32 get_bullet_index_by_npc_id(s32 npcId) {
     s32 i;
@@ -57,7 +58,7 @@ s32 test_bullet_first_strike(Npc* enemy) {
     enemyCollHeight = enemy->collisionHeight;
     enemyCollRadius = enemy->collisionDiameter * 0.55;
 
-    for (i = 0; i < bulletCount; i++) {
+    for (i = 0; i < ARRAY_COUNT(bullets); i++) {
 
         if (bullets[i].activeBulletIndex == BULLET_EMPTY) {
             continue;
@@ -197,10 +198,10 @@ void use_bullet(void) {
     npcData.id       = 69 + i;
     npcData.init     = (void*)0x00004003;
     npcData.settings = &npcSettings;
-    // npcData.animations = {};
+    npcData.flags = ENEMY_FLAG_PASSIVE;
 
     // create the new NPC
-    bp->flags       = 0;
+    bp->flags       = NPC_FLAG_IGNORE_WORLD_COLLISION;
     bp->initialAnim = npcSettings.defaultAnim;
     bp->onRender    = on_bullet_render;
     bp->onUpdate    = NULL;
@@ -227,7 +228,7 @@ void use_bullet(void) {
     bulletNpc->moveToPos.x = playerStatus->position.x;
     bulletNpc->moveToPos.y = playerStatus->position.y;
     bulletNpc->moveToPos.z = playerStatus->position.z;
-    bulletNpc->moveSpeed   = 30.0f;
+    bulletNpc->moveSpeed   = bulletSpeed;
     bulletNpc->yaw         = 90.0f;
 
     bulletNpc->pos.x = playerPosX + initialDistanceX;
@@ -238,4 +239,13 @@ void use_bullet(void) {
     bulletNpc->rotationPivotOffsetY = 10.0f;
 
     sfx_play_sound_at_player(0x17, SOUND_SPACE_MODE_0);
+}
+
+void clear_bullets() {
+    s32 i;
+    for (i = 0; i < ARRAY_COUNT(bullets); i++)
+    {
+        bullets[i].npcID = 0;
+        bullets[i].activeBulletIndex = BULLET_EMPTY;
+    }
 }

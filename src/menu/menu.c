@@ -1,6 +1,7 @@
 
 #include "common.h"
 #include "gcc/string.h"
+#include "message_ids.h"
 
 void title_menu_cb_newgame(void* arg);
 void title_menu_cb_continue(void* arg);
@@ -27,7 +28,7 @@ struct title_menu {
 
     struct title_menu* previous; // linked list
 } dx_debugMenu = {
-    .title = "Debug menu",
+    .title = "",
     .selectedIndex = 0,
     .scrollY = 0,
     .targetScrollY = 0,
@@ -36,6 +37,8 @@ struct title_menu {
 };
 
 int title_menu_isVisible = FALSE;
+s32 are_credits_displayed = FALSE;
+Evt *credits_script = NULL;
 
 u8 dx_ascii_char_to_msg(u8 in) {
     switch (in) {
@@ -94,14 +97,14 @@ void title_menu_draw_contents(void* arg0, s32 baseX, s32 baseY, s32 width, s32 h
 }
 
 void render_title_menu(void) {
-    s32 x = 4;
-    s32 y = 24;
+    s32 x = 200;
+    s32 y = 142;
     s32 width = 130;
     s32 height = 150;
     char msgbuf[0x100];
 
     // Don't render if the menu isn't visible
-    if (!title_menu_isVisible) {
+    if (!title_menu_isVisible || evt_get_variable(credits_script, GF_Credits_Displayed)) {
         return;
     }
 
@@ -180,8 +183,6 @@ void title_menu_pop(void) {
     general_heap_free(previous);
 }
 
-// Callack for when you pick a map on the "Go to map" menu
-// Actually loads the map
 void title_menu_cb_startgame(char* argMap) {
     char* map = argMap;
 
@@ -203,39 +204,10 @@ void title_menu_cb_startgame(char* argMap) {
     title_menu_close();
 }
 
-// Callback for when you pick an area on the "Go to map" menu
-// Lists the maps in that area
-void title_menu_cb_gotomap_area(void* arg) {
-    AreaConfig* area = arg;
-    struct title_menu_item* items;
-    s32 i;
-
-    items = general_heap_malloc((area->mapCount + 1) * sizeof(struct title_menu_item));
-    if (items == NULL) {
-        return;
-    }
-
-    for (i = 0; i < area->mapCount; i++) {
-        if (area->maps[i].id == NULL) {
-            continue;
-        }
-        items[i].name = area->maps[i].id;
-        items[i].callback = title_menu_cb_startgame;
-        items[i].callbackArg = &area->maps[i];
-    }
-
-    items[i].name = NULL;
-    items[i].callback = NULL;
-
-    title_menu_push();
-    dx_debugMenu.title = "Go to map";
-    dx_debugMenu.items = items;
-}
-
 // Callback for the "New Game" option
 // Lists the areas
 void title_menu_cb_newgame(void* arg) {
-    title_menu_cb_startgame("spc_00");
+    title_menu_cb_startgame("spc_05");
 }
 
 void title_menu_cb_continue(void* arg) {
@@ -243,52 +215,16 @@ void title_menu_cb_continue(void* arg) {
     recover_fp(-1);
 }
 
-void title_menu_cb_increasejump(void* args);
-void title_menu_cb_decreasejump(void* args);
-
-void title_menu_cb_increasehammer(void* args);
-void title_menu_cb_decreasehammer(void* args);
+EvtScript ShowCreditsMessage = {
+    EVT_SET(GF_Credits_Displayed, TRUE)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_Credits, 160, 40)
+    EVT_SET(GF_Credits_Displayed, FALSE)
+    EVT_RETURN
+    EVT_END
+};
 
 void title_menu_cb_credits(void* arg) {
-    struct title_menu_item* items;
-
-    title_menu_push();
-    dx_debugMenu.title = "Equipment";
-    items = general_heap_malloc(5 * sizeof(struct title_menu_item));
-    dx_debugMenu.items = items;
-    items[0].name = "Increase Jump";
-    items[0].callback = title_menu_cb_increasejump;
-    items[1].name = "Decrease Jump";
-    items[1].callback = title_menu_cb_decreasejump;
-    items[2].name = "Increase Hammer";
-    items[2].callback = title_menu_cb_increasehammer;
-    items[3].name = "Decrease Hammer";
-    items[3].callback = title_menu_cb_decreasehammer;
-}
-
-
-void title_menu_cb_increasejump(void* args){
-    if (gPlayerData.bootsLevel < 2) {
-        gPlayerData.bootsLevel++;
-    }
-}
-
-void title_menu_cb_decreasejump(void* args){
-    if (gPlayerData.bootsLevel > 0) {
-        gPlayerData.bootsLevel--;
-    }
-}
-
-void title_menu_cb_increasehammer(void* args){
-    if (gPlayerData.hammerLevel < 2) {
-        gPlayerData.hammerLevel++;
-    }
-}
-
-void title_menu_cb_decreasehammer(void* args){
-    if (gPlayerData.hammerLevel > -1) {
-        gPlayerData.hammerLevel--;
-    }
+    credits_script = start_script(&ShowCreditsMessage, 0xF, 0);
 }
 
 API_CALLABLE(EnableTitleMenu) {
@@ -297,4 +233,3 @@ API_CALLABLE(EnableTitleMenu) {
     title_menu_isVisible = enable;
     return ApiStatus_DONE2;
 }
-

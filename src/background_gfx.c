@@ -258,19 +258,16 @@ void gfx_transfer_frame_to_depth(u16* frameBuffer0, u16* frameBuffer1, u16* zBuf
               . x .
                . .
             */
-            if (((frameBuffer1[pixel] >> 2) & 0xF) < 8) {
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x - 1, &filterBuf0[0]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x + 1, &filterBuf0[1]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x - 2, &filterBuf0[2]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x + 2, &filterBuf0[3]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x - 1, &filterBuf0[4]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x + 1, &filterBuf0[5]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x,     &filterBuf1);
-                gfx_frame_filter_pass_1(filterBuf0, filterBuf1, &zBuffer[pixel]);
-            } else {
+                // gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x - 1, &filterBuf0[0]);
+                // gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x + 1, &filterBuf0[1]);
+                // gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x - 2, &filterBuf0[2]);
+                // gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x + 2, &filterBuf0[3]);
+                // gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x - 1, &filterBuf0[4]);
+                // gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x + 1, &filterBuf0[5]);
+                // gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x,     &filterBuf1);
+                // gfx_frame_filter_pass_1(filterBuf0, filterBuf1, &zBuffer[pixel]);
                 // Don't apply any filters to the edges of the screen
                 zBuffer[pixel] = frameBuffer0[pixel] | 1;
-            }
         }
     }
 }

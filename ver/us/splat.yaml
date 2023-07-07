@@ -83,6 +83,8 @@ segments:
     - [auto, c, encounter_api]
     - [auto,   c, world/action/bullet]
     - [auto, .data, world/action/bullet]
+    - [auto, c, world/action/enemy_bullet]
+    - [auto, .data, world/action/enemy_bullet]
     - [auto, c, world/action/damage_system]
     - [auto, .data, world/action/damage_system]
     - [auto, c, menu/menu]
@@ -15717,4 +15719,34 @@ segments:
     subsegments:
     - [auto, c, main]
     - [auto, c, npcs]
+    - [auto, c, draw_title_image]
+  - name: spc_02
+    dir: world/area_spc/spc_02
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+  - name: spc_03
+    dir: world/area_spc/spc_03
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+  - name: spc_04
+    dir: world/area_spc/spc_04
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+  - name: spc_05
+    dir: world/area_spc/spc_05
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]    
+    - [auto, c, npcs]    
   - [0xDEADBEEF] # end

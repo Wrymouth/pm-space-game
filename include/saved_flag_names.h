@@ -11,7 +11,7 @@ enum GameFlags {
     GF_StartedChapter7                          = GameFlag(0x007),
     GF_StartedChapter8                          = GameFlag(0x008),
     GF_DemoSceneDone                            = GameFlag(0x009),
-    GF_Unused_EVT_0A                            = GameFlag(0x00A),
+    GF_Credits_Displayed                        = GameFlag(0x00A),
     GF_Unused_EVT_0B                            = GameFlag(0x00B),
     GF_Unused_EVT_0C                            = GameFlag(0x00C),
     GF_Unused_EVT_0D                            = GameFlag(0x00D),
