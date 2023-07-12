@@ -86,7 +86,7 @@ void state_step_intro(void) {
     s32 i;
 
     if (gGameStatusPtr->creditsViewportMode != -1) {
-        if (D_800A0964 == 0 && pressedButtons & (BUTTON_A | BUTTON_B | BUTTON_START | BUTTON_Z)) {
+        if (TRUE || D_800A0964 == 0 && pressedButtons & (BUTTON_A | BUTTON_B | BUTTON_START | BUTTON_Z)) {
             D_800A0964 = 1;
         }
 

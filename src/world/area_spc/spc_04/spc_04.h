@@ -1,5 +1,5 @@
 /// @file spc_04.h
-/// @brief Space Region - Jr Troopa Battle
+/// @brief Space Region - Game Over
 
 #include "common.h"
 #include "message_ids.h"

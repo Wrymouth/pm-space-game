@@ -89,6 +89,8 @@ segments:
     - [auto, .data, world/action/damage_system]
     - [auto, c, menu/menu]
     - [auto, .data, menu/menu]
+    - [auto, c, filemenu/filemenu_create_instant]
+    - [auto, .data, filemenu/filemenu_create_instant]
     - [auto, c, status_icons]
     - [auto, c, 23680]
     - [auto, c, 25AF0]

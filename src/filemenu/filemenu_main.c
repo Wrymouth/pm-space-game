@@ -997,6 +997,8 @@ void filemenu_main_handle_input(MenuPanel* menu) {
                 }
 
                 if (menu->selected == 6) {
+                    sfx_play_sound(0x42);
+                    break;
                     set_window_update(WINDOW_ID_FILEMENU_STEREO, (s32)filemenu_update_hidden_options_left);
                     set_window_update(WINDOW_ID_FILEMENU_MONO, (s32)filemenu_update_hidden_options_right);
                     set_window_update(WINDOW_ID_FILEMENU_OPTION_LEFT, (s32)filemenu_update_hidden_options_bottom);
@@ -1242,6 +1244,7 @@ void filemenu_main_handle_input(MenuPanel* menu) {
 
         switch (menu->page) {
             case 0:
+                break;
                 set_window_update(WINDOW_ID_FILEMENU_STEREO, (s32)filemenu_update_hidden_options_left);
                 set_window_update(WINDOW_ID_FILEMENU_MONO, (s32)filemenu_update_hidden_options_right);
                 set_window_update(WINDOW_ID_FILEMENU_OPTION_LEFT, (s32)filemenu_update_hidden_options_bottom);
@@ -1254,7 +1257,6 @@ void filemenu_main_handle_input(MenuPanel* menu) {
                 set_window_update(WINDOW_ID_FILEMENU_TITLE, (s32)filemenu_update_hidden_title);
                 sfx_play_sound(SOUND_D6);
                 set_game_mode(GAME_MODE_END_FILE_SELECT);
-                break;
             case 1:
                 menu->page = 0;
                 filemenu_set_selected(menu, 0, 2);

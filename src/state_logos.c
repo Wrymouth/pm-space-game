@@ -146,7 +146,7 @@ void state_step_logos(void) {
                 break;
             case INTRO_STATE_1:
                 if (gGameStatusPtr->introCounter == 0) {
-                    intro_logos_set_fade_color(208);
+                    intro_logos_set_fade_color(0);
                     gGameStatusPtr->introState++;
                 }
                 gGameStatusPtr->introCounter--;
@@ -175,7 +175,7 @@ void state_step_logos(void) {
 #if VERSION_JP
                     intro_logos_set_fade_color(0);
 #else
-                    intro_logos_set_fade_color(208);
+                    intro_logos_set_fade_color(0);
 #endif
                 }
                 gGameStatusPtr->introCounter--;
@@ -194,7 +194,7 @@ void state_step_logos(void) {
             case INTRO_STATE_7:
                 if (gGameStatusPtr->introCounter == 0) {
                     gGameStatusPtr->introState++;
-                    intro_logos_set_fade_color(208);
+                    intro_logos_set_fade_color(0);
                     gGameStatusPtr->introCounter = 30;
                 }
                 gGameStatusPtr->introCounter--;
@@ -202,9 +202,10 @@ void state_step_logos(void) {
             case INTRO_STATE_8:
                 if (gGameStatusPtr->introCounter == 0) {
                     gGameStatusPtr->introState++;
-                    set_curtain_scale_goal(1.0f);
-                    set_curtain_draw_callback(NULL);
-                    set_curtain_fade_goal(0.3f);
+
+                    // set_curtain_scale_goal(2.0f);
+                    // set_curtain_draw_callback(NULL);
+                    // set_curtain_fade_goal(0.3f);
                 } else {
                     gGameStatusPtr->introCounter--;
                 }
@@ -213,6 +214,12 @@ void state_step_logos(void) {
                 if (intro_logos_fade_out(10)) {
                     gGameStatusPtr->introCounter = 15;
                     gGameStatusPtr->introState++;
+                    gOverrideFlags = 0;
+                    heap_free(gLogosImages);
+                    gLogosImages = NULL;
+                    intro_logos_set_fade_alpha(255);
+                    set_game_mode(GAME_MODE_FILE_SELECT);
+                    return;
                 }
                 break;
             case INTRO_STATE_A:
@@ -247,7 +254,7 @@ void appendGfx_intro_logos(void) {
     gDPSetRenderMode(gMainGfxPos++, G_RM_NOOP, G_RM_NOOP2);
     gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGB, G_CC_DECALRGB);
     gDPSetCycleType(gMainGfxPos++, G_CYC_FILL);
-    gDPSetFillColor(gMainGfxPos++, PACK_FILL_COLOR(224, 224, 224, 1));
+    gDPSetFillColor(gMainGfxPos++, PACK_FILL_COLOR(0, 0, 0, 1));
     gDPFillRectangle(gMainGfxPos++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
     gDPPipeSync(gMainGfxPos++);
 

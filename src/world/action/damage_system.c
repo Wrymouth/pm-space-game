@@ -40,15 +40,17 @@ void player_take_damage(s32 amount) {
 }
 
 void enemy_take_damage(Enemy* enemy, s32 amount) {
+    s16 lostHP = 1024 / enemy->maxHP;
     if (!(enemy->flags & ENEMY_FLAG_INVINCIBLE)) {
         enemy->curHP -= amount;
         enemy->flags |= ENEMY_FLAG_INVINCIBLE;
         enemy->invFrames = 0;
+        gPlayerData.specialBarsFilled -= (lostHP * amount);
     }
 }
 
 void game_over_cleanup() {
-    clear_enemy_bullets();
     clear_bullets();
+    clear_enemy_bullets();
 }
 

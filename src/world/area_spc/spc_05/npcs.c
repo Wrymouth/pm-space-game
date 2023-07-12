@@ -22,8 +22,13 @@
     .anim_F = ANIM_ParadeYoshi_StillGreen, \
 }
 
+API_CALLABLE(N(HammerShipUseHammer)) {
+    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_HAMMER);
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(N(HammerShipUseBullet)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_HAMMER);
+    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_LEFT);
     return ApiStatus_DONE2;
 }
 
@@ -49,19 +54,34 @@ API_CALLABLE(N(SetDamageAnimation)) {
 }
 
 EvtScript N(NpcIdle_HammerBroShip) = {
+    EVT_SET(LVar3, 20) // direction
     EVT_LOOP(0)
         //movement
-        EVT_IF_EQ(MV_AttackTimer, 15)
-            EVT_CALL(N(HammerShipUseBullet))
-            EVT_SET(MV_AttackTimer, 0)
+        EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_SWITCH(LVar0)
+            EVT_CASE_OR_EQ(MapXLeft)
+            EVT_CASE_OR_EQ(MapXRight)
+                EVT_MUL(LVar3, -1)
+            EVT_END_CASE_GROUP
+        EVT_END_SWITCH
+        EVT_ADD(LVar0, LVar3)
+        EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_IF_EQ(MV_HammerTimer, 20)
+            EVT_CALL(N(HammerShipUseHammer))
+            EVT_SET(MV_HammerTimer, 0)
         EVT_END_IF
+        EVT_IF_EQ(MV_ShotTimer, 15)
+            EVT_CALL(N(HammerShipUseBullet))
+            EVT_SET(MV_ShotTimer, 0)
+        EVT_END_IF
+        EVT_ADD(MV_HammerTimer, 1)
+        EVT_ADD(MV_ShotTimer, 1)
         // damage
         EVT_SET(LVar0, ANIM_ParadeYoshi_StillGreen)
-        EVT_SET(LVar1, ANIM_ParadeYoshi_IdleGreen)
+        EVT_SET(LVar1, ANIM_ParadeYoshi_StillBlue)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
         EVT_DEBUG_PRINT_VAR(LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
-        EVT_ADD(MV_AttackTimer, 1)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN
@@ -75,8 +95,8 @@ EvtScript N(NpcInit_HammerBroShip) = {
 };
 
 NpcSettings N(NpcSettings_HammerBroShip) = {
-    .height = 50,
-    .radius = 18,
+    .height = 64,
+    .radius = 28,
     .level = 99,
 };
 
@@ -90,8 +110,8 @@ NpcData N(NpcData_HammerBroShip) = {
     .drops = NO_DROPS,
     .animations = HAMMER_BRO_SHIP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
-    .maxHP = 10,
-    .invFrames = 60,
+    .maxHP = 32,
+    .invFrames = 30,
 };
 
 NpcGroupList N(DefaultNpcs) = {

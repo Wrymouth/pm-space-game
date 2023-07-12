@@ -296,6 +296,8 @@ typedef struct Npc {
     /* 0x330 */ s8 decorationInitialised[2];
     /* 0x332 */ s16 decorationUnk[2];
     /* 0x336 */ char unk_336[10];
+                f32 goalY;
+                f32 distToGoal;
 } Npc; // size = 0x340
 
 typedef Npc* NpcList[MAX_NPCS];

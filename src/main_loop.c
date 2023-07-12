@@ -237,7 +237,7 @@ void gfx_draw_frame(void) {
 
     ASSERT((s32)(((u32)(gMainGfxPos - gDisplayContext->mainGfx) << 3) >> 3) < ARRAY_COUNT(gDisplayContext->mainGfx));
 
-    render_title_menu();
+    render_game_menus();
 
     gDPFullSync(gMainGfxPos++);
     gSPEndDisplayList(gMainGfxPos++);

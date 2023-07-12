@@ -42,6 +42,7 @@ void state_step_enter_world(void) {
             if (gMapTransitionStateTime == 0) {
                 gGameStatusPtr->isBattle = FALSE;
                 gGameStatusPtr->disableScripts = FALSE;
+                D_800A0948 = FALSE;
 
                 if (!gLoadedFromFileSelect) {
                     load_map_by_IDs(gGameStatusPtr->areaID, gGameStatusPtr->mapID, LOAD_FROM_MAP);

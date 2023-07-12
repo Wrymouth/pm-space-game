@@ -86,7 +86,21 @@ void state_init_file_select(void) {
     gCameras[CAM_DEFAULT].auxPitch = 0;
     gCameras[CAM_DEFAULT].lookAt_dist = 100;
     gCameras[CAM_DEFAULT].auxBoomPitch = 0;
+    clear_script_list();
+    clear_worker_list();
+    clear_render_tasks();
+    spr_init_sprites(PLAYER_SPRITES_MARIO_WORLD);
+    clear_animator_list();
+    clear_entity_models();
+    clear_npcs();
+    hud_element_clear_cache();
+    reset_background_settings();
+    clear_entity_data(1);
+    clear_effect_data();
     gOverrideFlags |= GLOBAL_OVERRIDES_WINDOWS_IN_FRONT_OF_CURTAINS;
+    clear_player_data();
+    load_map_bg("hos_bg");
+    read_background_size(&gBackgroundImage);
 }
 
 void state_step_language_select(void) {
@@ -182,14 +196,19 @@ void state_step_file_select(void) {
 
     switch (D_800A0931) {
         case 1:
-            set_windows_visible(WINDOW_GROUP_FILE_MENU);
-            D_800A0930 = temp;
-            D_800A0931 = 2;
+            if (intro_logos_fade_in(9)) {
+                set_windows_visible(WINDOW_GROUP_FILE_MENU);
+                D_800A0930 = temp;
+                D_800A0931 = 2;
+            } else {
+                intro_logos_update_fade();
+            }
             break;
         case 0:
             D_800A0931 = 1;
             break;
         case 2:
+            bgm_set_song(0, SONG_FILE_SELECT, 0, 0, 8);
             if (D_800A0930 >= 0) {
                 D_800A0930--;
                 temp = D_800A0930;

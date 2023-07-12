@@ -44,7 +44,7 @@ API_CALLABLE(N(SetDamageAnimation)) {
 }
 
 API_CALLABLE(N(BowserUseBullet)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_STRAIGHT);
+    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_LEFT);
     return ApiStatus_DONE2;
 }
 

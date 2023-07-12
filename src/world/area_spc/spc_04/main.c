@@ -2,10 +2,11 @@
 #include "menu/menu.h"
 
 EntryList N(Entrances) = {
-    [spc_01_Entry0]    { -246.0,   -144.0,  -105.0,   90.0 },
+    [spc_04_ENTRY_0]    { -246.0,   -144.0,  -105.0,   90.0 },
 };
 
 s32 N(map_init)(void) {
+    sprintf(wMapBgName, "hos_bg");
     sprintf(wMapTexName, "hos_tex");
     return FALSE;
 }
@@ -14,7 +15,7 @@ MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),
-    .background = &gBackgroundImage,
+    .background = 0,
     .tattle = { MSG_MapTattle_kmr_20 },
 };
 

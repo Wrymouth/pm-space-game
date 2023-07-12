@@ -248,4 +248,5 @@ void clear_bullets() {
         bullets[i].npcID = 0;
         bullets[i].activeBulletIndex = BULLET_EMPTY;
     }
+    bulletCount = 0;
 }

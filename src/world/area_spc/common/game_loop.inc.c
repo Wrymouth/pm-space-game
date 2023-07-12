@@ -11,9 +11,15 @@ API_CALLABLE(N(CheckBulletDamage)) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(N(SetEnemyHPBar)) {
+    gPlayerData.maxStarPower = 4;
+    gPlayerData.specialBarsFilled = 0x0400;
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(N(EnableSpaceShipMode)) {
     Bytecode* args = script->ptrReadPos;
-    s32 enable = args++;
+    s32 enable = *args++;
     if (enable) {
         gPlayerStatus.flags |=  PS_FLAG_IN_SPACESHIP;
     } else {
@@ -50,20 +56,43 @@ API_CALLABLE(N(SetInvFrames)) {
 EvtScript N(GameLoop) = {
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(N(EnableSpaceShipMode), TRUE)
+    EVT_CALL(N(SetEnemyHPBar))
     EVT_LOOP(0)
-        // handle ship position
+        // get stick input and process
+        EVT_CALL(GetPlayerPos, LVar4, LVar5, LVar6)
         EVT_CALL(N(CheckStickInput), LVar0, LVar1)
         EVT_DIV(LVar0, 8)
         EVT_DIV(LVar1, 8)
+        // check position against map borders
+        EVT_IF_LT(LVar4, MapXLeft)
+            EVT_IF_LT(LVar0, 0)
+                EVT_SET(LVar0, 0)
+            EVT_END_IF
+        EVT_END_IF
+        EVT_IF_GT(LVar4, MapXRight)
+            EVT_IF_GT(LVar0, 0)
+                EVT_SET(LVar0, 0)
+            EVT_END_IF
+        EVT_END_IF
+        EVT_IF_LT(LVar5, MapYBottom)
+            EVT_IF_LT(LVar1, 0)
+                EVT_SET(LVar1, 0)
+            EVT_END_IF
+        EVT_END_IF
+        EVT_IF_GT(LVar5, MapYTop)
+            EVT_IF_GT(LVar1, 0)
+                EVT_SET(LVar1, 0)
+            EVT_END_IF
+        EVT_END_IF
+        // move ship
         EVT_ADD(MV_ShipPosX, LVar0)
         EVT_ADD(MV_ShipPosY, LVar1)
         EVT_CALL(TranslateGroup, Model_Spaceship, MV_ShipPosX, MV_ShipPosY, 0)
-        EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
-        EVT_SET(LVar0, MV_ShipPosX)
-        EVT_SUB(LVar0, 12) 
-        EVT_SET(LVar1, MV_ShipPosY)
-        EVT_ADD(LVar1, 20) 
-        EVT_CALL(SetPlayerPos, LVar0, LVar1, 12)
+        EVT_SET(LVar4, MV_ShipPosX)
+        EVT_SUB(LVar4, 12) 
+        EVT_SET(LVar5, MV_ShipPosY)
+        EVT_ADD(LVar5, 20) 
+        EVT_CALL(SetPlayerPos, LVar4, LVar5, 12)
         // handle player damage
         EVT_CALL(N(CheckBulletDamage))
         EVT_CALL(N(SetInvFrames))

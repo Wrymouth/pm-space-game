@@ -9,6 +9,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_Main) = {
+    EVT_CALL(GotoMap, "kmr_20", 0)
     EVT_SET(GB_WorldLocation, LOCATION_GOOMBA_VILLAGE)
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()

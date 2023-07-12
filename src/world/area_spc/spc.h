@@ -20,12 +20,21 @@ enum {
     AB_SPC_Unused_F     = AreaByte(15),
 };
 
+enum {
+    MapXLeft = -300,
+    MapXRight = 300,
+    MapYBottom = -180,
+    MapYTop = 150,
+};
+
 extern MapSettings spc_00_settings;
 extern MapSettings spc_01_settings;
+extern MapSettings spc_03_settings;
 extern MapSettings spc_05_settings;
 
 extern s32 spc_00_map_init(void);
 extern s32 spc_01_map_init(void);
+extern s32 spc_03_map_init(void);
 extern s32 spc_05_map_init(void);
 
 

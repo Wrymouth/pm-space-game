@@ -37,8 +37,16 @@ struct title_menu {
 };
 
 int title_menu_isVisible = FALSE;
-s32 are_credits_displayed = FALSE;
+int character_select_isVisible = FALSE;
 Evt *credits_script = NULL;
+
+typedef enum MenuType {
+    MENU_TYPE_TITLE            = 1,
+    MENU_TYPE_GAME_OVER        = 2,
+    MENU_TYPE_CHARACTER_SELECT = 3,
+} MenuType;
+
+MenuType menuType = NULL;
 
 u8 dx_ascii_char_to_msg(u8 in) {
     switch (in) {
@@ -96,17 +104,25 @@ void title_menu_draw_contents(void* arg0, s32 baseX, s32 baseY, s32 width, s32 h
     }
 }
 
+void render_game_menus(void) {
+    if (title_menu_isVisible && !evt_get_variable(credits_script, GF_Credits_Displayed)) {
+        render_title_menu();
+    }
+    if (character_select_isVisible) {
+        render_character_select();
+    }
+}
+
+void render_character_select(void) {
+    
+}
+
 void render_title_menu(void) {
     s32 x = 200;
     s32 y = 142;
     s32 width = 130;
     s32 height = 150;
     char msgbuf[0x100];
-
-    // Don't render if the menu isn't visible
-    if (!title_menu_isVisible || evt_get_variable(credits_script, GF_Credits_Displayed)) {
-        return;
-    }
 
     // Handle selection movement
     if (gGameStatus.heldButtons[0] & BUTTON_STICK_UP) {
