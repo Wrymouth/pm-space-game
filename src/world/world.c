@@ -880,8 +880,11 @@ MapConfig gv_maps[] = {
 MapConfig spc_maps[] = {
     { MAP_WITH_INIT(spc_00) },
     { MAP_WITH_INIT(spc_01) },
+    { MAP_WITH_INIT(spc_02) },
     { MAP_WITH_INIT(spc_03) },
+    { MAP_WITH_INIT(spc_04) },
     { MAP_WITH_INIT(spc_05) },
+    { MAP_WITH_INIT(spc_06) },
 };
 
 AreaConfig gAreas[] = {

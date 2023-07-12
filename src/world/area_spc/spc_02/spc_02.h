@@ -6,7 +6,7 @@
 #include "map.h"
 
 #include "../spc.h"
-#include "mapfs/spc_01.h"
+#include "mapfs/spc_02.h"
 
 enum {
     spc_02_ENTRY_0

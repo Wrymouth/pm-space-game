@@ -23,19 +23,25 @@ enum {
 enum {
     MapXLeft = -300,
     MapXRight = 300,
-    MapYBottom = -180,
+    MapYBottom = -200,
     MapYTop = 150,
 };
 
 extern MapSettings spc_00_settings;
 extern MapSettings spc_01_settings;
+extern MapSettings spc_02_settings;
 extern MapSettings spc_03_settings;
+extern MapSettings spc_04_settings;
 extern MapSettings spc_05_settings;
+extern MapSettings spc_06_settings;
 
 extern s32 spc_00_map_init(void);
 extern s32 spc_01_map_init(void);
+extern s32 spc_02_map_init(void);
 extern s32 spc_03_map_init(void);
+extern s32 spc_04_map_init(void);
 extern s32 spc_05_map_init(void);
+extern s32 spc_06_map_init(void);
 
 
 #endif

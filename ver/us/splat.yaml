@@ -15750,5 +15750,12 @@ segments:
     vram: 0x80240000
     subsegments:
     - [auto, c, main]    
+  - name: spc_06
+    dir: world/area_spc/spc_06
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]    
     - [auto, c, npcs]    
   - [0xDEADBEEF] # end

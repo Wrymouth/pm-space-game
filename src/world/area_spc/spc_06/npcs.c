@@ -1,4 +1,4 @@
-#include "spc_05.h"
+#include "spc_06.h"
 #include "sprite/npc/ParadeYoshi.h"
 #include "world/action/enemy_bullet.h"
 

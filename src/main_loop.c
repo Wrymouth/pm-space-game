@@ -4,6 +4,7 @@
 #include "hud_element.h"
 #include "sprite.h"
 #include "overlay.h"
+#include "menu/menu.h"
 
 SHIFT_BSS s32 gOverrideFlags;
 SHIFT_BSS s32 timeFreezeMode;
