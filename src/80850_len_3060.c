@@ -648,15 +648,15 @@ void update_status_bar(void) {
                 if (uiStatus->showTimer != 0) {
                     uiStatus->showTimer--;
                 } else {
-                    if (!uiStatus->ignoreChanges) {
-                        if (!uiStatus->unk_3B[0] || playerStatus->actionState != ACTION_STATE_IDLE) {
-                            if (gGameStatusPtr->isBattle == 0) {
-                                uiStatus->hidden = 1;
-                                uiStatus->showTimer = 0;
-                                uiStatus->unk_3B[1] = 0;
-                            }
-                        }
-                    }
+                    // if (!uiStatus->ignoreChanges) {
+                    //     if (!uiStatus->unk_3B[0] || playerStatus->actionState != ACTION_STATE_IDLE) {
+                    //         if (gGameStatusPtr->isBattle == 0) {
+                    //             uiStatus->hidden = 1;
+                    //             uiStatus->showTimer = 0;
+                    //             uiStatus->unk_3B[1] = 0;
+                    //         }
+                    //     }
+                    // }
                 }
             }
             break;
