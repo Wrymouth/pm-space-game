@@ -27,7 +27,10 @@ EvtScript N(EVS_Main) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(SetMusicTrack, 0, SONG_TUBBA_BLUBBA_THEME, 0, 8)
-    EVT_CALL(SetMenuType, MENU_TYPE_CHARACTER_SELECT)
+    EVT_THREAD
+        EVT_WAIT(20)
+        EVT_CALL(SetMenuType, MENU_TYPE_CHARACTER_SELECT)
+    EVT_END_THREAD
     EVT_EXEC(N(SetupTexturePan))
     EVT_RETURN
     EVT_END
