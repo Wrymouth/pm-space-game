@@ -45,6 +45,7 @@ MenuType menuType = MENU_TYPE_NONE;
 s32 csSelectedRow = 0;
 s32 csSelectedCol = 0;
 s32 selectionDelay = 3;
+s32 gvOpacity = 0;
 
 u8* destMaps[2][2] = {{"spc_06", "spc_07"}, {"spc_08", "spc_09"}};
 
@@ -118,23 +119,6 @@ void title_menu_cb_credits(void* arg) {
 
 void menu_close(void) {
     menuType = MENU_TYPE_NONE;
-}
-
-void title_menu_pop(void) {
-    struct title_menu* previous = dx_debugMenu.previous;
-
-    if (previous == NULL) {
-        return;
-    }
-
-    // Free the items
-    if (dx_debugMenu.items != NULL) {
-        general_heap_free(dx_debugMenu.items);
-    }
-
-    // Restore the previous menu
-    memcpy(&dx_debugMenu, previous, sizeof(struct title_menu));
-    general_heap_free(previous);
 }
 
 void menu_gotomap(char* argMap) {
@@ -257,6 +241,51 @@ void render_title_menu(void) {
     draw_msg((s32)msgbuf, x + 20, y - 12, 255, 0, 0);
 }
 
+void menu_retry(s32 prevMapID) {
+    char* baseMap;
+
+    if (prevMapID < 10) {
+        sprintf(baseMap, "spc_0%d", prevMapID);
+    } else {
+        sprintf(baseMap, "spc_%d", prevMapID);
+    }
+    menu_gotomap(baseMap);
+}
+
+void render_game_over() {
+    s32 x = 100;
+    s32 y = 100;
+    s16 destAreaID;
+    s16 destMapID;
+    s32 prevMapID = evt_get_variable(NULL, GB_GameOverEntry);
+    s32 enemyDefeated = evt_get_variable(NULL, GameFlag(prevMapID+6));
+
+    if (enemyDefeated) {
+        evt_set_variable(NULL, GameFlag(prevMapID+6), FALSE);
+        evt_set_variable(NULL, GB_BossesDefeated, (evt_get_variable(NULL, GB_BossesDefeated) - 1));
+    }
+
+    gvOpacity += 5;
+    if (gvOpacity > 255) {
+        gvOpacity = 255;
+
+        if (gGameStatus.pressedButtons[0] & BUTTON_A) {
+            gPlayerData.curHP = 5;
+            menu_retry(prevMapID);
+        }
+        if (gGameStatus.pressedButtons[0] & BUTTON_B) {
+            gPlayerData.curHP = 5;
+            menu_gotomap("spc_03");
+        }
+        if (gGameStatus.pressedButtons[0] & BUTTON_Z) {
+            gPlayerData.curHP = 5;
+            menu_gotomap("spc_01");
+        }
+    }
+
+    draw_msg(MSG_Space_Retry, x, y, gvOpacity, 0, 0);
+}
+
 void render_game_menus(void) {
     switch (menuType) {
         case MENU_TYPE_TITLE:
@@ -265,26 +294,13 @@ void render_game_menus(void) {
         case MENU_TYPE_CHARACTER_SELECT:
             render_character_select();
             break;
+        case MENU_TYPE_GAME_OVER:
+            render_game_over();
+            break;
         default:
             break;
     }
 }
-
-void title_menu_push(void) {
-    struct title_menu* previous = general_heap_malloc(sizeof(struct title_menu));
-    memcpy(previous, &dx_debugMenu, sizeof(struct title_menu));
-
-    dx_debugMenu.title = "Untitled menu";
-    dx_debugMenu.selectedIndex = 0;
-    dx_debugMenu.scrollY = 0;
-    dx_debugMenu.targetScrollY = 0;
-    dx_debugMenu.items = NULL;
-    dx_debugMenu.previous = previous;
-}
-
-
-
-
 
 API_CALLABLE(SetMenuType) {
     Bytecode* args = script->ptrReadPos;

@@ -71,7 +71,7 @@ s32 test_bullet_first_strike(Npc* enemy) {
         bulletZ = bullet->pos.z;
 
         bulletCollHeight = bullet->collisionHeight;
-        bulletCollHeight = bullet->collisionDiameter * 0.8;
+        bulletCollRadius = bullet->collisionDiameter * 0.8;
 
         angleToEnemy = atan2(enemyX, enemyZ, bulletX, bulletZ);
         distToEnemy  = dist2D(enemyX, enemyZ, bulletX, bulletZ);
@@ -238,7 +238,7 @@ void use_bullet(void) {
     bulletNpc->rotation.z           = 0.0f;
     bulletNpc->rotationPivotOffsetY = 10.0f;
 
-    sfx_play_sound_at_player(0x17, SOUND_SPACE_MODE_0);
+    sfx_play_sound_at_player(0x2096, SOUND_SPACE_MODE_0);
 }
 
 void clear_bullets() {

@@ -15,6 +15,10 @@ enum {
 };
 
 enum {
+    MF_EnemyDefeated = MapFlag(0),
+};
+
+enum {
     spc_00_ENTRY_0
 };
 

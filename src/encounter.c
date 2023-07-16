@@ -670,14 +670,11 @@ void update_encounters_neutral(void) {
                 // PUT BULLET CODE HERE
                 if (!(enemy->flags & ENEMY_FLAG_IGNORE_PARTNER) && test_bullet_first_strike(npc)) {
                     currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
-                    // enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
-                    // currentEncounter->currentEncounter = encounter;
-                    // currentEncounter->currentEnemy = enemy;
-                    // currentEncounter->firstStrikeType = FIRST_STRIKE_PLAYER;
-                    // goto START_BATTLE;
                     enemy_take_damage(enemy, 1);
                     if (enemy->curHP <= 0) {
-                        kill_enemy(enemy);
+                        evt_set_variable(NULL, enemy->defeatFlag, TRUE);
+                        evt_set_variable(NULL, GB_BossesDefeated, (evt_get_variable(NULL, GB_BossesDefeated) + 1));
+                        // kill_enemy(enemy);
                     }
                 }
             } while (0);
@@ -1549,14 +1546,14 @@ void show_first_strike_message(void) {
                 case 4:
                     width = get_msg_width(MSG_Menus_PlayerFirstStrike, 0) + 24;
                     posX = (xOffset + screenWidthHalf) - (width / 2);
-                    draw_box(0, WINDOW_STYLE_20, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
+                    draw_box(0, (WindowStyle) WINDOW_STYLE_20, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
                              SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
                     draw_msg(MSG_Menus_PlayerFirstStrike, posX + 11, 75, 0xFF, MSG_PAL_STANDARD, 0);
                     break;
                 case 6:
                     width = get_msg_width(MSG_Menus_PartnerFirstStrike, 0) + 24;
                     posX = (xOffset + screenWidthHalf) - (width / 2);
-                    draw_box(0, WINDOW_STYLE_20, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
+                    draw_box(0, (WindowStyle) WINDOW_STYLE_20, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
                              SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
                     draw_msg(MSG_Menus_PartnerFirstStrike, posX + 11, 75, 0xFF, MSG_PAL_STANDARD, 0);
                     break;
@@ -1566,7 +1563,7 @@ void show_first_strike_message(void) {
             if (!is_ability_active(ABILITY_CHILL_OUT)) {
                 width = get_msg_width(MSG_Menus_EnemyFirstStrike, 0) + 24;
                 posX = (xOffset + screenWidthHalf) - (width / 2);
-                draw_box(0, WINDOW_STYLE_4, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
+                draw_box(0, (WindowStyle) WINDOW_STYLE_4, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
                          SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
                 draw_msg(MSG_Menus_EnemyFirstStrike, posX + 11, 75, 0xFF, MSG_PAL_STANDARD, 0);
             }
@@ -2527,6 +2524,7 @@ void create_encounters(void) {
                     enemy->curHP = npcData->maxHP;
                     enemy->invFrames = 0;
                     enemy->invTimer = npcData->invFrames;
+                    enemy->defeatFlag = npcData->defeatFlag;
                     if (npcData->initVarCount != 0) {
                         if (npcData->initVarCount == 1) {
                             enemy->varTable[0] = npcData->initVar.value;

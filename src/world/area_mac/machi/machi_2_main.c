@@ -1,30 +1,5 @@
 #include "machi.h"
 
-API_CALLABLE(N(CheckGameVarRanges)) {
-    GameVarRange* bytes;
-    GameVarRange* flags;
-
-    bytes = N(GameByteTable);
-    while (TRUE) {
-        if (bytes->name == 0) {
-            break;
-        }
-        // release version does nothing
-        bytes++;
-    }
-
-    flags = N(GameFlagTable);
-    while (TRUE) {
-        if (flags->name == 0) {
-            break;
-        }
-        // release version does nothing
-        flags++;
-    }
-
-    return 2;
-}
-
 EvtScript N(EVS_GotoMap_kmr_09_1) = {
     EVT_CALL(GotoMap, EVT_PTR("kmr_09"), kmr_09_ENTRY_1)
     EVT_WAIT(100)
@@ -61,7 +36,6 @@ EvtScript N(EVS_GotoMap_jan_00_0) = {
 };
 
 EvtScript N(EVS_Main) = {
-    EVT_CALL(N(CheckGameVarRanges))
     EVT_SETUP_CAMERA_DEFAULT()
     EVT_EXEC_WAIT(N(EVS_MakeEntities))
     EVT_BIND_TRIGGER(EVT_PTR(N(EVS_GotoMap_kmr_09_1)), TRIGGER_WALL_PUSH, COLLIDER_deilitn, 1, 0)

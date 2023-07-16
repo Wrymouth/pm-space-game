@@ -80,16 +80,32 @@ EvtScript N(NpcIdle_HammerBroShip) = {
         EVT_SET(LVar0, ANIM_ParadeYoshi_StillGreen)
         EVT_SET(LVar1, ANIM_ParadeYoshi_StillBlue)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
-        EVT_DEBUG_PRINT_VAR(LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         EVT_WAIT(1)
+        // defeat
+        EVT_IF_TRUE(GF_HammerBrosDefeated)
+            EVT_SET(MF_EnemyDefeated, TRUE)
+            EVT_CALL(DoNpcDefeat)
+            EVT_BREAK_LOOP
+        EVT_END_IF
     EVT_END_LOOP
     EVT_RETURN
     EVT_END
 };
 
+EvtScript N(NpcDefeat_HammerBroShip) = {
+    EVT_IF_TRUE(AF_Dead)
+        EVT_SET(MF_EnemyDefeated, FALSE)
+        EVT_SET(GF_HammerBrosDefeated, FALSE)
+    EVT_END_IF
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(NpcInit_HammerBroShip) = {
+    EVT_CALL(SetNpcScale, NPC_SELF, 2.0f, 2.0f, 1.0f)
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_HammerBroShip)))
+    EVT_CALL(BindNpcDefeat, NPC_SELF, EVT_PTR(N(NpcDefeat_HammerBroShip)))
     EVT_RETURN
     EVT_END
 };
@@ -112,6 +128,7 @@ NpcData N(NpcData_HammerBroShip) = {
     .aiDetectFlags = AI_DETECT_SIGHT,
     .maxHP = 32,
     .invFrames = 30,
+    .defeatFlag = GF_HammerBrosDefeated,
 };
 
 NpcGroupList N(DefaultNpcs) = {

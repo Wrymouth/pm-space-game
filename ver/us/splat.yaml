@@ -15749,13 +15749,46 @@ segments:
     start: auto
     vram: 0x80240000
     subsegments:
-    - [auto, c, main]    
+    - [auto, c, main]
+    - [auto, c, npcs]
   - name: spc_06
     dir: world/area_spc/spc_06
     type: code
     start: auto
     vram: 0x80240000
     subsegments:
-    - [auto, c, main]    
-    - [auto, c, npcs]    
+    - [auto, c, main]
+    - [auto, c, npcs]
+  - name: spc_07
+    dir: world/area_spc/spc_07
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+    - [auto, c, npcs]
+  - name: spc_08
+    dir: world/area_spc/spc_08
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+    - [auto, c, npcs]
+  - name: spc_09
+    dir: world/area_spc/spc_09
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+    - [auto, c, npcs]
+  - name: spc_10
+    dir: world/area_spc/spc_10
+    type: code
+    start: auto
+    vram: 0x80240000
+    subsegments:
+    - [auto, c, main]
+    - [auto, c, npcs]
   - [0xDEADBEEF] # end

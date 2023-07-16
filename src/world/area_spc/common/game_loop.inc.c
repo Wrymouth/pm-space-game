@@ -2,7 +2,7 @@
 #include "sprite/player.h"
 #include "world/action/enemy_bullet.h"
 #include "world/action/damage_system.h"
-
+#include "effects.h"
 
 API_CALLABLE(N(CheckBulletDamage)) {
     if (test_enemy_bullet_first_strike()) {
@@ -53,11 +53,74 @@ API_CALLABLE(N(SetInvFrames)) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(N(DoGameOver)) {
+    goto_gameover();
+    return ApiStatus_DONE2;
+}
+
+EvtScript N(Die) = {
+    EVT_SET(LVar0, 7)
+    EVT_SET(LVar1, -7)
+    EVT_SET(LVarC, 0)
+    EVT_CALL(SetMusicTrack, 0, SONG_PEACH_CAUGHT, 0, 8)
+    EVT_LOOP(120)
+        EVT_ADD(MV_ShipPosX, LVar0)
+        EVT_ADD(MV_ShipPosY, LVar1)
+        EVT_CALL(TranslateGroup, Model_Spaceship, MV_ShipPosX, MV_ShipPosY, 0)
+        EVT_SET(LVar4, MV_ShipPosX)
+        EVT_SUB(LVar4, 12) 
+        EVT_SET(LVar5, MV_ShipPosY)
+        EVT_ADD(LVar5, 20) 
+        EVT_CALL(SetPlayerPos, LVar4, LVar5, 12)
+        EVT_IF_EQ(LVarC, 12)
+            EVT_SET(LVarC, 0)
+            EVT_CALL(GetPlayerPos, LVarD, LVarE, LVarF)
+            EVT_CALL(PlaySound, 0x2076)
+            EVT_ADD(LVarD, 12)
+            EVT_CALL(PlayEffect, EFFECT_EXPLOSION, 1, LVarD, LVarE, LVarF)
+        EVT_END_IF
+        EVT_ADD(LVarC, 1)
+        EVT_WAIT(1)
+    EVT_END_LOOP
+    EVT_CALL(N(DoGameOver))
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(Win) = {
+    EVT_CALL(SetMusicTrack, 0, SONG_BATTLE_END, 0, 8)
+    EVT_CALL(SetPlayerAnimation, ANIM_MarioB1_Hammer3_FingerWag)
+    EVT_WAIT(20)
+    EVT_CALL(MakeLerp, 0, 500, 90, EASING_CUBIC_IN)
+    EVT_LOOP(90)
+        EVT_CALL(UpdateLerp)
+        EVT_ADD(MV_ShipPosX, LVar0)
+        EVT_CALL(TranslateGroup, Model_Spaceship, MV_ShipPosX, MV_ShipPosY, 0)
+        EVT_SET(LVar4, MV_ShipPosX)
+        EVT_SUB(LVar4, 12) 
+        EVT_SET(LVar5, MV_ShipPosY)
+        EVT_ADD(LVar5, 20) 
+        EVT_CALL(SetPlayerPos, LVar4, LVar5, 12)
+        EVT_WAIT(1)
+    EVT_END_LOOP
+    EVT_CALL(GotoMap, "spc_03", 0)
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(GameLoop) = {
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(N(EnableSpaceShipMode), TRUE)
     EVT_CALL(N(SetEnemyHPBar))
     EVT_LOOP(0)
+        EVT_IF_TRUE(AF_Dead)
+            EVT_EXEC_WAIT(N(Die))
+            EVT_BREAK_LOOP
+        EVT_END_IF
+        EVT_IF_TRUE(MF_EnemyDefeated)
+            EVT_EXEC_WAIT(N(Win))
+            EVT_BREAK_LOOP
+        EVT_END_IF
         // get stick input and process
         EVT_CALL(GetPlayerPos, LVar4, LVar5, LVar6)
         EVT_CALL(N(CheckStickInput), LVar0, LVar1)

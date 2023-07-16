@@ -6,7 +6,6 @@ EntryList N(Entrances) = {
 };
 
 s32 N(map_init)(void) {
-    sprintf(wMapBgName, "hos_bg");
     sprintf(wMapTexName, "hos_tex");
     return FALSE;
 }
@@ -25,7 +24,8 @@ EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_MARIOS_HOUSE) // pause_map.c
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()
-    EVT_CALL(SetMusicTrack, 0, SONG_TOAD_TOWN, 0, 8)
+    EVT_CALL(SetMusicTrack, 0, SONG_GAME_OVER, 0, 8)
+    EVT_CALL(SetMenuType, MENU_TYPE_GAME_OVER)
     EVT_RETURN
     EVT_END
 };

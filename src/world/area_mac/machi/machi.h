@@ -53,5 +53,3 @@ typedef struct GameVarRange {
     /* 0C */ s32 next;
 } GameVarRange; // size = 0x10
 
-extern GameVarRange N(GameByteTable)[];
-extern GameVarRange N(GameFlagTable)[];

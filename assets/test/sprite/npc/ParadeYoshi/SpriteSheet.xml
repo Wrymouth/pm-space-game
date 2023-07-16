@@ -1,0 +1,222 @@
+<SpriteSheet maxComponents="1" paletteGroups="4">
+    <PaletteList>
+        <Palette id="0" src="Default.png" />
+        <Palette id="1" src="Green.png" />
+        <Palette id="2" src="Blue.png" />
+        <Palette id="3" src="Yellow.png" />
+        <Palette id="4" src="Chief.png" />
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="IdleBrown1.png" />
+        <Raster id="1" palette="0" src="IdleBrown2.png" />
+        <Raster id="2" palette="0" src="BlinkBrown.png" />
+        <Raster id="3" palette="1" src="BlinkGreen.png" />
+        <Raster id="4" palette="2" src="BlinkBlue.png" />
+        <Raster id="5" palette="3" src="BlinkYellow.png" />
+        <Raster id="6" palette="1" src="IdleGreen1.png" />
+        <Raster id="7" palette="2" src="IdleBlue1.png" />
+        <Raster id="8" palette="3" src="IdleYellow1.png" />
+        <Raster id="9" palette="1" src="IdleGreen2.png" />
+        <Raster id="A" palette="2" src="IdleBlue2.png" />
+        <Raster id="B" palette="3" src="IdleYellow2.png" />
+        <Raster id="C" palette="4" src="IdleChief1.png" />
+        <Raster id="D" palette="4" src="IdleChief2.png" />
+        <Raster id="E" palette="4" src="IdleChief3.png" />
+        <Raster id="F" palette="4" src="IdleBlink1.png" />
+        <Raster id="10" palette="4" src="IdleBlink2.png" />
+    </RasterList>
+    <AnimationList>
+        <Animation name="StillGreen">
+            <Component name="Comp_0" xyz="0,-6,0">
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="StillBlue">
+            <Component name="Comp_0" xyz="0,-6,0">
+                <SetRaster raster="7" />
+                <Wait duration="6" />
+                <SetRaster raster="6" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="StillYellow">
+            <Component name="Comp_0" xyz="0,-6,0">
+                <SetRaster raster="8" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="StillBrown">
+            <Component name="Comp_0" xyz="0,-5,0">
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="StillLeader">
+            <Component name="Comp_0" xyz="0,-8,0">
+                <SetRaster raster="C" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="IdleGreen">
+            <Component name="Comp_0" xyz="0,-6,0">
+                <SetRaster raster="6" />
+                <Wait duration="32" />
+                <SetRaster raster="9" />
+                <Wait duration="32" />
+                <SetRaster raster="6" />
+                <Wait duration="4" />
+                <SetRaster raster="3" />
+                <Wait duration="4" />
+                <SetRaster raster="6" />
+                <Wait duration="4" />
+                <SetRaster raster="3" />
+                <Wait duration="4" />
+                <SetRaster raster="6" />
+                <Wait duration="16" />
+                <SetRaster raster="9" />
+                <Wait duration="32" />
+                <SetRaster raster="6" />
+                <Wait duration="32" />
+                <SetRaster raster="9" />
+                <Wait duration="32" />
+                <Loop count="16" pos="5" />
+                <SetRaster raster="6" />
+                <Wait duration="4" />
+                <SetRaster raster="3" />
+                <Wait duration="4" />
+                <SetRaster raster="6" />
+                <Wait duration="24" />
+                <SetRaster raster="9" />
+                <Wait duration="32" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="IdleBlue">
+            <Component name="Comp_0" xyz="0,-6,0">
+                <SetRaster raster="7" />
+                <Wait duration="32" />
+                <SetRaster raster="A" />
+                <Wait duration="32" />
+                <Loop count="0" pos="3" />
+                <SetRaster raster="7" />
+                <Wait duration="8" />
+                <SetRaster raster="4" />
+                <Wait duration="4" />
+                <SetRaster raster="7" />
+                <Wait duration="20" />
+                <SetRaster raster="A" />
+                <Wait duration="32" />
+                <SetRaster raster="7" />
+                <Wait duration="32" />
+                <SetRaster raster="A" />
+                <Wait duration="32" />
+                <Loop count="14" pos="1" />
+                <SetRaster raster="7" />
+                <Wait duration="8" />
+                <SetRaster raster="4" />
+                <Wait duration="4" />
+                <SetRaster raster="7" />
+                <Wait duration="20" />
+                <SetRaster raster="A" />
+                <Wait duration="32" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="IdleYellow">
+            <Component name="Comp_0" xyz="0,-6,0">
+                <SetRaster raster="8" />
+                <Wait duration="32" />
+                <SetRaster raster="B" />
+                <Wait duration="32" />
+                <Loop count="0" pos="5" />
+                <SetRaster raster="8" />
+                <Wait duration="8" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="8" />
+                <Wait duration="20" />
+                <SetRaster raster="B" />
+                <Wait duration="32" />
+                <Loop count="6" pos="1" />
+                <SetRaster raster="8" />
+                <Wait duration="32" />
+                <SetRaster raster="B" />
+                <Wait duration="32" />
+                <Loop count="16" pos="3" />
+                <SetRaster raster="8" />
+                <Wait duration="8" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="8" />
+                <Wait duration="20" />
+                <SetRaster raster="B" />
+                <Wait duration="32" />
+                <SetRaster raster="8" />
+                <Wait duration="32" />
+                <SetRaster raster="B" />
+                <Wait duration="32" />
+                <Loop count="30" pos="3" />
+                <SetRaster raster="8" />
+                <Wait duration="4" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="8" />
+                <Wait duration="4" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="8" />
+                <Wait duration="16" />
+                <SetRaster raster="B" />
+                <Wait duration="32" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="IdleBrown">
+            <Component name="Comp_0" xyz="0,-5,0">
+                <SetRaster raster="0" />
+                <Wait duration="4" />
+                <SetRaster raster="2" />
+                <Wait duration="4" />
+                <SetRaster raster="0" />
+                <Wait duration="24" />
+                <SetRaster raster="1" />
+                <Wait duration="32" />
+                <SetRaster raster="0" />
+                <Wait duration="32" />
+                <SetRaster raster="1" />
+                <Wait duration="32" />
+                <Loop count="8" pos="3" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="IdleLeader">
+            <Component name="Comp_0" xyz="0,-8,0">
+                <SetRaster raster="C" />
+                <Wait duration="24" />
+                <SetRaster raster="D" />
+                <Wait duration="24" />
+                <SetRaster raster="E" />
+                <Wait duration="18" />
+                <SetRaster raster="C" />
+                <Wait duration="30" />
+                <Loop count="0" pos="6" />
+                <SetRaster raster="C" />
+                <Wait duration="10" />
+                <SetRaster raster="F" />
+                <Wait duration="2" />
+                <SetRaster raster="10" />
+                <Wait duration="2" />
+                <SetRaster raster="F" />
+                <Wait duration="2" />
+                <Loop count="10" pos="1" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

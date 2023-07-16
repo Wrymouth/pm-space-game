@@ -13,6 +13,10 @@ enum {
 };
 
 enum {
+    MF_EnemyDefeated = MapFlag(0),
+};
+
+enum {
     MV_ShipPosX = MapVar(0),
     MV_ShipPosY = MapVar(1),
     MV_HammerTimer = MapVar(2),

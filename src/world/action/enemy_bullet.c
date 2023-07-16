@@ -81,7 +81,7 @@ s32 test_enemy_bullet_first_strike() {
         bulletZ = bullet->pos.z;
 
         bulletCollHeight = bullet->collisionHeight;
-        bulletCollHeight = bullet->collisionDiameter * 0.8;
+        bulletCollRadius = bullet->collisionDiameter * 0.8;
 
         angleToPlayer = atan2(playerX, playerZ, bulletX, bulletZ);
         distToPlayer  = dist2D(playerX, playerZ, bulletX, bulletZ);
