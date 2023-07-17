@@ -3,6 +3,42 @@
 #include "world/action/enemy_bullet.h"
 #include "world/action/damage_system.h"
 #include "effects.h"
+#include "message_ids.h"
+#include "fio.h"
+
+API_CALLABLE(N(SaveAndContinue)) {
+    u16 curArea  = gGameStatusPtr->areaID;
+    u16 curMap   = gGameStatusPtr->mapID;
+    u16 curEntry = gGameStatusPtr->entryID;
+    // save with map being spc_01, entry 0
+    u16 areaID, mapID;
+
+    get_map_IDs_by_name("spc_01", &areaID, &mapID);
+    gGameStatusPtr->areaID  = areaID;
+    gGameStatusPtr->mapID   = mapID;
+    gGameStatusPtr->entryID = 0;
+    fio_save_game(gGameStatusPtr->saveSlot);
+    // and continue
+    gGameStatusPtr->areaID  = curArea;
+    gGameStatusPtr->mapID   = curMap;
+    gGameStatusPtr->entryID = curEntry;
+    return ApiStatus_DONE2;
+}
+
+EvtScript N(EVS_SaveAndContinue_Prompt) = {
+    EVT_WAIT(10)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Menus_SavePrompt, 160, 40)
+    EVT_CALL(ShowChoice, MSG_Choice_0004, 160, 40)
+    EVT_IF_EQ(LVar0, 0)
+        EVT_CALL(N(SaveAndContinue))
+        EVT_WAIT(10)
+    EVT_END_IF
+    EVT_CALL(CloseMessage)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("spc_03"), 0, TRANSITION_AFTER_SAVE_PROMPT) 
+    EVT_WAIT(100)
+    EVT_RETURN
+    EVT_END
+};
 
 API_CALLABLE(N(CheckBulletDamage)) {
     if (test_enemy_bullet_first_strike()) {
@@ -58,6 +94,11 @@ API_CALLABLE(N(DoGameOver)) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(N(HealPlayer)) {
+    gPlayerData.curHP = gPlayerData.curMaxHP;
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(Die) = {
     EVT_SET(LVar0, 7)
     EVT_SET(LVar1, -7)
@@ -92,6 +133,10 @@ EvtScript N(Win) = {
     EVT_CALL(SetPlayerAnimation, ANIM_MarioB1_Hammer3_FingerWag)
     EVT_WAIT(20)
     EVT_CALL(MakeLerp, 0, 500, 90, EASING_CUBIC_IN)
+    EVT_THREAD
+        EVT_WAIT(15)
+        EVT_CALL(N(HealPlayer))
+    EVT_END_THREAD
     EVT_LOOP(90)
         EVT_CALL(UpdateLerp)
         EVT_ADD(MV_ShipPosX, LVar0)
@@ -103,7 +148,7 @@ EvtScript N(Win) = {
         EVT_CALL(SetPlayerPos, LVar4, LVar5, 12)
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(GotoMap, "spc_03", 0)
+    EVT_EXEC_WAIT(N(EVS_SaveAndContinue_Prompt))
     EVT_RETURN
     EVT_END
 };

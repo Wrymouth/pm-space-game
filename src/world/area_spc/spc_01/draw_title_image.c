@@ -86,7 +86,7 @@ EvtScript N(ShowTitle) = {
     EVT_SET(LVar0, -1)
     EVT_CALL(N(SetTitlePrimAlpha))
     EVT_LOOP(0)
-        EVT_IF_TRUE(GF_Credits_Displayed)
+        EVT_IF_TRUE(GF_CreditsDisplayed)
             EVT_SET(LVar0, -150)
             EVT_CALL(N(SetTitlePosY))
         EVT_ELSE

@@ -36,18 +36,24 @@ struct title_menu {
     .previous = NULL,
 };
 
-int title_menu_isVisible = FALSE;
-int character_select_isVisible = FALSE;
 Evt *credits_script = NULL;
 
 MenuType menuType = MENU_TYPE_NONE;
 
+// story
+s32 storyX = 20;
+s32 storyY = 200;
+s32 shiftDelay = 3;
+// character select
 s32 csSelectedRow = 0;
 s32 csSelectedCol = 0;
-s32 selectionDelay = 3;
+s32 selectionDelay = 8;
+CharacterSelectPanel csPanels[2][2] = {{{"spc_06", FALSE}, {"spc_07", FALSE}}, {{"spc_08", FALSE}, {"spc_09", FALSE}}}; // rows, columns
+
+// game over
 s32 gvOpacity = 0;
 
-u8* destMaps[2][2] = {{"spc_06", "spc_07"}, {"spc_08", "spc_09"}};
+
 
 u8 dx_ascii_char_to_msg(u8 in) {
     switch (in) {
@@ -106,9 +112,10 @@ void title_menu_draw_contents(void* arg0, s32 baseX, s32 baseY, s32 width, s32 h
 }
 
 EvtScript ShowCreditsMessage = {
-    EVT_SET(GF_Credits_Displayed, TRUE)
+    EVT_SET(GF_CreditsDisplayed, TRUE)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Space_Credits, 160, 40)
-    EVT_SET(GF_Credits_Displayed, FALSE)
+    EVT_SET(GF_CreditsDisplayed, FALSE)
+    EVT_SET(GF_CreditsSeen, TRUE)
     EVT_RETURN
     EVT_END
 };
@@ -121,7 +128,7 @@ void menu_close(void) {
     menuType = MENU_TYPE_NONE;
 }
 
-void menu_gotomap(char* argMap) {
+void menu_gotomap(char* argMap, s32 entry) {
     char* map = argMap;
 
     // Get area/map id pair
@@ -132,7 +139,7 @@ void menu_gotomap(char* argMap) {
     // Go there
     gGameStatusPtr->areaID = areaID;
     gGameStatusPtr->mapID = mapID;
-    gGameStatusPtr->entryID = 0;
+    gGameStatusPtr->entryID = entry;
     set_map_transition_effect(0);
     set_game_mode(GAME_MODE_UNUSED);
 
@@ -144,7 +151,7 @@ void menu_gotomap(char* argMap) {
 // Callback for the "New Game" option
 // Lists the areas
 void title_menu_cb_newgame(void* arg) {
-    menu_gotomap("spc_03");
+    menu_gotomap("spc_03", 0);
 }
 
 void render_character_select(void) {
@@ -156,7 +163,32 @@ void render_character_select(void) {
     s32 height = 50;
     s32 row;
     s32 col;
+    s32 enemyCounter = 0;
     WindowStyle ws;
+
+    load_font(1);
+    draw_msg(MSG_Space_CharacterSelect, 95, 95, 255, 0, 0);   
+
+    for (row = 0; row < MAX_ROWS; row++)
+    {
+        for (col = 0; col < MAX_COLS; col++)
+        {
+            csPanels[row][col].cleared = evt_get_variable(NULL, GameFlag(enemyCounter + 12));
+            enemyCounter++;
+            if ((row == csSelectedRow && col == csSelectedCol)) {
+                if (selectionDelay > 0) {
+                    ws = (WindowStyle) WINDOW_STYLE_13;
+                    selectionDelay--;
+                } else {
+                    ws = (WindowStyle) WINDOW_STYLE_11;
+                }
+                
+            } else {
+                ws = (WindowStyle) ((csPanels[row][col].cleared) ? WINDOW_STYLE_20 : WINDOW_STYLE_9);
+            }
+            draw_box(0, ws, xStart + (col * width), yStart + (row * height), 0, width, height, 255, 0, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL); 
+        }
+    }
 
     // Handle selection movement
     if (gGameStatus.heldButtons[0] & BUTTON_STICK_UP) {
@@ -185,23 +217,10 @@ void render_character_select(void) {
     }
     if (gGameStatus.pressedButtons[0] & BUTTON_A) {
         selectionDelay = 8;
-        menu_gotomap(destMaps[csSelectedCol][csSelectedRow]);
-    }
-
-    load_font(1);
-    draw_msg(MSG_Space_CharacterSelect, 95, 95, 255, 0, 0);   
-
-    for (row = 0; row < MAX_ROWS; row++)
-    {
-        for (col = 0; col < MAX_COLS; col++)
-        {
-            if (selectionDelay > 0) {
-                ws = (WindowStyle) ((row == csSelectedRow && col == csSelectedCol) ? WINDOW_STYLE_13 : WINDOW_STYLE_9);
-                selectionDelay--;
-            } else {
-                ws = (WindowStyle) ((row == csSelectedRow && col == csSelectedCol) ? WINDOW_STYLE_11 : WINDOW_STYLE_9);
-            }
-            draw_box(0, ws, xStart + (col * width), yStart + (row * height), 0, width, height, 255, 0, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL); 
+        if (!(csPanels[csSelectedRow][csSelectedCol].cleared)) {
+            menu_gotomap(csPanels[csSelectedRow][csSelectedCol].destMap, 0);
+        } else {
+            sfx_play_sound(0x21D);
         }
     }
 }
@@ -213,7 +232,7 @@ void render_title_menu(void) {
     s32 height = 150;
     char msgbuf[0x100];
 
-    if (evt_get_variable(credits_script, GF_Credits_Displayed)) {
+    if (evt_get_variable(credits_script, GF_CreditsDisplayed)) {
         return;
     }
 
@@ -249,7 +268,7 @@ void menu_retry(s32 prevMapID) {
     } else {
         sprintf(baseMap, "spc_%d", prevMapID);
     }
-    menu_gotomap(baseMap);
+    menu_gotomap(baseMap, 0);
 }
 
 void render_game_over() {
@@ -275,15 +294,28 @@ void render_game_over() {
         }
         if (gGameStatus.pressedButtons[0] & BUTTON_B) {
             gPlayerData.curHP = 5;
-            menu_gotomap("spc_03");
+            menu_gotomap("spc_03", 0);
         }
         if (gGameStatus.pressedButtons[0] & BUTTON_Z) {
             gPlayerData.curHP = 5;
-            menu_gotomap("spc_01");
+            menu_gotomap("spc_01", 0);
         }
     }
 
     draw_msg(MSG_Space_Retry, x, y, gvOpacity, 0, 0);
+}
+
+void render_story(void) {
+    draw_msg(MSG_Space_IntroStoryTitle, storyX + 90, storyY, 255, 0, 0);
+    draw_msg(MSG_Space_IntroStory, storyX, storyY + 30, 255, 0, 0);
+    shiftDelay--;
+    if (shiftDelay <= 0) {
+        shiftDelay = 3;
+        storyY--;
+    }
+    if (storyY < -567) {
+        menu_gotomap("mac_05", 1);
+    }
 }
 
 void render_game_menus(void) {
@@ -296,6 +328,9 @@ void render_game_menus(void) {
             break;
         case MENU_TYPE_GAME_OVER:
             render_game_over();
+            break;
+        case MENU_TYPE_STORY:
+            render_story();
             break;
         default:
             break;

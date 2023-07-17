@@ -29,20 +29,20 @@ EvtScript N(D_8024457C_8566EC) = {
 
 EvtScript N(D_80244648_8567B8) = {
     EVT_LOOP(0)
-        EVT_CALL(MakeLerp, 600, -240, 320, EASING_LINEAR)
+        EVT_CALL(MakeLerp, 0, -120, 60, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
-            EVT_CALL(TranslateModel, MODEL_o177, LVar0, -25, -75)
+            EVT_CALL(TranslateModel, MODEL_o177, LVar0, 0,0)
             EVT_CALL(RotateModel, MODEL_o177, 0, 0, 1, 0)
             EVT_WAIT(1)
             EVT_IF_EQ(LVar1, 0)
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(MakeLerp, -240, 600, 320, EASING_LINEAR)
+        EVT_CALL(MakeLerp, -120, 0, 60, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
-            EVT_CALL(TranslateModel, MODEL_o177, LVar0, -25, -75)
+            EVT_CALL(TranslateModel, MODEL_o177, LVar0, 0,0)
             EVT_CALL(RotateModel, MODEL_o177, 180, 0, 1, 0)
             EVT_WAIT(1)
             EVT_IF_EQ(LVar1, 0)
@@ -128,10 +128,28 @@ EvtScript N(D_802448C4_856A34) = {
     EVT_END
 };
 
+EvtScript N(OpeningCutscene) = {
+    EVT_CALL(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, MSG_Space_FishTalk1)
+    EVT_CALL(SpeakToPlayer, NPC_Fishmael, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, MSG_Space_FishTalk2)
+    EVT_CALL(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, MSG_Space_FishTalk3)
+    EVT_CALL(SpeakToPlayer, NPC_Fishmael, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, MSG_Space_FishTalk4)
+    EVT_CALL(UseSettingsFrom, CAM_DEFAULT, -1019, 4, 365)
+    EVT_CALL(SetPanTarget, CAM_DEFAULT, -1019, 4, 365)
+    EVT_CALL(PanToTarget, CAM_DEFAULT, EASING_LINEAR, 1)
+    EVT_WAIT_SECS(25)
+    EVT_CALL(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, MSG_Space_FishTalk5)
+    EVT_CALL(GotoMap, EVT_PTR("spc_01"), 0)
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_TOAD_TOWN)
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()
+    EVT_CALL(DisablePlayerInput, TRUE)
+    EVT_CALL(DisablePlayerPhysics, TRUE)
+    EVT_EXEC(N(OpeningCutscene))
     EVT_SWITCH(GB_StoryProgress)
         EVT_CASE_LT(STORY_CH4_STAR_SPRIT_DEPARTED)
             EVT_SET(LVar0, EVT_PTR(N(NpcSetA)))
@@ -160,8 +178,6 @@ EvtScript N(EVS_Main) = {
     EVT_EXEC(N(EVS_SetupRooms))
     EVT_EXEC(N(EVS_802441E0))
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitne, COLLIDER_FLAGS_UPPER_MASK)
-    EVT_EXEC(N(D_802448C4_856A34))
-    EVT_WAIT(1)
     EVT_EXEC(N(D_8024457C_8566EC))
     EVT_CALL(SetTexPanner, MODEL_kaimen, 1)
     EVT_THREAD
