@@ -23,12 +23,12 @@
 }
 
 API_CALLABLE(N(HammerShipUseHammer)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_HAMMER);
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_HAMMER);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(HammerShipUseBullet)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_LEFT);
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_LEFT);
     return ApiStatus_DONE2;
 }
 

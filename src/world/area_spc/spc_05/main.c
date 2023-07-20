@@ -25,7 +25,7 @@ EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_MARIOS_HOUSE) // pause_map.c
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()
-    EVT_CALL(SetMusicTrack, 0, SONG_TOAD_TOWN, 0, 8)
+    EVT_CALL(SetMusicTrack, 0, SONG_PARADE_DAY, 0, 8)
     EVT_RETURN
     EVT_END
 };

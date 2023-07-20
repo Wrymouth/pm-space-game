@@ -2,13 +2,13 @@
 #include "sprite/npc/ParadeKolorado.h"
 #include "world/action/enemy_bullet.h"
 
-API_CALLABLE(N(HammerShipUseHammer)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_HAMMER);
+API_CALLABLE(N(KoopaShipUseSplit)) {
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_SPLIT);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(HammerShipUseBullet)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_LEFT);
+API_CALLABLE(N(KoopaShipUseShell)) {
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_KOOPA_SHELLS);
     return ApiStatus_DONE2;
 }
 
@@ -37,13 +37,26 @@ EvtScript N(NpcIdle_KoopaBrosShip) = {
     EVT_SET(LVar3, 20) // direction
     EVT_LOOP(0)
         //movement
-        
+        EVT_IF_EQ(MV_SplitTimer, 50)
+            // EVT_CALL(N(KoopaShipUseSplit))
+            EVT_SET(MV_SplitTimer, 0)
+        EVT_END_IF
+        EVT_IF_EQ(MV_ShellTimer, 15)
+            EVT_CALL(N(KoopaShipUseShell))
+        EVT_END_IF
+        EVT_ADD(MV_SplitTimer, 1)
+        EVT_ADD(MV_ShellTimer, 1)
         // damage
         EVT_SET(LVar0, ANIM_ParadeKolorado_Idle)
         EVT_SET(LVar1, ANIM_ParadeKolorado_WifeIdle)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
-        EVT_DEBUG_PRINT_VAR(LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
+        // defeat
+        EVT_IF_TRUE(GF_KoopaBrosDefeated)
+            EVT_SET(MF_EnemyDefeated, TRUE)
+            EVT_CALL(DoNpcDefeat)
+            EVT_BREAK_LOOP
+        EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN
@@ -64,7 +77,7 @@ NpcSettings N(NpcSettings_KoopaBrosShip) = {
 
 NpcData N(NpcData_KoopaBrosShip) = {
     .id = 2,
-    .pos = { 0.0f, -213.0f, 16.0f },
+    .pos = { 90.0f, 0.0f, 16.0f },
     .init = &N(NpcInit_KoopaBrosShip),
     .yaw = 270,
     .settings = &N(NpcSettings_KoopaBrosShip),

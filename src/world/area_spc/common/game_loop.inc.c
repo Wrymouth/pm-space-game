@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sprite/player.h"
 #include "world/action/enemy_bullet.h"
+#include "world/action/bullet.h"
 #include "world/action/damage_system.h"
 #include "effects.h"
 #include "message_ids.h"
@@ -13,7 +14,7 @@ API_CALLABLE(N(SaveAndContinue)) {
     // save with map being spc_01, entry 0
     u16 areaID, mapID;
 
-    get_map_IDs_by_name("spc_01", &areaID, &mapID);
+    get_map_IDs_by_name("spc_02", &areaID, &mapID);
     gGameStatusPtr->areaID  = areaID;
     gGameStatusPtr->mapID   = mapID;
     gGameStatusPtr->entryID = 0;
@@ -103,6 +104,7 @@ EvtScript N(Die) = {
     EVT_SET(LVar0, 7)
     EVT_SET(LVar1, -7)
     EVT_SET(LVarC, 0)
+    EVT_CALL(N(EnableSpaceShipMode), FALSE)
     EVT_CALL(SetMusicTrack, 0, SONG_PEACH_CAUGHT, 0, 8)
     EVT_LOOP(120)
         EVT_ADD(MV_ShipPosX, LVar0)
@@ -130,6 +132,8 @@ EvtScript N(Die) = {
 
 EvtScript N(Win) = {
     EVT_CALL(SetMusicTrack, 0, SONG_BATTLE_END, 0, 8)
+    EVT_CALL(ClearAllPlayerBullets)
+    EVT_CALL(ClearAllEnemyBullets)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioB1_Hammer3_FingerWag)
     EVT_WAIT(20)
     EVT_CALL(MakeLerp, 0, 500, 90, EASING_CUBIC_IN)

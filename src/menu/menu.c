@@ -37,6 +37,7 @@ struct title_menu {
 };
 
 Evt *credits_script = NULL;
+Evt *credits_notif_script = NULL;
 
 MenuType menuType = MENU_TYPE_NONE;
 
@@ -44,6 +45,7 @@ MenuType menuType = MENU_TYPE_NONE;
 s32 storyX = 20;
 s32 storyY = 200;
 s32 shiftDelay = 3;
+s32 skipOpacity = 255;
 // character select
 s32 csSelectedRow = 0;
 s32 csSelectedCol = 0;
@@ -120,6 +122,14 @@ EvtScript ShowCreditsMessage = {
     EVT_END
 };
 
+EvtScript ShowCreditsNotif = {
+    EVT_SET(GF_CreditsDisplayed, TRUE)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_CreditsNotif, 160, 40)
+    EVT_SET(GF_CreditsDisplayed, FALSE)
+    EVT_RETURN
+    EVT_END
+};
+
 void title_menu_cb_credits(void* arg) {
     credits_script = start_script(&ShowCreditsMessage, 0xF, 0);
 }
@@ -151,7 +161,11 @@ void menu_gotomap(char* argMap, s32 entry) {
 // Callback for the "New Game" option
 // Lists the areas
 void title_menu_cb_newgame(void* arg) {
-    menu_gotomap("spc_03", 0);
+    if (!evt_get_variable(NULL, GF_CreditsSeen)) {
+        credits_notif_script = start_script(&ShowCreditsNotif, 0xA, 0);
+    } else {
+        menu_gotomap("spc_03", 0);
+    }
 }
 
 void render_character_select(void) {
@@ -291,14 +305,17 @@ void render_game_over() {
         if (gGameStatus.pressedButtons[0] & BUTTON_A) {
             gPlayerData.curHP = 5;
             menu_retry(prevMapID);
+            gvOpacity = 0;
         }
         if (gGameStatus.pressedButtons[0] & BUTTON_B) {
             gPlayerData.curHP = 5;
             menu_gotomap("spc_03", 0);
+            gvOpacity = 0;
         }
         if (gGameStatus.pressedButtons[0] & BUTTON_Z) {
             gPlayerData.curHP = 5;
             menu_gotomap("spc_01", 0);
+            gvOpacity = 0;
         }
     }
 
@@ -307,14 +324,27 @@ void render_game_over() {
 
 void render_story(void) {
     draw_msg(MSG_Space_IntroStoryTitle, storyX + 90, storyY, 255, 0, 0);
-    draw_msg(MSG_Space_IntroStory, storyX, storyY + 30, 255, 0, 0);
+    draw_msg(MSG_Space_IntroStory, storyX, storyY + 50, 255, 0, 0);
     shiftDelay--;
     if (shiftDelay <= 0) {
         shiftDelay = 3;
         storyY--;
     }
+
+    if (evt_get_variable(NULL, GF_IntroSeen) && skipOpacity > 0) {
+        draw_msg(MSG_Space_SkipOpening, 240, 25, skipOpacity, 0, 0);
+        if (storyY < 130) {
+            skipOpacity -= 2;
+        }
+    }
+    
     if (storyY < -567) {
         menu_gotomap("mac_05", 1);
+    }
+
+    if (gGameStatus.pressedButtons[0] & BUTTON_START) {
+        menu_gotomap("spc_01", 0);
+        evt_set_variable(NULL, GF_IntroSeen, TRUE);
     }
 }
 

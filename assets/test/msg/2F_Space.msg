@@ -62,26 +62,26 @@
 	the protection of various underlings.[BR]
 	[BR]
 	He used the power of the Star Rod to[BR]
-	make himself invincible and seize[BR]
-	the castle of Princess Peach,[BR]
-	lifting it far up into the sky.[BR]
+	make himself invincible and seize the[BR]
+	castle of Princess Peach, lifting it[BR]
+	far up into the sky.[BR]
 	[BR]
 	The Star Spirits have requested the[BR]
-	help of Mario to retrieve the Star Rod [BR]
+	help of Mario to retrieve the Star Rod[BR]
 	and save the princess.[BR]
 	[BR]
 	On his travels, Mario faced many[BR]
-	enemies. One by one, he overcame[BR]
-	his struggles and rescued the[BR]
-	Star Spirits.[BR]
+	challenges. One by one, he overcame[BR]
+	his struggles and rescued the Star[BR]
+	Spirits.[BR]
 	[BR]
 	Now, he must use their power to[BR]
-	travel to the floating castle and[BR]
-	put an end to the invincible king's[BR]
-	reign.[BR]
+	travel to the floating castle and put[BR]
+	an end to the invincible king's reign.[BR]
 	[BR]
-	However, the vast reaches of the[BR]
-	cosmos hide many challenges.[BR]
+	However, there are many challenges[BR]
+	hidden within the vast reaches of[BR]
+	the cosmos.[BR]
 	[BR]
 	Will Mario be able to fight his way[BR]
 	through? Or will the entire Mushroom[BR]
@@ -101,10 +101,10 @@
 
 #message:2F:(Space_FishTalk3) {
 	[Style Right]And what exactly would we be[BR]
-	wishing for?[BR]
+	wishin' fer?[BR]
 	[Wait][Next]
 	I dunno about you, but I'm[BR]
-	content just sitting here looking[BR]
+	content just sittin' here lookin'[BR]
 	at this fish.[Wait][End]
 }
 
@@ -118,6 +118,15 @@
 	[Wait][Next]
 	I wonder what that Mario guy[BR]
 	is up to right now...[Wait][End]
+}
+
+#message:2F:(Space_SkipOpening) {
+	[START] Skip[End]
+}
+
+#message:2F:(Space_CreditsNotif) {
+	[Style Inspect]Please read the credits before[BR]
+	starting the game.[Wait][End]
 }
 
 #message:2F:(Space_CharacterSelect) {

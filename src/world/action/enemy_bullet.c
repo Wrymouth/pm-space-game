@@ -4,6 +4,7 @@
 #include "world/partners.h"
 #include "sprite/npc/Fire.h"
 #include "sprite/npc/HammerBros.h"
+#include "sprite/npc/KoopaBros.h"
 #include "sprite/player.h"
 #include "world/action/enemy_bullet.h"
 
@@ -14,6 +15,7 @@ typedef struct EnemyBulletStatus {
     s32 activeBulletIndex;
     s32 activeBulletTime;
     s8  facingLeft;
+    EnemyBulletType bulletType;
 } EnemyBulletStatus;
 
 const s32 MAX_ENEMY_BULLETS  = 10;
@@ -111,47 +113,18 @@ s32 test_enemy_bullet_first_strike() {
         distToPlayer = SQ(bulletX) + SQ(bulletZ);
 
         if (!(SQ(bulletCollRadius) + SQ(playerCollRadius) <= distToPlayer)) {
+            switch (enemy_bullets[i].bulletType) {
+                case ENEMY_BULLET_TYPE_KOOPA_UL:
+                case ENEMY_BULLET_TYPE_KOOPA_UR:
+                case ENEMY_BULLET_TYPE_KOOPA_DL:
+                case ENEMY_BULLET_TYPE_KOOPA_DR:
+                    return TRUE;
+            }
             destroy_enemy_bullet(i);
             return TRUE;
         }
     }
     return FALSE;
-}
-
-void enemy_bullet_hit_entity(Npc* bulletNpc, s32 bulletIndex) {
-    Entity* entity;
-
-    if (NpcHitQueryColliderID < 0 || !(NpcHitQueryColliderID & COLLISION_WITH_ENTITY_BIT)) {
-        bulletNpc->moveSpeed = 0.0f;
-        return;
-    }
-
-    enemy_bullets[bulletIndex].activeBulletTime = ENEMY_BULLET_DECAY; // Kill bullet on next render
-    entity         = get_entity_by_index(NpcHitQueryColliderID & ~COLLISION_WITH_ENTITY_BIT);
-    entity->flags |= ENTITY_FLAG_PARTNER_COLLISION;
-}
-
-void update_enemy_bullet_collision(Npc* bulletNpc, s32 bulletIndex) {
-    f32 posX, posY, posZ;
-// check the forward collision for bullet
-#define TEST_COLLISION_AT_ANGLE(testAngle)                                                                             \
-    (posX = bulletNpc->pos.x, posY = bulletNpc->pos.y, posZ = bulletNpc->pos.z,                                        \
-     npc_test_move_taller_with_slipping(                                                                               \
-         COLLISION_CHANNEL_8000, &posX, &posY, &posZ, bulletNpc->moveSpeed, testAngle, bulletNpc->collisionHeight,     \
-         bulletNpc->collisionDiameter / 2                                                                              \
-     ))
-
-    if (TEST_COLLISION_AT_ANGLE(bulletNpc->yaw - 20.0f)) {
-        enemy_bullet_hit_entity(bulletNpc, bulletIndex);
-    }
-
-    if (TEST_COLLISION_AT_ANGLE(bulletNpc->yaw + 20.0f)) {
-        enemy_bullet_hit_entity(bulletNpc, bulletIndex);
-    }
-
-    if (TEST_COLLISION_AT_ANGLE(bulletNpc->yaw)) {
-        enemy_bullet_hit_entity(bulletNpc, bulletIndex);
-    }
 }
 
 void bullet_render_straight(Npc* bulletNpc) {
@@ -163,7 +136,7 @@ void bullet_render_straight(Npc* bulletNpc) {
         destroy_enemy_bullet(bulletIndex);
     }
     enemy_bullets[bulletIndex].activeBulletTime++;
-    update_enemy_bullet_collision(bulletNpc, bulletIndex);
+    // update_enemy_bullet_collision(bulletNpc, bulletIndex);
     npc_move_heading(bulletNpc, bulletNpc->moveSpeed, bulletNpc->yaw);
 }
 
@@ -190,7 +163,7 @@ void bullet_render_hammer(Npc* bulletNpc) {
         destroy_enemy_bullet(bulletIndex);
     }
     enemy_bullets[bulletIndex].activeBulletTime++;
-    update_enemy_bullet_collision(bulletNpc, bulletIndex);
+    // update_enemy_bullet_collision(bulletNpc, bulletIndex);
     hammer_jump(bulletNpc);
     if (enemy_bullets[bulletIndex].facingLeft) {
         bulletNpc->rotation.z += 20.0f;
@@ -198,6 +171,18 @@ void bullet_render_hammer(Npc* bulletNpc) {
         bulletNpc->rotation.z -= 20.0f;
     }
     bulletNpc->rotation.x = 0;
+}
+
+void bullet_render_koopa(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    if (bulletNpc->pos.x > 300 || bulletNpc->pos.x < -300) {
+        bulletNpc->moveToPos.x *= -1;
+    }
+    if (bulletNpc->pos.y > 150 || bulletNpc->pos.y < -200) {
+        bulletNpc->moveToPos.y *= -1;
+    }
+    bulletNpc->pos.x += bulletNpc->moveToPos.x;
+    bulletNpc->pos.y += bulletNpc->moveToPos.y;
 }
 
 void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
@@ -246,6 +231,33 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             bulletNpc->scale.z           = 0.7f;
             bulletNpc->moveSpeed   = 30.0f;
             break;
+        case ENEMY_BULLET_TYPE_RIGHT:
+            bulletNpc->moveToPos.x = enemyPosX;
+            bulletNpc->moveToPos.y = enemyPosY;
+            bulletNpc->moveToPos.z = enemyPosZ;
+            bulletNpc->yaw         = clamp_angle(enemy->yaw - 180);
+            bulletNpc->scale.x           = 0.7f;
+            bulletNpc->scale.y           = 0.7f;
+            bulletNpc->scale.z           = 0.7f;
+            bulletNpc->moveSpeed   = 30.0f;
+            break;
+        case ENEMY_BULLET_TYPE_KOOPA_UL:
+            bulletNpc->moveToPos.x = -10.0f;
+            bulletNpc->moveToPos.y = 10.0f;
+            break;
+        case ENEMY_BULLET_TYPE_KOOPA_UR:
+            bulletNpc->moveToPos.x = 10.0f;
+            bulletNpc->moveToPos.y = 10.0f;
+            break;
+        case ENEMY_BULLET_TYPE_KOOPA_DL:
+            bulletNpc->moveToPos.x = -10.0f;
+            bulletNpc->moveToPos.y = -10.0f;
+            break;
+        case ENEMY_BULLET_TYPE_KOOPA_DR:
+            // used for axis speed
+            bulletNpc->moveToPos.x = 10.0f;
+            bulletNpc->moveToPos.y = -10.0f;
+            break;
     }
 }
 
@@ -291,16 +303,42 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
             bp->onRender    = bullet_render_hammer;
             break;
         case ENEMY_BULLET_TYPE_LEFT:
+            enemy_bullets[i].facingLeft        = TRUE;
             npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
             npcSettings.height      = 16;
             npcSettings.radius      = 32;
             bp->onRender    = bullet_render_straight;
             break;
         case ENEMY_BULLET_TYPE_RIGHT:
+            enemy_bullets[i].facingLeft        = FALSE;
             npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
             npcSettings.height      = 16;
             npcSettings.radius      = 32;
             bp->onRender    = bullet_render_straight;
+            break;
+        case ENEMY_BULLET_TYPE_KOOPA_UL:
+            npcSettings.defaultAnim = ANIM_KoopaBros_Green_ShellSpin;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_koopa;
+            break;
+        case ENEMY_BULLET_TYPE_KOOPA_UR:
+            npcSettings.defaultAnim = ANIM_KoopaBros_Yellow_ShellSpin;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_koopa;
+            break;
+        case ENEMY_BULLET_TYPE_KOOPA_DL:
+            npcSettings.defaultAnim = ANIM_KoopaBros_Black_ShellSpin;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_koopa;
+            break;
+        case ENEMY_BULLET_TYPE_KOOPA_DR:
+            npcSettings.defaultAnim = ANIM_KoopaBros_Red_ShellSpin;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_koopa;
             break;
     }
 
@@ -311,12 +349,8 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
 
     enemy_bullets[i].activeBulletTime  = 0;
     enemy_bullets[i].activeBulletIndex = create_basic_npc(bp);
+    enemy_bullets[i].bulletType = type;
 
-    if (!(enemyNpc->yaw >= 90.0f) || !(enemyNpc->yaw < 270)) {
-        enemy_bullets[i].facingLeft        = TRUE;
-    } else {
-        enemy_bullets[i].facingLeft        = FALSE;
-    }
     enemy_bullets[i].npcID             = npcData.id;
 
     bulletNpc = get_npc_by_index(enemy_bullets[i].activeBulletIndex);
@@ -334,9 +368,27 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
 
 }
 
-
-
-void create_enemy_bullet() {
+void do_attack(Enemy* enemy, EnemyAttackType type) {
+    switch (type) {
+        case ENEMY_ATTACK_TYPE_HAMMER:
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_HAMMER);
+            break;
+        case ENEMY_ATTACK_TYPE_LEFT:
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_LEFT);
+            break;
+        case ENEMY_ATTACK_TYPE_KOOPA_SHELLS:
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_KOOPA_UL);
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_KOOPA_UR);
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_KOOPA_DL);
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_KOOPA_DR);
+            break;
+        case ENEMY_ATTACK_TYPE_SPLIT:
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_LEFT);
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_RIGHT);
+            break;
+        default:
+            break;
+    }
     
 }
 
@@ -344,10 +396,15 @@ void clear_enemy_bullets() {
     s32 i;
     for (i = 0; i < ARRAY_COUNT(enemy_bullets); i++)
     {
-        enemy_bullets[i].npcID = 0;
-        enemy_bullets[i].activeBulletIndex = ENEMY_BULLET_EMPTY;
+        destroy_enemy_bullet(i);
+        // enemy_bullets[i].npcID = 0;
+        // enemy_bullets[i].activeBulletIndex = ENEMY_BULLET_EMPTY;
     }
 
     enemyBulletCount = 0;
 }
 
+API_CALLABLE(ClearAllEnemyBullets) {
+    clear_enemy_bullets();
+    return ApiStatus_DONE2;
+}

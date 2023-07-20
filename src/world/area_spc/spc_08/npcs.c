@@ -23,12 +23,52 @@
 }
 
 API_CALLABLE(N(HammerShipUseHammer)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_HAMMER);
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_HAMMER);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(HammerShipUseBullet)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_LEFT);
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_LEFT);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(N(GetHeading)) {
+    s32 enemyPosX  = evt_get_variable(script, LVar0);
+    s32 enemyPosY  = evt_get_variable(script, LVar1); 
+    s32 targetPosX = evt_get_variable(script, LVar4); 
+    s32 targetPosY = evt_get_variable(script, LVar5);
+    s32 moveSpeed  = evt_get_variable(script, LVar3);
+
+    s32 directionX;
+    s32 directionY;
+
+    f32 distX;
+    f32 distY;
+
+    f32 angle = DEG_TO_RAD(atan2(targetPosX, targetPosY, enemyPosX, enemyPosY));
+
+    if (enemyPosX > targetPosX) {
+        directionX = -1;
+    } else if (enemyPosX < targetPosX) {
+        directionX = 1;
+    } else {
+        directionX = 0;
+    }
+
+    if (enemyPosY > targetPosY) {
+        directionY = -1;
+    } else if (enemyPosY < targetPosY) {
+        directionY = 1;
+    } else {
+        directionY = 0;
+    }
+
+    distX = (cos_rad(angle) * moveSpeed);
+    distY = (sin_rad(angle) * moveSpeed);
+
+    evt_set_variable(script, LVar0, (enemyPosX+distX));
+    evt_set_variable(script, LVar1, (enemyPosY+distY));
+
     return ApiStatus_DONE2;
 }
 
@@ -54,33 +94,19 @@ API_CALLABLE(N(SetDamageAnimation)) {
 }
 
 EvtScript N(NpcIdle_Whale) = {
-    EVT_SET(LVar3, 20) // direction
+    EVT_SET(LVar3, 10) // moveSpeed
     EVT_LOOP(0)
-        //movement
+        // movement
         EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-        EVT_SWITCH(LVar0)
-            EVT_CASE_OR_EQ(MapXLeft)
-            EVT_CASE_OR_EQ(MapXRight)
-                EVT_MUL(LVar3, -1)
-            EVT_END_CASE_GROUP
-        EVT_END_SWITCH
-        EVT_ADD(LVar0, LVar3)
+        EVT_CALL(GetPlayerPos, LVar4, LVar5, LVar6)
+        EVT_CALL(N(GetHeading))
         EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-        EVT_IF_EQ(MV_HammerTimer, 20)
-            EVT_CALL(N(HammerShipUseHammer))
-            EVT_SET(MV_HammerTimer, 0)
-        EVT_END_IF
-        EVT_IF_EQ(MV_ShotTimer, 15)
-            EVT_CALL(N(HammerShipUseBullet))
-            EVT_SET(MV_ShotTimer, 0)
-        EVT_END_IF
-        EVT_ADD(MV_HammerTimer, 1)
-        EVT_ADD(MV_ShotTimer, 1)
+        EVT_SUB(LVar2, 16)
+        EVT_CALL(TranslateGroup, Model_Whale, LVar0, LVar1, LVar2)
         // damage
         EVT_SET(LVar0, ANIM_ParadeYoshi_StillGreen)
         EVT_SET(LVar1, ANIM_ParadeYoshi_StillBlue)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
-        EVT_DEBUG_PRINT_VAR(LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         EVT_WAIT(1)
     EVT_END_LOOP
@@ -95,8 +121,8 @@ EvtScript N(NpcInit_Whale) = {
 };
 
 NpcSettings N(NpcSettings_Whale) = {
-    .height = 64,
-    .radius = 28,
+    .height = 90,
+    .radius = 128,
     .level = 99,
 };
 

@@ -322,7 +322,7 @@ MapConfig mac_maps[] = {
     { MAP(mac_02), .bgName = "nok_bg" },
     { MAP(mac_03), .bgName = "nok_bg" },
     { MAP_WITH_INIT(mac_04), .bgName = "nok_bg" },
-    { MAP(mac_05), .bgName = "nok_bg" },
+    { MAP(mac_05), .bgName = "hos_bg" },
     { MAP(mac_06), .bgName = "nok_bg" },
 };
 

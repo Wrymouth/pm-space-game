@@ -245,8 +245,14 @@ void clear_bullets() {
     s32 i;
     for (i = 0; i < ARRAY_COUNT(bullets); i++)
     {
+        free_npc_by_index(bullets[i].activeBulletIndex);
         bullets[i].npcID = 0;
         bullets[i].activeBulletIndex = BULLET_EMPTY;
     }
     bulletCount = 0;
+}
+
+API_CALLABLE(ClearAllPlayerBullets) {
+    clear_bullets();
+    return ApiStatus_DONE2;
 }

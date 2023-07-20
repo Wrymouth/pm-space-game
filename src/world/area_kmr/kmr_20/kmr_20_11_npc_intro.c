@@ -199,7 +199,7 @@ EvtScript N(EVS_Scene_BeginGame) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_THREAD
         EVT_WAIT(5 * DT)
-        EVT_CALL(SetMusicTrack, 0, SONG_MAIL_CALL, 0, 8)
+        // EVT_CALL(SetMusicTrack, 0, SONG_TOAD_TOWN, 0, 8)
     EVT_END_THREAD
     EVT_CALL(InterpPlayerYaw, 90, 0)
     EVT_CALL(SetPlayerPos, -50, 30, -80)

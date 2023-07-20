@@ -27,6 +27,13 @@ EvtScript N(D_8024457C_8566EC) = {
     EVT_END
 };
 
+API_CALLABLE(N(SkipScene)) {
+    if (gGameStatus.pressedButtons[0] & BUTTON_START) {
+        evt_set_variable(script, LVar3, TRUE);
+    }
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(D_80244648_8567B8) = {
     EVT_LOOP(0)
         EVT_CALL(MakeLerp, 0, -120, 60, EASING_LINEAR)
@@ -128,7 +135,23 @@ EvtScript N(D_802448C4_856A34) = {
     EVT_END
 };
 
+EvtScript N(CheckSkip) = {
+    EVT_LOOP(0)
+        EVT_CALL(N(SkipScene))
+        EVT_IF_TRUE(LVar3)
+            EVT_BREAK_LOOP
+
+        EVT_END_IF
+        EVT_WAIT(1)
+    EVT_END_LOOP
+    EVT_SET(GF_IntroSeen, TRUE)
+    EVT_CALL(GotoMap, "spc_01", 0)
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(OpeningCutscene) = {
+    EVT_CALL(SetMusicTrack, 0, SONG_TOAD_TOWN, 0, 8)
     EVT_CALL(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, MSG_Space_FishTalk1)
     EVT_CALL(SpeakToPlayer, NPC_Fishmael, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, MSG_Space_FishTalk2)
     EVT_CALL(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, MSG_Space_FishTalk3)
@@ -138,6 +161,7 @@ EvtScript N(OpeningCutscene) = {
     EVT_CALL(PanToTarget, CAM_DEFAULT, EASING_LINEAR, 1)
     EVT_WAIT_SECS(25)
     EVT_CALL(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, MSG_Space_FishTalk5)
+    EVT_SET(GF_IntroSeen, TRUE)
     EVT_CALL(GotoMap, EVT_PTR("spc_01"), 0)
     EVT_RETURN
     EVT_END
@@ -149,6 +173,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD()
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(DisablePlayerPhysics, TRUE)
+    EVT_EXEC(N(CheckSkip))
     EVT_EXEC(N(OpeningCutscene))
     EVT_SWITCH(GB_StoryProgress)
         EVT_CASE_LT(STORY_CH4_STAR_SPRIT_DEPARTED)
@@ -176,7 +201,6 @@ EvtScript N(EVS_Main) = {
     EVT_EXEC(N(EVS_8025194C))
     EVT_CALL(GetEntryID, LVar0)
     EVT_EXEC(N(EVS_SetupRooms))
-    EVT_EXEC(N(EVS_802441E0))
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitne, COLLIDER_FLAGS_UPPER_MASK)
     EVT_EXEC(N(D_8024457C_8566EC))
     EVT_CALL(SetTexPanner, MODEL_kaimen, 1)

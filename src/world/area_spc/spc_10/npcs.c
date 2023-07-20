@@ -3,12 +3,12 @@
 #include "world/action/enemy_bullet.h"
 
 API_CALLABLE(N(HammerShipUseHammer)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_HAMMER);
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_HAMMER);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(HammerShipUseBullet)) {
-    use_enemy_bullet(script->owner1.enemy, ENEMY_BULLET_TYPE_LEFT);
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_LEFT);
     return ApiStatus_DONE2;
 }
 
@@ -42,7 +42,6 @@ EvtScript N(NpcIdle_Bowser) = {
         EVT_SET(LVar0, ANIM_ParadeKolorado_Idle)
         EVT_SET(LVar1, ANIM_ParadeKolorado_WifeIdle)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
-        EVT_DEBUG_PRINT_VAR(LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         EVT_WAIT(1)
     EVT_END_LOOP
