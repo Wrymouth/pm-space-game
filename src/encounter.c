@@ -672,8 +672,10 @@ void update_encounters_neutral(void) {
                     currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
                     enemy_take_damage(enemy, 1);
                     if (enemy->curHP <= 0) {
+                        if (evt_get_variable(NULL, enemy->defeatFlag) == FALSE) {   
+                            evt_set_variable(NULL, GB_BossesDefeated, (evt_get_variable(NULL, GB_BossesDefeated) + 1));
+                        }
                         evt_set_variable(NULL, enemy->defeatFlag, TRUE);
-                        evt_set_variable(NULL, GB_BossesDefeated, (evt_get_variable(NULL, GB_BossesDefeated) + 1));
                         // kill_enemy(enemy);
                     }
                 }

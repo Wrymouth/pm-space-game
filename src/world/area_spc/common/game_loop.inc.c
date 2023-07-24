@@ -158,6 +158,9 @@ EvtScript N(Win) = {
 };
 
 EvtScript N(GameLoop) = {
+    EVT_IF_EQ(GB_Settings_ShipSpeed, 0)
+        EVT_SET(GB_Settings_ShipSpeed, 6)
+    EVT_END_IF
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(N(EnableSpaceShipMode), TRUE)
     EVT_CALL(N(SetEnemyHPBar))
@@ -173,8 +176,8 @@ EvtScript N(GameLoop) = {
         // get stick input and process
         EVT_CALL(GetPlayerPos, LVar4, LVar5, LVar6)
         EVT_CALL(N(CheckStickInput), LVar0, LVar1)
-        EVT_DIV(LVar0, 8)
-        EVT_DIV(LVar1, 8)
+        EVT_DIV(LVar0, GB_Settings_ShipSpeed)
+        EVT_DIV(LVar1, GB_Settings_ShipSpeed)
         // check position against map borders
         EVT_IF_LT(LVar4, MapXLeft)
             EVT_IF_LT(LVar0, 0)

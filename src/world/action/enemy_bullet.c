@@ -14,7 +14,7 @@ typedef struct EnemyBulletStatus {
     s32 npcID;
     s32 activeBulletIndex;
     s32 activeBulletTime;
-    s8  facingLeft;
+    s32 flags;
     EnemyBulletType bulletType;
 } EnemyBulletStatus;
 
@@ -38,7 +38,9 @@ s32 get_enemy_bullet_index_by_npc_id(s32 npcId) {
 }
 
 void destroy_enemy_bullet(s32 bulletIndex) {
-    free_npc_by_index(enemy_bullets[bulletIndex].activeBulletIndex);
+    if (enemy_bullets[bulletIndex].activeBulletIndex != ENEMY_BULLET_EMPTY) {
+        free_npc_by_index(enemy_bullets[bulletIndex].activeBulletIndex);
+    }
     enemy_bullets[bulletIndex].npcID = 0;
     enemy_bullets[bulletIndex].activeBulletIndex = ENEMY_BULLET_EMPTY;
     enemyBulletCount--;
@@ -136,7 +138,6 @@ void bullet_render_straight(Npc* bulletNpc) {
         destroy_enemy_bullet(bulletIndex);
     }
     enemy_bullets[bulletIndex].activeBulletTime++;
-    // update_enemy_bullet_collision(bulletNpc, bulletIndex);
     npc_move_heading(bulletNpc, bulletNpc->moveSpeed, bulletNpc->yaw);
 }
 
@@ -163,9 +164,8 @@ void bullet_render_hammer(Npc* bulletNpc) {
         destroy_enemy_bullet(bulletIndex);
     }
     enemy_bullets[bulletIndex].activeBulletTime++;
-    // update_enemy_bullet_collision(bulletNpc, bulletIndex);
     hammer_jump(bulletNpc);
-    if (enemy_bullets[bulletIndex].facingLeft) {
+    if (enemy_bullets[bulletIndex].flags & ENEMY_BULLET_FLAG_FACING_LEFT) {
         bulletNpc->rotation.z += 20.0f;
     } else {
         bulletNpc->rotation.z -= 20.0f;
@@ -185,6 +185,14 @@ void bullet_render_koopa(Npc* bulletNpc) {
     bulletNpc->pos.y += bulletNpc->moveToPos.y;
 }
 
+void bullet_render_water(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+}
+
+void bullet_render_egg(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+}
+
 void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
     
@@ -192,9 +200,9 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
     s32 enemyPosY = enemy->pos.y;
     s32 enemyPosZ = enemy->pos.z;
 
-    s32 initialDistanceX = enemy_bullets[bulletIndex].facingLeft ? -25.0f : 25.0f;
+    s32 initialDistanceX = (enemy_bullets[bulletIndex].flags & ENEMY_BULLET_FLAG_FACING_LEFT) ? -25.0f : 25.0f;
     s32 hammerOffset;
-    s32 facingLeft;
+    s32 facingLeft = FALSE;
 
     bulletNpc->pos.x = enemyPosX + initialDistanceX;
     bulletNpc->pos.y = enemyPosY + 30.0f;
@@ -204,12 +212,15 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
     
     switch (type) {
         case ENEMY_BULLET_TYPE_HAMMER:
-            facingLeft = enemy_bullets[bulletIndex].facingLeft = (gPlayerStatus.position.x < bulletNpc->pos.x);
+            if (gPlayerStatus.position.x < bulletNpc->pos.x) {
+                enemy_bullets[bulletIndex].flags |= ENEMY_BULLET_FLAG_FACING_LEFT;
+                facingLeft = TRUE;
+            }
             hammerOffset = facingLeft ? -20.0f : 20.0f;
             bulletNpc->moveToPos.x = gPlayerStatus.position.x + hammerOffset;
             bulletNpc->moveToPos.y = -240;
             bulletNpc->moveToPos.z = gPlayerStatus.position.z;
-            bulletNpc->yaw = enemy_bullets[bulletIndex].facingLeft ? 270 : 90;
+            bulletNpc->yaw = facingLeft ? 270 : 90;
             bulletNpc->jumpScale = 1.1f;
             bulletNpc->duration   = ENEMY_BULLET_DECAY;
             bulletNpc->scale.x           = 2.5f;
@@ -242,6 +253,7 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             bulletNpc->moveSpeed   = 30.0f;
             break;
         case ENEMY_BULLET_TYPE_KOOPA_UL:
+            // used for axis speed
             bulletNpc->moveToPos.x = -10.0f;
             bulletNpc->moveToPos.y = 10.0f;
             break;
@@ -254,9 +266,11 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             bulletNpc->moveToPos.y = -10.0f;
             break;
         case ENEMY_BULLET_TYPE_KOOPA_DR:
-            // used for axis speed
             bulletNpc->moveToPos.x = 10.0f;
             bulletNpc->moveToPos.y = -10.0f;
+            break;
+        case ENEMY_BULLET_TYPE_WATER:
+
             break;
     }
 }
@@ -303,14 +317,14 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
             bp->onRender    = bullet_render_hammer;
             break;
         case ENEMY_BULLET_TYPE_LEFT:
-            enemy_bullets[i].facingLeft        = TRUE;
+            enemy_bullets[i].flags |= ENEMY_BULLET_FLAG_FACING_LEFT;
             npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
             npcSettings.height      = 16;
             npcSettings.radius      = 32;
             bp->onRender    = bullet_render_straight;
             break;
         case ENEMY_BULLET_TYPE_RIGHT:
-            enemy_bullets[i].facingLeft        = FALSE;
+            enemy_bullets[i].flags &= ~ENEMY_BULLET_FLAG_FACING_LEFT;
             npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
             npcSettings.height      = 16;
             npcSettings.radius      = 32;
@@ -339,6 +353,20 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
             npcSettings.height      = 16;
             npcSettings.radius      = 16;
             bp->onRender    = bullet_render_koopa;
+            break;
+        case ENEMY_BULLET_TYPE_WATER:
+            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_water;
+            break;
+        case ENEMY_BULLET_TYPE_EGG_DOWN:
+        case ENEMY_BULLET_TYPE_EGG_UP:
+        case ENEMY_BULLET_TYPE_EGG_MID:
+            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_egg;
             break;
     }
 
@@ -386,6 +414,16 @@ void do_attack(Enemy* enemy, EnemyAttackType type) {
             use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_LEFT);
             use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_RIGHT);
             break;
+        case ENEMY_ATTACK_TYPE_WATER:
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_WATER);
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_WATER);
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_WATER);
+            break;
+        case ENEMY_ATTACK_TYPE_EGGS:
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_EGG_DOWN);
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_EGG_UP);
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_EGG_MID);
+            break;
         default:
             break;
     }
@@ -394,11 +432,8 @@ void do_attack(Enemy* enemy, EnemyAttackType type) {
 
 void clear_enemy_bullets() {
     s32 i;
-    for (i = 0; i < ARRAY_COUNT(enemy_bullets); i++)
-    {
+    for (i = 0; i < ARRAY_COUNT(enemy_bullets); i++) {
         destroy_enemy_bullet(i);
-        // enemy_bullets[i].npcID = 0;
-        // enemy_bullets[i].activeBulletIndex = ENEMY_BULLET_EMPTY;
     }
 
     enemyBulletCount = 0;

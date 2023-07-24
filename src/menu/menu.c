@@ -5,6 +5,7 @@
 #include "menu.h"
 
 void title_menu_cb_newgame(void* arg);
+void title_menu_cb_settings(void* arg);
 void title_menu_cb_credits(void* arg);
 
 
@@ -12,8 +13,9 @@ struct title_menu_item {
     char* name;
     void (*callback)(void* arg);
     void* callbackArg;
-} dx_rootDebugMenuItems[] = {
+} titleMenuItems[] = {
     { "Start Game", title_menu_cb_newgame },
+    { "Settings", title_menu_cb_settings },
     { "Credits", title_menu_cb_credits },
     { NULL, NULL },
     {},
@@ -27,12 +29,12 @@ struct title_menu {
     struct title_menu_item* items; // zero-terminated
 
     struct title_menu* previous; // linked list
-} dx_debugMenu = {
+} titleMenu = {
     .title = "",
     .selectedIndex = 0,
     .scrollY = 0,
     .targetScrollY = 0,
-    .items = dx_rootDebugMenuItems,
+    .items = titleMenuItems,
     .previous = NULL,
 };
 
@@ -56,6 +58,58 @@ CharacterSelectPanel csPanels[2][2] = {{{"spc_06", FALSE}, {"spc_07", FALSE}}, {
 s32 gvOpacity = 0;
 
 
+void menu_close(void) {
+    menuType = MENU_TYPE_NONE;
+}
+
+void menu_gotomap(char* argMap, s32 entry) {
+    char* map = argMap;
+
+    // Get area/map id pair
+    s16 areaID;
+    s16 mapID;
+    get_map_IDs_by_name(map, &areaID, &mapID);
+
+    // Go there
+    gGameStatusPtr->areaID = areaID;
+    gGameStatusPtr->mapID = mapID;
+    gGameStatusPtr->entryID = entry;
+    set_map_transition_effect(0);
+    set_game_mode(GAME_MODE_UNUSED);
+
+    // Stop ambient sounds
+    play_ambient_sounds(AMBIENT_SILENCE, 1);
+    menu_close();
+}
+
+void title_menu_push(void) {
+    struct title_menu* previous = general_heap_malloc(sizeof(struct title_menu));
+    memcpy(previous, &titleMenu, sizeof(struct title_menu));
+
+    titleMenu.title = "Untitled menu";
+    titleMenu.selectedIndex = 0;
+    titleMenu.scrollY = 0;
+    titleMenu.targetScrollY = 0;
+    titleMenu.items = NULL;
+    titleMenu.previous = previous;
+}
+
+void title_menu_pop(void) {
+    struct title_menu* previous = titleMenu.previous;
+
+    if (previous == NULL) {
+        return;
+    }
+
+    // Free the items
+    if (titleMenu.items != NULL) {
+        general_heap_free(titleMenu.items);
+    }
+
+    // Restore the previous menu
+    memcpy(&titleMenu, previous, sizeof(struct title_menu));
+    general_heap_free(previous);
+}
 
 u8 dx_ascii_char_to_msg(u8 in) {
     switch (in) {
@@ -83,24 +137,24 @@ void title_menu_draw_contents(void* arg0, s32 baseX, s32 baseY, s32 width, s32 h
     char msgbuf[0x100];
     s32 x = baseX + 6;
     s32 y = baseY + 6;
-    struct title_menu_item* item = dx_debugMenu.items;
+    struct title_menu_item* item = titleMenu.items;
 
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, baseX, baseY, baseX+width, baseY+height);
 
     while (item && item->name != NULL) {
-        s32 isSelected = item == &dx_debugMenu.items[dx_debugMenu.selectedIndex];
+        s32 isSelected = item == &titleMenu.items[titleMenu.selectedIndex];
 
         dx_string_to_msg(msgbuf, item->name);
-        draw_msg((s32)msgbuf, x, y - dx_debugMenu.scrollY, 255, isSelected, 0);
+        draw_msg((s32)msgbuf, x, y - titleMenu.scrollY, 255, isSelected, 0);
         y += 16;
 
         if (isSelected) {
             // Scroll to us if we're not visible
-            if (y - dx_debugMenu.scrollY > baseY + height - 16) {
-                dx_debugMenu.targetScrollY = y - height + 16;
+            if (y - titleMenu.scrollY > baseY + height - 16) {
+                titleMenu.targetScrollY = y - height + 16;
             }
-            if (y - dx_debugMenu.scrollY < baseY + 16) {
-                dx_debugMenu.targetScrollY = y - 16;
+            if (y - titleMenu.scrollY < baseY + 16) {
+                titleMenu.targetScrollY = y - 16;
             }
 
             // Handle pick
@@ -130,42 +184,76 @@ EvtScript ShowCreditsNotif = {
     EVT_END
 };
 
-void title_menu_cb_credits(void* arg) {
-    credits_script = start_script(&ShowCreditsMessage, 0xF, 0);
-}
-
-void menu_close(void) {
-    menuType = MENU_TYPE_NONE;
-}
-
-void menu_gotomap(char* argMap, s32 entry) {
-    char* map = argMap;
-
-    // Get area/map id pair
-    s16 areaID;
-    s16 mapID;
-    get_map_IDs_by_name(map, &areaID, &mapID);
-
-    // Go there
-    gGameStatusPtr->areaID = areaID;
-    gGameStatusPtr->mapID = mapID;
-    gGameStatusPtr->entryID = entry;
-    set_map_transition_effect(0);
-    set_game_mode(GAME_MODE_UNUSED);
-
-    // Stop ambient sounds
-    play_ambient_sounds(AMBIENT_SILENCE, 1);
-    menu_close();
-}
-
 // Callback for the "New Game" option
-// Lists the areas
 void title_menu_cb_newgame(void* arg) {
     if (!evt_get_variable(NULL, GF_CreditsSeen)) {
         credits_notif_script = start_script(&ShowCreditsNotif, 0xA, 0);
     } else {
-        menu_gotomap("spc_03", 0);
+        if (evt_get_variable(NULL, GF_JrTroopaDefeated)) {
+            menu_gotomap("spc_03", 0);
+        } else {
+            menu_gotomap("spc_05", 0);
+        }
     }
+}
+
+void settings_set_speed(void* arg) {
+    sfx_play_sound(0x05);
+    evt_set_variable(NULL, GB_Settings_ShipSpeed, arg);
+}
+
+void title_menu_settings_speed(void* arg) {
+    struct title_menu_item* items;
+
+    items = general_heap_malloc((2 + 1) * sizeof(struct title_menu_item));
+
+    items[0].name = "Slow (PJ64)";
+    items[0].callback = settings_set_speed;
+    items[0].callbackArg = 8;
+
+    items[1].name = "Fast (Other)";
+    items[1].callback = settings_set_speed;
+    items[1].callbackArg = 6;
+
+    items[2].name = NULL;
+    items[2].callback = NULL;
+    items[2].callbackArg = NULL;
+
+    // Push new menu
+    title_menu_push();
+    titleMenu.title = "";
+    titleMenu.items = items;
+
+}
+
+// Callback for the "Settings" option
+void title_menu_cb_settings(void* arg) {
+    struct title_menu_item* items;
+
+    s32 settingsCount = 1;
+
+    // Allocate the items list with space for the terminator
+    items = general_heap_malloc((settingsCount + 1) * sizeof(struct title_menu_item));
+    if (items == NULL) {
+        return;
+    }
+
+    items[0].name = "Ship speed";
+    items[0].callback = title_menu_settings_speed;
+    items[0].callbackArg = NULL;
+
+    items[1].name = NULL;
+    items[1].callback = NULL;
+    items[1].callbackArg = NULL;
+
+    // Push new menu
+    title_menu_push();
+    titleMenu.title = "";
+    titleMenu.items = items;
+}
+
+void title_menu_cb_credits(void* arg) {
+    credits_script = start_script(&ShowCreditsMessage, 0xF, 0);
 }
 
 void render_character_select(void) {
@@ -179,6 +267,10 @@ void render_character_select(void) {
     s32 col;
     s32 enemyCounter = 0;
     WindowStyle ws;
+
+    if (evt_get_variable(NULL, GB_BossesDefeated) == 4) {
+        menu_gotomap("spc_10", 0);
+    }
 
     load_font(1);
     draw_msg(MSG_Space_CharacterSelect, 95, 95, 255, 0, 0);   
@@ -252,25 +344,30 @@ void render_title_menu(void) {
 
     // Handle selection movement
     if (gGameStatus.heldButtons[0] & BUTTON_STICK_UP) {
-        dx_debugMenu.selectedIndex--;
-        if (dx_debugMenu.selectedIndex < 0) {
-            dx_debugMenu.selectedIndex = 0;
+        titleMenu.selectedIndex--;
+        if (titleMenu.selectedIndex < 0) {
+            titleMenu.selectedIndex = 0;
         }
     }
     if (gGameStatus.heldButtons[0] & BUTTON_STICK_DOWN) {
-        dx_debugMenu.selectedIndex++;
-        if (dx_debugMenu.items && dx_debugMenu.items[dx_debugMenu.selectedIndex].name == NULL) {
-            dx_debugMenu.selectedIndex--;
+        titleMenu.selectedIndex++;
+        if (titleMenu.items && titleMenu.items[titleMenu.selectedIndex].name == NULL) {
+            titleMenu.selectedIndex--;
+        }
+    }
+    if (gGameStatus.pressedButtons[0] & BUTTON_B) {
+        if (titleMenu.previous) {
+            title_menu_pop();
         }
     }
 
     // Animate scroll position
-    dx_debugMenu.scrollY -= (dx_debugMenu.scrollY - dx_debugMenu.targetScrollY) / 6;
+    titleMenu.scrollY -= (titleMenu.scrollY - titleMenu.targetScrollY) / 6;
 
     title_menu_draw_contents(NULL, x, y, width, height, 255, 0);
 
 
-    dx_string_to_msg(msgbuf, dx_debugMenu.title);
+    dx_string_to_msg(msgbuf, titleMenu.title);
     draw_msg((s32)msgbuf, x + 20, y - 12, 255, 0, 0);
 }
 
@@ -324,7 +421,8 @@ void render_game_over() {
 
 void render_story(void) {
     draw_msg(MSG_Space_IntroStoryTitle, storyX + 90, storyY, 255, 0, 0);
-    draw_msg(MSG_Space_IntroStory, storyX, storyY + 50, 255, 0, 0);
+    draw_msg(MSG_Space_IntroStorySubtitle, storyX + 20, storyY + 20, 255, 0, 0);
+    draw_msg(MSG_Space_IntroStory, storyX, storyY + 60, 255, 0, 0);
     shiftDelay--;
     if (shiftDelay <= 0) {
         shiftDelay = 3;

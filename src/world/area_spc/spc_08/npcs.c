@@ -38,33 +38,20 @@ API_CALLABLE(N(GetHeading)) {
     s32 targetPosX = evt_get_variable(script, LVar4); 
     s32 targetPosY = evt_get_variable(script, LVar5);
     s32 moveSpeed  = evt_get_variable(script, LVar3);
-
     s32 directionX;
     s32 directionY;
 
     f32 distX;
     f32 distY;
 
-    f32 angle = DEG_TO_RAD(atan2(targetPosX, targetPosY, enemyPosX, enemyPosY));
-
-    if (enemyPosX > targetPosX) {
-        directionX = -1;
-    } else if (enemyPosX < targetPosX) {
-        directionX = 1;
-    } else {
-        directionX = 0;
+    s32 diffX = targetPosX - enemyPosX;
+    s32 diffY = targetPosY - enemyPosY;
+    f32 dist = dist2D(targetPosX, targetPosY, enemyPosX, enemyPosY);
+    
+    if (dist > 0) {
+        distX = (diffX / dist) * moveSpeed;
+        distY = (diffY / dist) * moveSpeed;
     }
-
-    if (enemyPosY > targetPosY) {
-        directionY = -1;
-    } else if (enemyPosY < targetPosY) {
-        directionY = 1;
-    } else {
-        directionY = 0;
-    }
-
-    distX = (cos_rad(angle) * moveSpeed);
-    distY = (sin_rad(angle) * moveSpeed);
 
     evt_set_variable(script, LVar0, (enemyPosX+distX));
     evt_set_variable(script, LVar1, (enemyPosY+distY));
@@ -94,14 +81,15 @@ API_CALLABLE(N(SetDamageAnimation)) {
 }
 
 EvtScript N(NpcIdle_Whale) = {
-    EVT_SET(LVar3, 10) // moveSpeed
+    EVT_SET(LVar3, 3) // moveSpeed
     EVT_LOOP(0)
         // movement
         EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         EVT_CALL(GetPlayerPos, LVar4, LVar5, LVar6)
         EVT_CALL(N(GetHeading))
         EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-        EVT_SUB(LVar2, 16)
+        EVT_ADD(LVar0, 25)
+        EVT_ADD(LVar1, 46)
         EVT_CALL(TranslateGroup, Model_Whale, LVar0, LVar1, LVar2)
         // damage
         EVT_SET(LVar0, ANIM_ParadeYoshi_StillGreen)
@@ -109,20 +97,33 @@ EvtScript N(NpcIdle_Whale) = {
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         EVT_WAIT(1)
+        // defeat
+        EVT_IF_TRUE(GF_WhaleDefeated)
+            EVT_SET(MF_EnemyDefeated, TRUE)
+            EVT_CALL(DoNpcDefeat)
+            EVT_BREAK_LOOP
+        EVT_END_IF
     EVT_END_LOOP
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(NpcDefeat_Whale) = {
+    EVT_CALL(TranslateGroup, Model_Whale, 0, 0, -20)
     EVT_RETURN
     EVT_END
 };
 
 EvtScript N(NpcInit_Whale) = {
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_Whale)))
+    EVT_CALL(BindNpcDefeat, NPC_SELF, EVT_PTR(N(NpcDefeat_Whale)))
     EVT_RETURN
     EVT_END
 };
 
 NpcSettings N(NpcSettings_Whale) = {
-    .height = 90,
-    .radius = 128,
+    .height = 80,
+    .radius = 220,
     .level = 99,
 };
 
@@ -136,7 +137,7 @@ NpcData N(NpcData_Whale) = {
     .drops = NO_DROPS,
     .animations = HAMMER_BRO_SHIP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
-    .maxHP = 32,
+    .maxHP = 16,
     .invFrames = 30,
     .defeatFlag = GF_WhaleDefeated,
 };

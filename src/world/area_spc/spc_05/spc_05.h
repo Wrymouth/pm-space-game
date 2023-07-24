@@ -9,7 +9,7 @@
 #include "mapfs/spc_05.h"
 
 enum {
-    spc_04_ENTRY_0
+    spc_05_ENTRY_0
 };
 
 enum {
@@ -19,10 +19,12 @@ enum {
 enum {
     MV_ShipPosX = MapVar(0),
     MV_ShipPosY = MapVar(1),
-    MV_HammerTimer = MapVar(2),
+    MV_EggsTimer = MapVar(2),
     MV_ShotTimer = MapVar(3),
+    MV_BattlePhase = MapVar(4),
 };
 
 #define NAMESPACE spc_05
 
+extern NpcGroupList N(DefaultNpcs);
 extern EvtScript N(EVS_Main);

@@ -31,6 +31,7 @@ EvtScript N(EVS_Main) = {
         EVT_WAIT(20)
         EVT_CALL(SetMenuType, MENU_TYPE_CHARACTER_SELECT)
     EVT_END_THREAD
+    EVT_DEBUG_PRINT_VAR(GB_BossesDefeated)
     EVT_EXEC(N(SetupTexturePan))
     EVT_RETURN
     EVT_END

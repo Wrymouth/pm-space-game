@@ -9,6 +9,8 @@ typedef enum EnemyAttackType {
     ENEMY_ATTACK_TYPE_LEFT_RIGHT,
     ENEMY_ATTACK_TYPE_KOOPA_SHELLS,
     ENEMY_ATTACK_TYPE_SPLIT,
+    ENEMY_ATTACK_TYPE_WATER,
+    ENEMY_ATTACK_TYPE_EGGS
 } EnemyAttackType;
 
 typedef enum EnemyBulletType {
@@ -19,7 +21,15 @@ typedef enum EnemyBulletType {
     ENEMY_BULLET_TYPE_KOOPA_UR,
     ENEMY_BULLET_TYPE_KOOPA_DL,
     ENEMY_BULLET_TYPE_KOOPA_DR,
+    ENEMY_BULLET_TYPE_WATER,
+    ENEMY_BULLET_TYPE_EGG_UP,
+    ENEMY_BULLET_TYPE_EGG_MID,
+    ENEMY_BULLET_TYPE_EGG_DOWN,
 } EnemyBulletType;
+
+enum EnemyBulletFlags {
+    ENEMY_BULLET_FLAG_FACING_LEFT = 0x0001,
+};
 
 void do_attack(Enemy* enemy, EnemyAttackType type);
 s32 test_enemy_bullet_first_strike();

@@ -32,8 +32,13 @@ EvtScript N(NpcIdle_HuffNPuff) = {
         EVT_SET(LVar0, ANIM_HuffNPuff_Anim00)
         EVT_SET(LVar1, ANIM_HuffNPuff_Anim01)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
-        EVT_DEBUG_PRINT_VAR(LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
+        // defeat
+        EVT_IF_TRUE(GF_HuffNPuffDefeated)
+            EVT_SET(MF_EnemyDefeated, TRUE)
+            EVT_CALL(DoNpcDefeat)
+            EVT_BREAK_LOOP
+        EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN

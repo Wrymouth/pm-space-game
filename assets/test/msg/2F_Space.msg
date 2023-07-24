@@ -38,6 +38,8 @@
 	Midi created by Justin Morgan on[BR]
 	vgmusic.com.[BR]
 	[Wait][Next]
+	Title image font: Audiowide[BR]
+	[Wait][Next]
 	Enjoy!
 	[Wait][End]
 }
@@ -50,6 +52,10 @@
 
 #message:2F:(Space_IntroStoryTitle) {
 	[Color 0x20]PAPER MARIO[End]
+}
+
+#message:2F:(Space_IntroStorySubtitle) {
+	[Color 0x20]AND THE LEGENDARY STAR SHIP[End]
 }
 
 #message:2F:(Space_IntroStory) {
@@ -127,6 +133,10 @@
 #message:2F:(Space_CreditsNotif) {
 	[Style Inspect]Please read the credits before[BR]
 	starting the game.[Wait][End]
+}
+
+#message:2F:(Space_EldstarTalk1) {
+	[Style Right]Test[Wait][End]
 }
 
 #message:2F:(Space_CharacterSelect) {

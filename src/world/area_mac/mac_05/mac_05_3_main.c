@@ -140,7 +140,6 @@ EvtScript N(CheckSkip) = {
         EVT_CALL(N(SkipScene))
         EVT_IF_TRUE(LVar3)
             EVT_BREAK_LOOP
-
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP

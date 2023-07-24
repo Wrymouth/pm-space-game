@@ -38,7 +38,7 @@ EvtScript N(NpcIdle_KoopaBrosShip) = {
     EVT_LOOP(0)
         //movement
         EVT_IF_EQ(MV_SplitTimer, 50)
-            // EVT_CALL(N(KoopaShipUseSplit))
+            EVT_CALL(N(KoopaShipUseSplit))
             EVT_SET(MV_SplitTimer, 0)
         EVT_END_IF
         EVT_IF_EQ(MV_ShellTimer, 15)
