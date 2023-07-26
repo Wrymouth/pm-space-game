@@ -19,8 +19,7 @@ enum {
 enum {
     MV_ShipPosX = MapVar(0),
     MV_ShipPosY = MapVar(1),
-    MV_HammerTimer = MapVar(2),
-    MV_ShotTimer = MapVar(3),
+    MV_BattlePhase = MapVar(2),
 };
 
 #define NAMESPACE spc_10

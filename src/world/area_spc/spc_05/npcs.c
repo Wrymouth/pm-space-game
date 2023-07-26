@@ -4,8 +4,8 @@
 #include "world/common/npc/StarSpirit.h"
 #include "world/action/enemy_bullet.h"
 
-API_CALLABLE(N(HammerShipUseHammer)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_HAMMER);
+API_CALLABLE(N(DoEggAttack)) {
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_EGGS);
     return ApiStatus_DONE2;
 }
 
@@ -33,7 +33,7 @@ API_CALLABLE(N(SetDamageAnimation)) {
 EvtScript N(NpcIdle_JrTroopa) = {
     EVT_SET(LVar3, 12) // direction
     EVT_LOOP(0)
-        //movement
+        // movement
         EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         EVT_IF_LT(LVar1, MapYBottom)
             EVT_MUL(LVar3, -1)
@@ -43,7 +43,12 @@ EvtScript N(NpcIdle_JrTroopa) = {
         EVT_END_IF
         EVT_ADD(LVar1, LVar3)
         EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-
+        // attack
+        EVT_IF_EQ(MV_EggsTimer, 40)
+            EVT_CALL(N(DoEggAttack))
+            EVT_SET(MV_EggsTimer, 0)
+        EVT_END_IF
+        EVT_ADD(MV_EggsTimer, 1)
         // damage
         EVT_SET(LVar0, ANIM_JrTroopa_Idle)
         EVT_SET(LVar1, ANIM_JrTroopa_Ashen_BurnHurt)

@@ -54,7 +54,7 @@ void enemy_take_damage(Enemy* enemy, s32 amount) {
     }
 }
 
-void game_over_cleanup() {
+void game_over_cleanup(void) {
     clear_bullets();
     clear_enemy_bullets();
 }

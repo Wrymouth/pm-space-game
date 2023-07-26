@@ -1,0 +1,30 @@
+<SpriteSheet maxComponents="1" paletteGroups="1">
+    <PaletteList>
+        <Palette id="0" src="Default.png" />
+        <Palette id="1" src="Unused1.png" />
+        <Palette id="2" src="Unused2.png" />
+        <Palette id="3" src="Unused3.png" />
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="Idle1.png" />
+        <Raster id="1" palette="0" src="Idle2.png" />
+    </RasterList>
+    <AnimationList>
+        <Animation name="Still">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Idle">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="1" />
+                <Wait duration="8" />
+                <SetRaster raster="0" />
+                <Wait duration="8" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

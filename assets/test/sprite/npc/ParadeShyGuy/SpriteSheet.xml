@@ -1,0 +1,219 @@
+<SpriteSheet maxComponents="1" paletteGroups="1">
+    <PaletteList>
+        <Palette id="0" src="Default.png" />
+        <Palette id="1" src="Burnt.png" />
+        <Palette id="2" src="Glow.png" />
+        <Palette id="3" src="Extra.png" />
+        <Palette id="4" src="ExtraGlow.png" />
+        <Palette id="5" src="Groove.png" />
+        <Palette id="6" src="General.png" />
+        <Palette id="7" src="DarkGlow.png" />
+        <Palette id="8" src="Dark.png" />
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="5" src="GrooveNeutral.png" />
+        <Raster id="1" palette="5" src="GrooveLeanLeft.png" />
+        <Raster id="2" palette="5" src="GroovePivot.png" />
+        <Raster id="3" palette="5" src="GrooveLeanRight.png" />
+        <Raster id="4" palette="0" src="StackNeutral.png" />
+        <Raster id="5" palette="0" src="StackPointUp.png" />
+        <Raster id="6" palette="0" src="StackHold1.png" />
+        <Raster id="7" palette="0" src="StackHold2.png" />
+        <Raster id="8" palette="0" src="StackLand1.png" />
+        <Raster id="9" palette="0" src="StackLand2.png" />
+        <Raster id="A" palette="0" src="StackLand3.png" />
+        <Raster id="B" palette="0" src="StackLand4.png" />
+        <Raster id="C" palette="7" src="MarshallNeutral.png" />
+        <Raster id="D" palette="7" src="MarshallBeckon1.png" />
+        <Raster id="E" palette="7" src="MarshallBeckon2.png" />
+        <Raster id="F" palette="7" src="MarshallBeckon3.png" />
+        <Raster id="10" palette="7" src="MarshallBeckon4.png" />
+        <Raster id="11" palette="7" src="MarshallStep1.png" />
+        <Raster id="12" palette="7" src="MarshallStep2.png" />
+        <Raster id="13" palette="7" src="MarshallStep3.png" />
+        <Raster id="14" palette="7" src="MarshallStep4.png" />
+        <Raster id="15" palette="6" src="GeneralNeutral.png" />
+        <Raster id="16" palette="6" src="GeneralPoint1.png" />
+        <Raster id="17" palette="6" src="GeneralPoint2.png" />
+        <Raster id="18" palette="7" src="ShadeStep1.png" />
+        <Raster id="19" palette="7" src="ShadeStep2.png" />
+        <Raster id="1A" palette="7" src="ShadeStep3.png" />
+        <Raster id="1B" palette="7" src="ShadeStep4.png" />
+        <Raster id="1C" palette="7" src="ShadePointUp.png" />
+        <Raster id="1D" palette="7" src="ShadeNeutral.png" />
+    </RasterList>
+    <AnimationList>
+        <Animation name="GrooveStill">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="-4,0,0" />
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="GrooveLeanLeft">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="0,0,0" />
+                <SetRaster raster="1" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="GroovePivot">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="0,0,0" />
+                <SetRaster raster="2" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="GrooveLeanRight">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="0,0,0" />
+                <SetRaster raster="3" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="StackStill1">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="4" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="StackStill2">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="4" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="StackPointUp">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="5" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="StackHold">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="7" />
+                <Wait duration="2" />
+                <Goto pos="2" />
+            </Component>
+        </Animation>
+        <Animation name="StackLand">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="8" />
+                <Wait duration="2" />
+                <SetRaster raster="9" />
+                <Wait duration="2" />
+                <SetRaster raster="9" />
+                <Wait duration="2" />
+                <SetRaster raster="A" />
+                <Wait duration="2" />
+                <SetRaster raster="B" />
+                <Wait duration="2" />
+                <SetRaster raster="A" />
+                <Wait duration="2" />
+                <Goto pos="10" />
+            </Component>
+        </Animation>
+        <Animation name="MarshallStill">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="C" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="MarshallWalk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="11" />
+                <Wait duration="6" />
+                <SetRaster raster="12" />
+                <Wait duration="4" />
+                <SetRaster raster="13" />
+                <Wait duration="6" />
+                <SetRaster raster="14" />
+                <Wait duration="4" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="MarshallBeckon">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="8,0,0" />
+                <SetRaster raster="D" />
+                <Wait duration="6" />
+                <SetPos flag="1" xyz="8,0,0" />
+                <SetRaster raster="E" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="MarshallPanic">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="8,0,0" />
+                <SetRaster raster="E" />
+                <Wait duration="2" />
+                <SetPos flag="1" xyz="8,0,0" />
+                <SetRaster raster="F" />
+                <Wait duration="2" />
+                <SetPos flag="1" xyz="8,0,0" />
+                <SetRaster raster="10" />
+                <Wait duration="2" />
+                <SetPos flag="1" xyz="8,0,0" />
+                <SetRaster raster="F" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="GeneralStill">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="15" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="GeneralPoint">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="15" />
+                <Wait duration="2" />
+                <SetRaster raster="16" />
+                <Wait duration="8" />
+                <SetRaster raster="17" />
+                <Wait duration="2" />
+                <Goto pos="4" />
+            </Component>
+        </Animation>
+        <Animation name="ShadeWalk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="18" />
+                <Wait duration="6" />
+                <SetRaster raster="19" />
+                <Wait duration="4" />
+                <SetRaster raster="1A" />
+                <Wait duration="6" />
+                <SetRaster raster="1B" />
+                <Wait duration="4" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="ShadeStill">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="1D" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="ShadePointUp">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="1C" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

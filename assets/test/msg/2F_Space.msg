@@ -50,6 +50,11 @@
 	[Z] Title Screen[End]
 }
 
+#message:2F:(Space_Retry_NoCharacterSelect) {
+	[A] Retry[BR]
+	[Z] Title Screen[End]
+}
+
 #message:2F:(Space_IntroStoryTitle) {
 	[Color 0x20]PAPER MARIO[End]
 }

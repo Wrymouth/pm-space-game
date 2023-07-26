@@ -14,13 +14,17 @@ enum {
 
 enum {
     MF_EnemyDefeated = MapFlag(0),
+    MF_EnemyHasDestination = MapFlag(1),
 };
 
 enum {
     MV_ShipPosX = MapVar(0),
     MV_ShipPosY = MapVar(1),
-    MV_HammerTimer = MapVar(2),
-    MV_ShotTimer = MapVar(3),
+    MV_BattlePhase = MapVar(2),
+    MV_HammerTimer = MapVar(3),
+    MV_ShotTimer = MapVar(4),
+    MV_DestX = MapVar(5),
+    MV_DestY = MapVar(6),
 };
 
 #define NAMESPACE spc_07

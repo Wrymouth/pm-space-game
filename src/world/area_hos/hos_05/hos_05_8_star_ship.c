@@ -30,9 +30,6 @@ EvtScript N(EVS_UpdatePassengers) = {
             EVT_CALL(SetPlayerPos, LVar0, LVar1, LVar2)
         EVT_END_IF
         EVT_ADD(LVar0, 10)
-        EVT_IF_EQ(MV_PartnerOnBoard, TRUE)
-            EVT_CALL(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
-        EVT_END_IF
         EVT_WAIT(1)
         EVT_GOTO(0)
     EVT_RETURN

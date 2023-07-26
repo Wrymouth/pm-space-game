@@ -24,10 +24,61 @@ API_CALLABLE(N(SetDamageAnimation)) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(N(EnemyMoveToDestination)) {
+    s32 enemyPosX = evt_get_variable(script, LVar0);
+    s32 enemyPosY = evt_get_variable(script, LVar1);
+    s32 moveSpeed = evt_get_variable(script, LVar3);
+
+    s32 destX = evt_get_variable(script, MV_DestX);
+    s32 destY = evt_get_variable(script, MV_DestY);
+    
+    f32 distX;
+    f32 distY;
+
+    s32 diffX = destX - enemyPosX;
+    s32 diffY = destY - enemyPosY;
+    f32 dist = dist2D(destX, destY, enemyPosX, enemyPosY);
+    
+    if (dist > 0) {
+        distX = (diffX / dist) * moveSpeed;
+        distY = (diffY / dist) * moveSpeed;
+    }
+
+    if (dist < moveSpeed) {
+        enemyPosX = destX;
+        enemyPosY = destY;
+        distX = 0;
+        distY = 0;
+    }
+    
+    evt_set_variable(script, LVar0, (enemyPosX+distX));
+    evt_set_variable(script, LVar1, (enemyPosY+distY));
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(N(SetEnemyDestination)) {
+    s32 destX = rand_int(550) - 275;
+    s32 destY = rand_int(300) - 150;
+
+    evt_set_variable(script, MV_DestX, destX);
+    evt_set_variable(script, MV_DestY, destY);
+    evt_set_variable(script, MF_EnemyHasDestination, TRUE);
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(NpcIdle_HuffNPuff) = {
-    EVT_SET(LVar3, 20) // direction
+    EVT_SET(LVar3, 6) // moveSpeed
     EVT_LOOP(0)
         //movement
+        EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_CALL(N(EnemyMoveToDestination))
+        EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_IF_EQ(LVar0, MV_DestX)
+            EVT_IF_EQ(LVar1, MV_DestY)
+                EVT_CALL(N(SetEnemyDestination))
+            EVT_END_IF
+        EVT_END_IF
         // damage
         EVT_SET(LVar0, ANIM_HuffNPuff_Anim00)
         EVT_SET(LVar1, ANIM_HuffNPuff_Anim01)
@@ -52,8 +103,8 @@ EvtScript N(NpcInit_HuffNPuff) = {
 };
 
 NpcSettings N(NpcSettings_HuffNPuff) = {
-    .height = 64,
-    .radius = 28,
+    .height = 70,
+    .radius = 70,
     .level = 99,
 };
 
@@ -63,7 +114,7 @@ NpcData N(NpcData_HuffNPuff) = {
     .init = &N(NpcInit_HuffNPuff),
     .yaw = 270,
     .settings = &N(NpcSettings_HuffNPuff),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
     .drops = NO_DROPS,
     .animations = HUFF_N_PUFF_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,

@@ -676,7 +676,6 @@ void update_encounters_neutral(void) {
                             evt_set_variable(NULL, GB_BossesDefeated, (evt_get_variable(NULL, GB_BossesDefeated) + 1));
                         }
                         evt_set_variable(NULL, enemy->defeatFlag, TRUE);
-                        // kill_enemy(enemy);
                     }
                 }
             } while (0);

@@ -1,0 +1,207 @@
+<SpriteSheet maxComponents="1" paletteGroups="2">
+    <PaletteList>
+        <Palette id="0" src="Merle.png" />
+        <Palette id="1" src="MerleGlow.png" />
+        <Palette id="2" src="Merlee.png" />
+        <Palette id="3" src="MerleeBrighter.png" />
+        <Palette id="4" src="MerleeBrightest.png" />
+        <Palette id="5" src="Merlon.png" />
+        <Palette id="6" src="MerlonGlow.png" />
+        <Palette id="7" src="Merluvlee.png" />
+        <Palette id="8" src="MerluvleeGlow.png" />
+        <Palette id="9" src="Merlow.png" />
+        <Palette id="A" src="MerlowGlow.png" />
+        <Palette id="B" src="Merlar.png" />
+        <Palette id="C" src="MerlarGlow.png" />
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="MerleGather1.png" />
+        <Raster id="1" palette="0" src="MerleGather2.png" />
+        <Raster id="2" palette="0" src="MerleRelease3.png" />
+        <Raster id="3" palette="0" src="MerleRelease4.png" />
+        <Raster id="4" palette="2" src="MerleeGather1.png" />
+        <Raster id="5" palette="2" src="MerleeGather2.png" />
+        <Raster id="6" palette="3" src="MerleeGather3.png" />
+        <Raster id="7" palette="4" src="MerleeGather4.png" />
+        <Raster id="8" palette="2" src="MerleeRelease1.png" />
+        <Raster id="9" palette="2" src="MerleeRelease2.png" />
+        <Raster id="A" palette="5" src="MerlonGather1.png" />
+        <Raster id="B" palette="5" src="MerlonGather2.png" />
+        <Raster id="C" palette="5" src="MerlonRelease3.png" />
+        <Raster id="D" palette="5" src="MerlonRelease4.png" />
+        <Raster id="E" palette="5" src="MerlonRelease5.png" />
+        <Raster id="F" palette="7" src="MerluvleeGather1.png" />
+        <Raster id="10" palette="7" src="MerluvleeGather2.png" />
+        <Raster id="11" palette="7" src="MerluvleeGather3.png" />
+        <Raster id="12" palette="7" src="MerluvleeGather4.png" />
+        <Raster id="13" palette="7" src="MerluvleeRelease1.png" />
+        <Raster id="14" palette="7" src="MerluvleeRelease2.png" />
+        <Raster id="15" palette="B" src="MerlarGather1.png" />
+        <Raster id="16" palette="B" src="MerlarGather2.png" />
+        <Raster id="17" palette="B" src="MerlarGather3.png" />
+        <Raster id="18" palette="B" src="MerlarGather4.png" />
+        <Raster id="19" palette="B" src="MerlarRelease1.png" />
+        <Raster id="1A" palette="B" src="MerlarRelease2.png" />
+        <Raster id="1B" palette="9" src="MerlowGather1.png" />
+        <Raster id="1C" palette="9" src="MerlowGather2.png" />
+        <Raster id="1D" palette="9" src="MerlowRelease3.png" />
+        <Raster id="1E" palette="9" src="MerlowRelease4.png" />
+    </RasterList>
+    <AnimationList>
+        <Animation name="MerleGather">
+            <Component name="Comp_0" xyz="0,-1,0">
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="MerleRelease">
+            <Component name="Comp_0" xyz="0,-1,0">
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <SetRaster raster="2" />
+                <Wait duration="2" />
+                <SetRaster raster="3" />
+                <Wait duration="2" />
+                <Goto pos="4" />
+            </Component>
+        </Animation>
+        <Animation name="MerleeGather">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="4" />
+                <Wait duration="4" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <Loop count="0" pos="3" />
+                <SetRaster raster="6" />
+                <Wait duration="4" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="4" />
+                <Wait duration="4" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <Loop count="0" pos="2" />
+                <SetRaster raster="6" />
+                <Wait duration="4" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="6" />
+                <Wait duration="4" />
+                <SetRaster raster="7" />
+                <Wait duration="16" />
+            </Component>
+        </Animation>
+        <Animation name="MerleeRelease">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="8" />
+                <Wait duration="4" />
+                <SetRaster raster="9" />
+                <Wait duration="2" />
+                <Goto pos="2" />
+            </Component>
+        </Animation>
+        <Animation name="MerlonGather">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="A" />
+                <Wait duration="4" />
+                <SetRaster raster="B" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="MerlonRelease">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="C" />
+                <Wait duration="2" />
+                <SetRaster raster="D" />
+                <Wait duration="2" />
+                <SetRaster raster="E" />
+                <Wait duration="2" />
+                <Goto pos="4" />
+            </Component>
+        </Animation>
+        <Animation name="MerluvleeGather">
+            <Component name="Comp_0" xyz="5,0,0">
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="F" />
+                <Wait duration="8" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="10" />
+                <Wait duration="8" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="11" />
+                <Wait duration="8" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="12" />
+                <Wait duration="8" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="MerluvleeRelease">
+            <Component name="Comp_0" xyz="5,0,0">
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="12" />
+                <Wait duration="2" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="13" />
+                <Wait duration="2" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="14" />
+                <Wait duration="2" />
+                <Goto pos="12" />
+            </Component>
+        </Animation>
+        <Animation name="MerlowGather">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="1B" />
+                <Wait duration="2" />
+                <SetRaster raster="1C" />
+                <Wait duration="4" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="MerlowRelease">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="1B" />
+                <Wait duration="2" />
+                <SetRaster raster="1D" />
+                <Wait duration="2" />
+                <SetRaster raster="1E" />
+                <Wait duration="2" />
+                <Goto pos="4" />
+            </Component>
+        </Animation>
+        <Animation name="MerlarGather">
+            <Component name="Comp_0" xyz="5,-2,0">
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="15" />
+                <Wait duration="8" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="16" />
+                <Wait duration="8" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="17" />
+                <Wait duration="8" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="18" />
+                <Wait duration="8" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="MerlarRelease">
+            <Component name="Comp_0" xyz="5,-2,0">
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="18" />
+                <Wait duration="2" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="19" />
+                <Wait duration="2" />
+                <SetPos flag="0" xyz="-6,0,0" />
+                <SetRaster raster="1A" />
+                <Wait duration="2" />
+                <Goto pos="12" />
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

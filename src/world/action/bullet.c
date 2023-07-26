@@ -241,11 +241,13 @@ void use_bullet(void) {
     sfx_play_sound_at_player(0x2096, SOUND_SPACE_MODE_0);
 }
 
-void clear_bullets() {
+void clear_bullets(void) {
     s32 i;
     for (i = 0; i < ARRAY_COUNT(bullets); i++)
     {
-        free_npc_by_index(bullets[i].activeBulletIndex);
+        if (bullets[i].activeBulletIndex != BULLET_EMPTY) {
+            free_npc_by_index(bullets[i].activeBulletIndex);
+        }
         bullets[i].npcID = 0;
         bullets[i].activeBulletIndex = BULLET_EMPTY;
     }

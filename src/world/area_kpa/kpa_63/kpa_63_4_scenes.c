@@ -1,4 +1,33 @@
 #include "kpa_63.h"
+#include "world/common/npc/StarSpirit.h"
+
+EvtScript N(NpcInit_EldStar) = {
+    EVT_RETURN
+    EVT_END
+};
+
+NpcSettings N(NpcSettings_EldStar) = {
+    .height = 64,
+    .radius = 28,
+    .level = 99,
+};
+
+NpcData N(NpcData_EldStar) = {
+    .id = 2,
+    .pos = { 0.0f, -213.0f, 16.0f },
+    .init = &N(NpcInit_EldStar),
+    .yaw = 270,
+    .settings = &N(NpcSettings_EldStar),
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .drops = NO_DROPS,
+    .animations = ELDSTAR_ANIMS,
+    .aiDetectFlags = AI_DETECT_SIGHT,
+};
+
+NpcGroupList N(DefaultNpcs) = {
+    NPC_GROUP(N(NpcData_EldStar)),
+    {}
+};
 
 API_CALLABLE(N(SetPassengerPos)) {
     Bytecode* args = script->ptrReadPos;
@@ -166,23 +195,25 @@ EvtScript N(EVS_Starship_Depart) = {
     EVT_END
 };
 
+EvtScript N(EVS_EndGame) = {
+    
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(EVS_Starship_Arrive) = {
     EVT_SET(MV_Starship_PosY, -100)
     EVT_SET(MV_Starship_Yaw, 180)
     EVT_SET(MV_PlayerOnBoard, TRUE)
-    EVT_SET(MV_PartnerOnBoard, TRUE)
     EVT_CALL(InterpPlayerYaw, 90, 0)
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(SetPlayerActionState, ACTION_STATE_LAND)
-    EVT_CALL(DisablePartnerAI, 0)
-    EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, -120, 0, 230)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, -120, 0, 230)
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(90.0))
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_CALL(HidePlayerShadow, FALSE)
-    EVT_CALL(EnableNpcShadow, NPC_PARTNER, TRUE)
     EVT_EXEC_GET_TID(N(EVS_UpdatePassengers), LVar9)
     EVT_CALL(PlaySoundAtPlayer, SOUND_17F, SOUND_SPACE_MODE_0)
     EVT_THREAD
@@ -215,15 +246,9 @@ EvtScript N(EVS_Starship_Arrive) = {
     EVT_CALL(PlayerJump, -50, 0, 225, 13)
     EVT_CALL(HidePlayerShadow, FALSE)
     EVT_CALL(DisablePlayerPhysics, FALSE)
-    EVT_SET(MV_PartnerOnBoard, FALSE)
-    EVT_CALL(PartnerIsFlying, LVar0)
     EVT_IF_EQ(LVar0, TRUE)
         EVT_WAIT(10)
-        EVT_CALL(SetNpcJumpscale, NPC_PARTNER, 2)
-        EVT_CALL(NpcJump0, NPC_PARTNER, -65, 0, 225, 13)
     EVT_END_IF
-    EVT_CALL(EnableNpcShadow, NPC_PARTNER, TRUE)
-    EVT_CALL(EnablePartnerAI)
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 0)
     EVT_WAIT(10)
     EVT_IF_LT(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)
@@ -234,6 +259,7 @@ EvtScript N(EVS_Starship_Arrive) = {
         EVT_WAIT(30)
         EVT_CALL(SetMusicTrackVolumes, TRACK_VOLS_KPA_OUTSIDE)
     EVT_END_THREAD
+    EVT_EXEC_WAIT(N(EVS_EndGame))
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_RETURN
     EVT_END

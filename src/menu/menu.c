@@ -2,6 +2,10 @@
 #include "common.h"
 #include "gcc/string.h"
 #include "message_ids.h"
+// #include "hud_element.h"
+// #include "icon_offsets.h"
+// #include "item_hud_scripts.inc.c"
+// #include "item_hud_script_table.inc.c"
 #include "menu.h"
 
 void title_menu_cb_newgame(void* arg);
@@ -256,6 +260,27 @@ void title_menu_cb_credits(void* arg) {
     credits_script = start_script(&ShowCreditsMessage, 0xF, 0);
 }
 
+void init_character_icons(void) {
+    s32 koopaIcon;
+    s32 huffIcon;
+    s32 hammerIcon;
+    s32 whaleIcon;
+    ItemData* itemTable = &gItemTable;
+
+    // koopaIcon = hud_element_create(&gItemHudScripts[itemTable[ITEM_APPLE].hudElemID]);
+    // hud_element_set_flags(koopaIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
+    // hud_element_set_render_pos(koopaIcon, 0, 0);
+    // huffIcon = hud_element_create(&gItemHudScripts[itemTable[ITEM_ALLOR_NOTHING].hudElemID]);
+    // hud_element_set_flags(huffIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
+    // hud_element_set_render_pos(huffIcon, -100, -100);
+    // hammerIcon = hud_element_create(&gItemHudScripts[itemTable[ITEM_APPLE_PIE].hudElemID]);
+    // hud_element_set_flags(hammerIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
+    // hud_element_set_render_pos(hammerIcon, 100, 100);
+    // whaleIcon = hud_element_create(&gItemHudScripts[itemTable[ITEM_ARTIFACT].hudElemID]);
+    // hud_element_set_flags(whaleIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
+    // hud_element_set_render_pos(whaleIcon, 200, -100);
+}
+
 void render_character_select(void) {
     const s32 MAX_ROWS = 2;
     const s32 MAX_COLS = 2;
@@ -268,8 +293,11 @@ void render_character_select(void) {
     s32 enemyCounter = 0;
     WindowStyle ws;
 
-    if (evt_get_variable(NULL, GB_BossesDefeated) == 4) {
+    if (evt_get_variable(NULL, GB_BossesDefeated) == 5) {
         menu_gotomap("spc_10", 0);
+    }
+    if (evt_get_variable(NULL, GB_BossesDefeated) == 6) {
+        menu_gotomap("kpa_63", 1);
     }
 
     load_font(1);
@@ -404,7 +432,7 @@ void render_game_over() {
             menu_retry(prevMapID);
             gvOpacity = 0;
         }
-        if (gGameStatus.pressedButtons[0] & BUTTON_B) {
+        if (gGameStatus.pressedButtons[0] & BUTTON_B && evt_get_variable(NULL, GF_JrTroopaDefeated)) {
             gPlayerData.curHP = 5;
             menu_gotomap("spc_03", 0);
             gvOpacity = 0;
@@ -415,13 +443,16 @@ void render_game_over() {
             gvOpacity = 0;
         }
     }
-
-    draw_msg(MSG_Space_Retry, x, y, gvOpacity, 0, 0);
+    if (evt_get_variable(NULL, GF_JrTroopaDefeated)) {
+        draw_msg(MSG_Space_Retry, x, y, gvOpacity, 0, 0);
+    } else {
+        draw_msg(MSG_Space_Retry_NoCharacterSelect, x, y, gvOpacity, 0, 0);
+    }
 }
 
 void render_story(void) {
-    draw_msg(MSG_Space_IntroStoryTitle, storyX + 90, storyY, 255, 0, 0);
-    draw_msg(MSG_Space_IntroStorySubtitle, storyX + 20, storyY + 20, 255, 0, 0);
+    draw_msg(MSG_Space_IntroStoryTitle, storyX + 100, storyY, 255, 0, 0);
+    draw_msg(MSG_Space_IntroStorySubtitle, storyX + 30, storyY + 20, 255, 0, 0);
     draw_msg(MSG_Space_IntroStory, storyX, storyY + 60, 255, 0, 0);
     shiftDelay--;
     if (shiftDelay <= 0) {
@@ -452,6 +483,7 @@ void render_game_menus(void) {
             render_title_menu();
             break;
         case MENU_TYPE_CHARACTER_SELECT:
+            // init_character_icons();
             render_character_select();
             break;
         case MENU_TYPE_GAME_OVER:

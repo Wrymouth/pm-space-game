@@ -5,10 +5,17 @@
 #include "sprite/npc/Fire.h"
 #include "sprite/npc/HammerBros.h"
 #include "sprite/npc/KoopaBros.h"
+#include "sprite/npc/ParadeTwink.h"
+#include "sprite/npc/ParadeShyGuy.h"
+#include "sprite/npc/ParadeWizard.h"
 #include "sprite/player.h"
 #include "world/action/enemy_bullet.h"
 
 #define ENEMY_BULLET_EMPTY -1
+
+#define CHECK_FLAG(var, flag) (var & flag)
+#define SET_FLAG(var, flag) (var |= flag)
+#define UNSET_FLAG(var, flag) (var &= ~flag)
 
 typedef struct EnemyBulletStatus {
     s32 npcID;
@@ -27,6 +34,14 @@ EnemyBulletStatus enemy_bullets[] = { { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULL
                                       { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY },
                                       { 0, ENEMY_BULLET_EMPTY } };
 
+void npc_move_angle_speed(Npc* npc, s32 moveSpeed, f32 angle) {
+    s32 distX = cos_deg(angle) * moveSpeed;
+    s32 distY = sin_deg(angle) * moveSpeed;
+
+    npc->pos.x += distX;
+    npc->pos.y += distY;
+}
+
 s32 get_enemy_bullet_index_by_npc_id(s32 npcId) {
     s32 i;
     for (i = 0; i < ARRAY_COUNT(enemy_bullets); i++) {
@@ -43,6 +58,7 @@ void destroy_enemy_bullet(s32 bulletIndex) {
     }
     enemy_bullets[bulletIndex].npcID = 0;
     enemy_bullets[bulletIndex].activeBulletIndex = ENEMY_BULLET_EMPTY;
+    enemy_bullets[bulletIndex].flags = 0;
     enemyBulletCount--;
 }
 
@@ -142,7 +158,6 @@ void bullet_render_straight(Npc* bulletNpc) {
 }
 
 void hammer_jump(Npc* bulletNpc) {
-    // new render function below
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
 
 
@@ -187,10 +202,38 @@ void bullet_render_koopa(Npc* bulletNpc) {
 
 void bullet_render_water(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    EnemyBulletStatus* bulletStatus = &enemy_bullets[bulletIndex];
+    if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_WATER_UP)) {
+        bulletNpc->pos.y += bulletNpc->moveSpeed;
+        if (bulletStatus->activeBulletTime > 30) {
+            bulletNpc->moveSpeed = 7;
+            bulletNpc->pos.x = rand_int(500) - 250;
+            bulletNpc->moveToPos.x = bulletNpc->pos.x; // used for base position in the down phase
+            bulletNpc->pos.y = 180;
+            bulletNpc->rotation.z = 0;
+            UNSET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_WATER_UP);
+            SET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_WATER_DOWN);
+        }
+    } else if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_WATER_DOWN)) {
+        bulletNpc->pos.y -= bulletNpc->moveSpeed;
+        bulletNpc->pos.x = 100 * sin_deg(bulletNpc->pos.y * 2) + bulletNpc->moveToPos.x;
+        if (bulletStatus->activeBulletTime > 180) {
+            destroy_enemy_bullet(bulletIndex);
+        }
+    } else {
+        SET_FLAG(enemy_bullets[bulletIndex].flags, ENEMY_BULLET_FLAG_WATER_UP);
+    }
+    bulletStatus->activeBulletTime++;
 }
 
 void bullet_render_egg(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    if (enemy_bullets[bulletIndex].activeBulletTime >= ENEMY_BULLET_DECAY) {
+        destroy_enemy_bullet(bulletIndex);
+    }
+    bulletNpc->rotation.z += 20.0f;
+    enemy_bullets[bulletIndex].activeBulletTime++;
+    npc_move_angle_speed(bulletNpc, bulletNpc->moveSpeed, bulletNpc->moveAngle);
 }
 
 void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
@@ -269,8 +312,30 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             bulletNpc->moveToPos.x = 10.0f;
             bulletNpc->moveToPos.y = -10.0f;
             break;
+        case ENEMY_BULLET_TYPE_EGG_DOWN:
+            bulletNpc->moveSpeed = 13;
+            bulletNpc->moveAngle = 210;
+            bulletNpc->scale.x   = 2.0f;
+            bulletNpc->scale.y   = 2.0f;
+            bulletNpc->scale.z   = 2.0f;
+            break;
+        case ENEMY_BULLET_TYPE_EGG_MID:
+            bulletNpc->moveSpeed = 13;
+            bulletNpc->moveAngle = 180;
+            bulletNpc->scale.x   = 2.0f;
+            bulletNpc->scale.y   = 2.0f;
+            bulletNpc->scale.z   = 2.0f;
+            break;
+        case ENEMY_BULLET_TYPE_EGG_UP:
+            bulletNpc->moveSpeed = 13;
+            bulletNpc->moveAngle = 150;
+            bulletNpc->scale.x   = 2.0f;
+            bulletNpc->scale.y   = 2.0f;
+            bulletNpc->scale.z   = 2.0f;
+            break;
         case ENEMY_BULLET_TYPE_WATER:
-
+            bulletNpc->moveSpeed = 13; 
+            bulletNpc->rotation.z = 180;
             break;
     }
 }
@@ -318,14 +383,14 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
             break;
         case ENEMY_BULLET_TYPE_LEFT:
             enemy_bullets[i].flags |= ENEMY_BULLET_FLAG_FACING_LEFT;
-            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
+            npcSettings.defaultAnim = ANIM_ParadeShyGuy_Groove_GrooveStill;
             npcSettings.height      = 16;
             npcSettings.radius      = 32;
             bp->onRender    = bullet_render_straight;
             break;
         case ENEMY_BULLET_TYPE_RIGHT:
             enemy_bullets[i].flags &= ~ENEMY_BULLET_FLAG_FACING_LEFT;
-            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
+            npcSettings.defaultAnim = ANIM_ParadeShyGuy_Groove_GrooveStill;
             npcSettings.height      = 16;
             npcSettings.radius      = 32;
             bp->onRender    = bullet_render_straight;
@@ -355,7 +420,7 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
             bp->onRender    = bullet_render_koopa;
             break;
         case ENEMY_BULLET_TYPE_WATER:
-            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
+            npcSettings.defaultAnim = ANIM_ParadeWizard_Merle_MerleGather;
             npcSettings.height      = 16;
             npcSettings.radius      = 16;
             bp->onRender    = bullet_render_water;
@@ -363,9 +428,9 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
         case ENEMY_BULLET_TYPE_EGG_DOWN:
         case ENEMY_BULLET_TYPE_EGG_UP:
         case ENEMY_BULLET_TYPE_EGG_MID:
-            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
-            npcSettings.height      = 16;
-            npcSettings.radius      = 16;
+            npcSettings.defaultAnim = ANIM_ParadeTwink_Still;
+            npcSettings.height      = 32;
+            npcSettings.radius      = 32;
             bp->onRender    = bullet_render_egg;
             break;
     }
@@ -416,8 +481,6 @@ void do_attack(Enemy* enemy, EnemyAttackType type) {
             break;
         case ENEMY_ATTACK_TYPE_WATER:
             use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_WATER);
-            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_WATER);
-            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_WATER);
             break;
         case ENEMY_ATTACK_TYPE_EGGS:
             use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_EGG_DOWN);
@@ -430,12 +493,12 @@ void do_attack(Enemy* enemy, EnemyAttackType type) {
     
 }
 
-void clear_enemy_bullets() {
+void clear_enemy_bullets(void) {
     s32 i;
     for (i = 0; i < ARRAY_COUNT(enemy_bullets); i++) {
         destroy_enemy_bullet(i);
     }
-
+    sfx_play_sound(SOUND_PERIL);
     enemyBulletCount = 0;
 }
 

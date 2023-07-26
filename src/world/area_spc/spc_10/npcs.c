@@ -43,6 +43,12 @@ EvtScript N(NpcIdle_Bowser) = {
         EVT_SET(LVar1, ANIM_ParadeKolorado_WifeIdle)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
+        // defeat
+        EVT_IF_TRUE(GF_BowserDefeated)
+            EVT_SET(MF_EnemyDefeated, TRUE)
+            EVT_CALL(DoNpcDefeat)
+            EVT_BREAK_LOOP
+        EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN

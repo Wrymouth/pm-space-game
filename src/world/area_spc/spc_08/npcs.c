@@ -22,13 +22,8 @@
     .anim_F = ANIM_ParadeYoshi_StillGreen, \
 }
 
-API_CALLABLE(N(HammerShipUseHammer)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_HAMMER);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(HammerShipUseBullet)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_LEFT);
+API_CALLABLE(N(DoWaterAttack)) {
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_WATER);
     return ApiStatus_DONE2;
 }
 
@@ -81,7 +76,7 @@ API_CALLABLE(N(SetDamageAnimation)) {
 }
 
 EvtScript N(NpcIdle_Whale) = {
-    EVT_SET(LVar3, 3) // moveSpeed
+    EVT_SET(LVar3, 4) // moveSpeed
     EVT_LOOP(0)
         // movement
         EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -91,6 +86,22 @@ EvtScript N(NpcIdle_Whale) = {
         EVT_ADD(LVar0, 25)
         EVT_ADD(LVar1, 46)
         EVT_CALL(TranslateGroup, Model_Whale, LVar0, LVar1, LVar2)
+        // attack
+        EVT_IF_EQ(MV_WaterTimer, 90)
+            EVT_IF_EQ(MV_WaterSubTimer, 8)
+                EVT_CALL(N(DoWaterAttack))
+                EVT_SET(MV_WaterSubTimer, 0)
+                EVT_ADD(MV_WaterCount, 1)
+            EVT_END_IF
+            EVT_IF_EQ(MV_WaterCount, 3)
+                EVT_SET(MV_WaterTimer, 0)
+                EVT_SET(MV_WaterCount, 0)
+            EVT_ELSE
+                EVT_ADD(MV_WaterSubTimer, 1)
+            EVT_END_IF
+        EVT_ELSE
+            EVT_ADD(MV_WaterTimer, 1)
+        EVT_END_IF
         // damage
         EVT_SET(LVar0, ANIM_ParadeYoshi_StillGreen)
         EVT_SET(LVar1, ANIM_ParadeYoshi_StillBlue)
