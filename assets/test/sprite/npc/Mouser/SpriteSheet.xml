@@ -1,0 +1,147 @@
+<SpriteSheet maxComponents="1" paletteGroups="2">
+    <PaletteList>
+        <Palette id="0" src="Blue.png" />
+        <Palette id="1" src="Purple.png" />
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="Step1.png" />
+        <Raster id="1" palette="0" src="Step2.png" />
+        <Raster id="2" palette="0" src="Step3.png" />
+        <Raster id="3" palette="0" src="Idle1.png" />
+        <Raster id="4" palette="0" src="Idle2.png" />
+        <Raster id="5" palette="0" src="Idle3.png" />
+        <Raster id="6" palette="0" src="Blink1.png" />
+        <Raster id="7" palette="0" src="Blink2.png" />
+    </RasterList>
+    <AnimationList>
+        <Animation name="Still">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="3" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Idle">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="3" />
+                <Wait duration="70" />
+                <SetRaster raster="4" />
+                <Wait duration="25" />
+                <SetRaster raster="3" />
+                <Wait duration="50" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="3" />
+                <Wait duration="4" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="3" />
+                <Wait duration="30" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <SetRaster raster="3" />
+                <Wait duration="4" />
+                <SetRaster raster="5" />
+                <Wait duration="4" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Blink">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="3" />
+                <Wait duration="2" />
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="7" />
+                <Wait duration="4" />
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="3" />
+                <Wait duration="2" />
+                <Goto pos="8" />
+            </Component>
+        </Animation>
+        <Animation name="IdleOnlyBlink">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="3" />
+                <Wait duration="2" />
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="7" />
+                <Wait duration="4" />
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="3" />
+                <Wait duration="70" />
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="7" />
+                <Wait duration="4" />
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="3" />
+                <Wait duration="5" />
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="7" />
+                <Wait duration="5" />
+                <SetRaster raster="6" />
+                <Wait duration="2" />
+                <SetRaster raster="3" />
+                <Wait duration="90" />
+                <SetRaster raster="3" />
+                <Wait duration="30" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Run">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <SetRaster raster="1" />
+                <Wait duration="2" />
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <SetRaster raster="2" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Talk">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="3" />
+                <Wait duration="6" />
+                <SetRaster raster="4" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Whisper">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="3" />
+                <Wait duration="6" />
+                <SetRaster raster="5" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Gossip">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="3" />
+                <Wait duration="6" />
+                <SetRaster raster="4" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="GossipWhisper">
+            <Component name="Comp_0" xyz="3,0,0">
+                <SetRaster raster="3" />
+                <Wait duration="6" />
+                <SetRaster raster="5" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

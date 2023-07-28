@@ -132,8 +132,6 @@ EvtScript N(Die) = {
 
 EvtScript N(Win) = {
     EVT_CALL(SetMusicTrack, 0, SONG_BATTLE_END, 0, 8)
-    EVT_CALL(ClearAllPlayerBullets)
-    EVT_CALL(ClearAllEnemyBullets)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioB1_Hammer3_FingerWag)
     EVT_WAIT(20)
     EVT_CALL(MakeLerp, 0, 500, 90, EASING_CUBIC_IN)
@@ -165,7 +163,7 @@ EvtScript N(GameLoop) = {
     EVT_CALL(N(EnableSpaceShipMode), TRUE)
     EVT_CALL(N(SetEnemyHPBar))
     EVT_LOOP(0)
-        EVT_IF_TRUE(AF_Dead)
+        EVT_IF_TRUE(AF_PlayerDead)
             EVT_EXEC_WAIT(N(Die))
             EVT_BREAK_LOOP
         EVT_END_IF

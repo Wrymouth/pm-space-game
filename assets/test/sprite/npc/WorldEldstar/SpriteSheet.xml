@@ -1,0 +1,107 @@
+<SpriteSheet maxComponents="1" paletteGroups="2" variations="Default,Glowing">
+    <PaletteList>
+        <Palette id="0" src="Default.png" />
+        <Palette id="1" src="Glowing.png" />
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="Idle1.png" />
+        <Raster id="1" palette="0" src="Idle2.png" />
+        <Raster id="2" palette="0" src="Wave1.png" />
+        <Raster id="3" palette="0" src="Wave2.png" />
+        <Raster id="4" palette="0" src="Leap1.png" />
+        <Raster id="5" palette="0" src="Leap2.png" />
+        <Raster id="6" palette="0" src="Panic.png" />
+        <Raster id="7" palette="0" src="Angry1.png" />
+        <Raster id="8" palette="0" src="Angry2.png" />
+        <Raster id="9" palette="0" src="Hurt1.png" />
+        <Raster id="A" palette="0" src="Hurt2.png" />
+        <Raster id="B" palette="0" src="Back1.png" />
+        <Raster id="C" palette="0" src="Back2.png" />
+        <Raster id="D" palette="0" src="Talk.png" />
+    </RasterList>
+    <AnimationList>
+        <Animation name="Still">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="0" />
+                <Wait duration="1" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Idle">
+            <Component name="Comp_0" xyz="0,-8,0">
+                <SetRaster raster="0" />
+                <Wait duration="14" />
+                <SetRaster raster="1" />
+                <Wait duration="14" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Wave">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="2" />
+                <Wait duration="10" />
+                <SetRaster raster="3" />
+                <Wait duration="10" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Leap">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="0" />
+                <Wait duration="6" />
+                <SetRaster raster="4" />
+                <Wait duration="30" />
+                <SetRaster raster="5" />
+                <Wait duration="16" />
+                <Goto pos="4" />
+            </Component>
+        </Animation>
+        <Animation name="Panic">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="6" />
+                <Wait duration="8" />
+                <SetRaster raster="0" />
+                <Wait duration="8" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Angry">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="7" />
+                <Wait duration="8" />
+                <SetRaster raster="8" />
+                <Wait duration="8" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Hurt">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRot xyz="0,0,10" />
+                <SetRaster raster="9" />
+                <Wait duration="6" />
+                <SetRot xyz="0,0,10" />
+                <SetRaster raster="A" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Back">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="B" />
+                <Wait duration="8" />
+                <SetRaster raster="C" />
+                <Wait duration="8" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Talk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="D" />
+                <Wait duration="8" />
+                <SetRaster raster="0" />
+                <Wait duration="8" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

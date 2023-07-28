@@ -126,10 +126,6 @@ EvtScript N(EVS_Starship_Update) = {
 };
 
 EvtScript N(EVS_Starship_Depart) = {
-    EVT_CALL(GetPartnerInUse, LVar9)
-    EVT_IF_NE(LVar9, PARTNER_NONE)
-        EVT_RETURN
-    EVT_END_IF
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(GetModelCenter, MODEL_o308)
@@ -142,13 +138,6 @@ EvtScript N(EVS_Starship_Depart) = {
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(DisablePartnerAI, 0)
     EVT_ADD(LVar2, 10)
-    EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
-    EVT_CALL(SetNpcJumpscale, NPC_PARTNER, 1)
-    EVT_CALL(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 15)
-    EVT_CALL(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    EVT_SET(MV_PartnerOnBoard, TRUE)
-    EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
-    EVT_CALL(EnableNpcShadow, NPC_PARTNER, FALSE)
     EVT_WAIT(10)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Menus_0188, 160, 40)
     EVT_CALL(ShowChoice, MSG_Choice_000C)
@@ -160,16 +149,9 @@ EvtScript N(EVS_Starship_Depart) = {
         EVT_CALL(PlayerJump, -50, 0, 225, 13)
         EVT_CALL(HidePlayerShadow, FALSE)
         EVT_CALL(SetPlayerActionState, ACTION_STATE_LAND)
-        EVT_SET(MV_PartnerOnBoard, FALSE)
-        EVT_CALL(PartnerIsFlying, LVar0)
         EVT_IF_EQ(LVar0, TRUE)
             EVT_WAIT(10)
-            EVT_CALL(SetNpcJumpscale, NPC_PARTNER, 2)
-            EVT_CALL(NpcJump0, NPC_PARTNER, -65, 0, 225, 13)
         EVT_END_IF
-        EVT_CALL(EnableNpcShadow, NPC_PARTNER, TRUE)
-        EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
-        EVT_CALL(EnablePartnerAI)
         EVT_CALL(DisablePlayerInput, FALSE)
         EVT_RETURN
     EVT_END_IF
@@ -196,7 +178,9 @@ EvtScript N(EVS_Starship_Depart) = {
 };
 
 EvtScript N(EVS_EndGame) = {
-    
+    EVT_CALL(SetNpcPos, 2, 9, 58, 225)
+    EVT_CALL(SpeakToPlayer, 2, ANIM_WorldEldstar_Talk, ANIM_WorldEldstar_Idle, 0, MSG_Space_EldstarTalk1)
+    EVT_CALL(SpeakToPlayer, 2, ANIM_WorldEldstar_Talk, ANIM_WorldEldstar_Idle, 0, MSG_Space_EldstarTalk2)
     EVT_RETURN
     EVT_END
 };

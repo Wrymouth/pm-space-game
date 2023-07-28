@@ -21,7 +21,7 @@ enum {
 };
 
 enum {
-    AF_Dead = AreaFlag(0)
+    AF_PlayerDead = AreaFlag(0)
 };
 
 enum {
@@ -42,6 +42,7 @@ extern MapSettings spc_07_settings;
 extern MapSettings spc_08_settings;
 extern MapSettings spc_09_settings;
 extern MapSettings spc_10_settings;
+extern MapSettings spc_11_settings;
 
 extern s32 spc_00_map_init(void);
 extern s32 spc_01_map_init(void);
@@ -54,5 +55,6 @@ extern s32 spc_07_map_init(void);
 extern s32 spc_08_map_init(void);
 extern s32 spc_09_map_init(void);
 extern s32 spc_10_map_init(void);
+extern s32 spc_11_map_init(void);
 
 #endif

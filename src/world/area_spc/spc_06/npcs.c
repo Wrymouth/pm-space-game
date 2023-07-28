@@ -86,6 +86,7 @@ EvtScript N(NpcIdle_HammerBroShip) = {
         EVT_IF_TRUE(GF_HammerBrosDefeated)
             EVT_SET(MF_EnemyDefeated, TRUE)
             EVT_CALL(DoNpcDefeat)
+            EVT_CALL(PlaySound, SOUND_PERIL)
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
@@ -94,7 +95,7 @@ EvtScript N(NpcIdle_HammerBroShip) = {
 };
 
 EvtScript N(NpcDefeat_HammerBroShip) = {
-    EVT_IF_TRUE(AF_Dead)
+    EVT_IF_TRUE(AF_PlayerDead)
         EVT_SET(MF_EnemyDefeated, FALSE)
         EVT_SET(GF_HammerBrosDefeated, FALSE)
     EVT_END_IF

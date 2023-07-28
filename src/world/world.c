@@ -889,6 +889,7 @@ MapConfig spc_maps[] = {
     { MAP_WITH_INIT(spc_08) },
     { MAP_WITH_INIT(spc_09) },
     { MAP_WITH_INIT(spc_10) },
+    { MAP_WITH_INIT(spc_11) },
 };
 
 AreaConfig gAreas[] = {

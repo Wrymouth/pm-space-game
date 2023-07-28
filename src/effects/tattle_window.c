@@ -28,8 +28,8 @@ WindowStyleCustom D_E00D87E0 = {
     },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
-    .color1 = { 61, 74, 188, 255 },
-    .color2 = { 0, 25, 28, 255},
+    .color1 = { 63, 196, 196, 255 },
+    .color2 = { 43, 130, 130, 255 },
 };
 
 D_E00D8818_Entry D_E00D8818[] = {
@@ -235,7 +235,7 @@ void func_E00D8630(EffectInstance* effect) {
         (data->pos.x + data->offset.x) - 75.0f,
         (data->pos.y + data->offset.y) - 53.0f,
         data->pos.z,
-        150, 107,
+        107, 107,
         255, 0,
         data->scale, data->scale,
         data->rot.x, data->rot.y, data->rot.z,

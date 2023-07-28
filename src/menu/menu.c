@@ -52,11 +52,15 @@ s32 storyX = 20;
 s32 storyY = 200;
 s32 shiftDelay = 3;
 s32 skipOpacity = 255;
+
 // character select
 s32 csSelectedRow = 0;
 s32 csSelectedCol = 0;
 s32 selectionDelay = 8;
+s32 displayMessageID = MSG_Space_CharacterSelectIntro;
 CharacterSelectPanel csPanels[2][2] = {{{"spc_06", FALSE}, {"spc_07", FALSE}}, {{"spc_08", FALSE}, {"spc_09", FALSE}}}; // rows, columns
+
+
 
 // game over
 s32 gvOpacity = 0;
@@ -184,6 +188,7 @@ EvtScript ShowCreditsNotif = {
     EVT_SET(GF_CreditsDisplayed, TRUE)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Space_CreditsNotif, 160, 40)
     EVT_SET(GF_CreditsDisplayed, FALSE)
+    EVT_SET(GF_CreditsSeen, TRUE)
     EVT_RETURN
     EVT_END
 };
@@ -299,9 +304,9 @@ void render_character_select(void) {
     if (evt_get_variable(NULL, GB_BossesDefeated) == 6) {
         menu_gotomap("kpa_63", 1);
     }
-
-    load_font(1);
-    draw_msg(MSG_Space_CharacterSelect, 95, 95, 255, 0, 0);   
+    
+    draw_msg(displayMessageID, 20, 20, 255, 0, 0);
+    draw_msg(MSG_Space_CharacterSelect, 65, 80, 255, 0, 0);   
 
     for (row = 0; row < MAX_ROWS; row++)
     {
@@ -451,8 +456,8 @@ void render_game_over() {
 }
 
 void render_story(void) {
-    draw_msg(MSG_Space_IntroStoryTitle, storyX + 100, storyY, 255, 0, 0);
-    draw_msg(MSG_Space_IntroStorySubtitle, storyX + 30, storyY + 20, 255, 0, 0);
+    draw_msg(MSG_Space_IntroStoryTitle, storyX + 75, storyY, 255, 0, 0);
+    draw_msg(MSG_Space_IntroStorySubtitle, storyX + 25, storyY + 30, 255, 0, 0);
     draw_msg(MSG_Space_IntroStory, storyX, storyY + 60, 255, 0, 0);
     shiftDelay--;
     if (shiftDelay <= 0) {
@@ -501,5 +506,10 @@ API_CALLABLE(SetMenuType) {
     Bytecode* args = script->ptrReadPos;
     s32 type = *args++;
     menuType = type;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(Menu_SetCharacterMessage) {
+    displayMessageID = evt_get_variable(script, LVar2);
     return ApiStatus_DONE2;
 }

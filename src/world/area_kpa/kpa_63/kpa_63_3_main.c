@@ -41,7 +41,7 @@ EvtScript N(EVS_ExitDoor_kpa_62_3) = {
     EVT_WAIT(15)
     EVT_CALL(UseExitHeading, 60, kpa_63_ENTRY_0)
     EVT_EXEC(ExitWalk)
-    EVT_CALL(GotoMap, EVT_PTR("kpa_62"), kpa_62_ENTRY_3)
+    EVT_CALL(GotoMap, EVT_PTR("kpa_62"), kpa_62_ENTRY_0)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END
@@ -80,6 +80,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_ALT_NO_LEAD()
     EVT_SET(GF_MAP_BowsersCastle, TRUE)
     EVT_EXEC_WAIT(N(EVS_MakeEntities))
+    EVT_CALL(MakeNpcs, FALSE, EVT_PTR(N(DefaultNpcs)))
     EVT_EXEC(N(EVS_EnterMap))
     EVT_EXEC(N(EVS_SetupMusic))
     EVT_BIND_TRIGGER(EVT_PTR(N(EVS_Starship_Depart)), TRIGGER_FLOOR_TOUCH, COLLIDER_o400, 1, 0)

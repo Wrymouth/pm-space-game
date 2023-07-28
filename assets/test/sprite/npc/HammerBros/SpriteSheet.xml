@@ -1,0 +1,381 @@
+<SpriteSheet maxComponents="1" paletteGroups="1">
+    <PaletteList>
+        <Palette id="0" src="Default.png" />
+        <Palette id="1" src="Poisoned.png" />
+        <Palette id="2" src="Dizzy.png" />
+        <Palette id="3" src="Shocked.png" />
+        <Palette id="4" src="Burnt.png" />
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="Raster00.png" />
+        <Raster id="1" palette="0" src="Raster01.png" />
+        <Raster id="2" palette="0" src="Raster02.png" />
+        <Raster id="3" palette="0" src="Raster03.png" />
+        <Raster id="4" palette="0" src="Raster04.png" />
+        <Raster id="5" palette="0" src="Raster05.png" />
+        <Raster id="6" palette="0" src="Raster06.png" />
+        <Raster id="7" palette="0" src="Raster07.png" />
+        <Raster id="8" palette="4" src="Raster08.png" />
+        <Raster id="9" palette="4" src="Raster09.png" />
+        <Raster id="A" palette="4" src="Raster0A.png" />
+        <Raster id="B" palette="0" src="Raster0B.png" />
+        <Raster id="C" palette="0" src="Raster0C.png" />
+        <Raster id="D" palette="0" src="Raster0D.png" />
+        <Raster id="E" palette="0" src="Raster0E.png" />
+        <Raster id="F" palette="0" src="Raster0F.png" />
+        <Raster id="10" palette="0" src="Raster10.png" />
+        <Raster id="11" palette="0" src="Raster11.png" />
+        <Raster id="12" palette="0" src="Raster12.png" />
+        <Raster id="13" palette="0" src="Raster13.png" />
+        <Raster id="14" palette="0" src="Raster14.png" />
+        <Raster id="15" palette="0" src="Raster15.png" />
+        <Raster id="16" palette="0" src="Raster16.png" />
+        <Raster id="17" palette="0" src="Raster17.png" />
+        <Raster id="18" palette="0" src="Raster18.png" />
+        <Raster id="19" palette="0" src="Raster19.png" />
+        <Raster id="1A" palette="0" src="Raster1A.png" />
+        <Raster id="1B" palette="0" src="Raster1B.png" />
+        <Raster id="1C" palette="0" src="Raster1C.png" />
+        <Raster id="1D" palette="0" src="Raster1D.png" />
+        <Raster id="1E" palette="0" src="Raster1E.png" />
+        <Raster id="1F" palette="0" src="Raster1F.png" />
+        <Raster id="20" palette="0" src="Raster20.png" />
+        <Raster id="21" palette="0" src="Raster21.png" />
+        <Raster id="22" palette="0" src="Raster22.png" />
+        <Raster id="23" palette="0" src="Raster23.png" />
+        <Raster id="24" palette="0" src="Raster24.png" />
+        <Raster id="25" palette="0" src="Raster25.png" />
+        <Raster id="26" palette="0" src="Raster26.png" />
+        <Raster id="27" palette="0" src="Raster27.png" />
+        <Raster id="28" palette="0" src="Raster28.png" />
+    </RasterList>
+    <AnimationList>
+        <Animation name="Anim00">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim01">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="27" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim02">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="0" />
+                <Wait duration="14" />
+                <SetRaster raster="1" />
+                <Wait duration="14" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim03">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="27" />
+                <Wait duration="14" />
+                <SetRaster raster="28" />
+                <Wait duration="14" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim04">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="2" />
+                <Wait duration="8" />
+                <SetRaster raster="3" />
+                <Wait duration="6" />
+                <SetRaster raster="4" />
+                <Wait duration="4" />
+                <SetRaster raster="3" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim05">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="14" />
+                <Wait duration="8" />
+                <SetRaster raster="15" />
+                <Wait duration="6" />
+                <SetRaster raster="16" />
+                <Wait duration="4" />
+                <SetRaster raster="15" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim06">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="1C" />
+                <Wait duration="8" />
+                <SetRaster raster="1D" />
+                <Wait duration="6" />
+                <SetRaster raster="1E" />
+                <Wait duration="4" />
+                <SetRaster raster="1D" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim07">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="2" />
+                <Wait duration="4" />
+                <SetRaster raster="3" />
+                <Wait duration="2" />
+                <SetRaster raster="4" />
+                <Wait duration="2" />
+                <SetRaster raster="3" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim08">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="14" />
+                <Wait duration="4" />
+                <SetRaster raster="15" />
+                <Wait duration="2" />
+                <SetRaster raster="16" />
+                <Wait duration="2" />
+                <SetRaster raster="15" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim09">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="1C" />
+                <Wait duration="4" />
+                <SetRaster raster="1D" />
+                <Wait duration="2" />
+                <SetRaster raster="1E" />
+                <Wait duration="2" />
+                <SetRaster raster="1D" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim0A">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="5" />
+                <Wait duration="6" />
+                <SetRaster raster="0" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim0B">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="1B" />
+                <Wait duration="6" />
+                <SetRaster raster="27" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim0C">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="17,0,0" />
+                <SetRaster raster="1F" />
+                <Wait duration="4" />
+                <SetPos flag="1" xyz="23,0,0" />
+                <SetRaster raster="20" />
+                <Wait duration="8" />
+                <SetPos flag="1" xyz="2,0,0" />
+                <SetRaster raster="21" />
+                <Wait duration="2" />
+                <SetRaster raster="22" />
+                <Wait duration="2" />
+                <SetRaster raster="21" />
+                <Wait duration="2" />
+                <Goto pos="20" />
+            </Component>
+        </Animation>
+        <Animation name="Anim0D">
+            <Component name="Comp_0" xyz="0,-16,0">
+                <SetRaster raster="1A" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim0E">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="6" />
+                <Wait duration="6" />
+                <SetRaster raster="7" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim0F">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="9" />
+                <Wait duration="6" />
+                <SetRaster raster="A" />
+                <Wait duration="6" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim10">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="8" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim11">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="B" />
+                <Wait duration="14" />
+                <SetRaster raster="D" />
+                <Wait duration="60" />
+                <SetRaster raster="B" />
+                <Wait duration="12" />
+                <SetRaster raster="C" />
+                <Wait duration="30" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim12">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="E" />
+                <Wait duration="4" />
+                <SetRaster raster="F" />
+                <Wait duration="4" />
+                <SetRaster raster="10" />
+                <Wait duration="4" />
+                <SetRaster raster="11" />
+                <Wait duration="4" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim13">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="12" />
+                <Wait duration="6" />
+                <SetRaster raster="13" />
+                <Wait duration="2" />
+                <Goto pos="2" />
+            </Component>
+        </Animation>
+        <Animation name="Anim14">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="17" />
+                <Wait duration="2" />
+                <SetRaster raster="18" />
+                <Wait duration="2" />
+                <SetRaster raster="19" />
+                <Wait duration="2" />
+                <SetRaster raster="18" />
+                <Wait duration="2" />
+                <Goto pos="6" />
+            </Component>
+        </Animation>
+        <Animation name="Anim15">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="5,0,0" />
+                <SetRaster raster="24" />
+                <Wait duration="6" />
+                <SetPos flag="1" xyz="4,7,0" />
+                <SetRaster raster="25" />
+                <Wait duration="4" />
+                <SetPos flag="1" xyz="2,7,0" />
+                <SetRaster raster="26" />
+                <Wait duration="2" />
+                <SetPos flag="1" xyz="4,1,0" />
+                <SetRot xyz="0,0,17" />
+                <SetScale mode="uniform" percent="106" />
+                <SetRaster raster="26" />
+                <Wait duration="2" />
+                <SetPos flag="1" xyz="8,2,0" />
+                <SetRot xyz="0,0,32" />
+                <SetScale mode="uniform" percent="106" />
+                <SetRaster raster="26" />
+                <Wait duration="2" />
+                <SetRot xyz="0,0,10" />
+                <SetPos flag="1" xyz="2,1,0" />
+                <SetRaster raster="23" />
+                <Wait duration="2" />
+                <SetRaster raster="23" />
+                <Wait duration="2" />
+                <SetRot xyz="0,0,-10" />
+                <SetPos flag="1" xyz="-2,1,0" />
+                <SetRaster raster="23" />
+                <Wait duration="2" />
+                <SetRaster raster="23" />
+                <Wait duration="2" />
+                <Goto pos="60" />
+            </Component>
+        </Animation>
+        <Animation name="Anim16">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="23" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+        <Animation name="Anim17">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="23" />
+                <Wait duration="2" />
+                <SetScale mode="uniform" percent="106" />
+                <SetRot xyz="0,0,32" />
+                <SetPos flag="1" xyz="8,2,0" />
+                <SetRaster raster="26" />
+                <Wait duration="2" />
+                <SetScale mode="uniform" percent="106" />
+                <SetRot xyz="0,0,17" />
+                <SetPos flag="1" xyz="4,1,0" />
+                <SetRaster raster="26" />
+                <Wait duration="2" />
+                <SetPos flag="1" xyz="2,7,0" />
+                <SetRaster raster="26" />
+                <Wait duration="2" />
+                <SetPos flag="1" xyz="4,7,0" />
+                <SetRaster raster="25" />
+                <Wait duration="2" />
+                <SetPos flag="1" xyz="6,0,0" />
+                <SetRaster raster="24" />
+                <Wait duration="2" />
+                <SetRaster raster="0" />
+                <Wait duration="2" />
+                <Goto pos="42" />
+            </Component>
+        </Animation>
+        <Animation name="Anim18">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="17,0,0" />
+                <SetRaster raster="1F" />
+                <Wait duration="4" />
+                <SetPos flag="1" xyz="23,0,0" />
+                <SetRaster raster="20" />
+                <Wait duration="8" />
+                <Goto pos="6" />
+            </Component>
+        </Animation>
+        <Animation name="Anim19">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetPos flag="1" xyz="2,0,0" />
+                <SetRaster raster="21" />
+                <Wait duration="2" />
+                <SetRaster raster="22" />
+                <Wait duration="2" />
+                <SetRaster raster="21" />
+                <Wait duration="2" />
+                <Goto pos="8" />
+            </Component>
+        </Animation>
+        <Animation name="Anim1A">
+            <Component name="Comp_0" xyz="0,0,0">
+                <SetRaster raster="13" />
+                <Wait duration="2" />
+                <Goto pos="0" />
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

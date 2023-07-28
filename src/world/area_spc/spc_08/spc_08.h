@@ -23,6 +23,7 @@ enum {
     MV_WaterTimer = MapVar(3),
     MV_WaterSubTimer = MapVar(4),
     MV_WaterCount = MapVar(5),
+    MV_FuzzyTimer = MapVar(6),
 };
 
 #define NAMESPACE spc_08

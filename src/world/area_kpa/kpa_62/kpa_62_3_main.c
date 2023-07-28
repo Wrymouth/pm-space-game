@@ -1,6 +1,43 @@
 #include "kpa_62.h"
+#include "world/common/npc/StarSpirit.h"
 
 #include "world/common/atomic/TexturePan.inc.c"
+
+EvtScript N(EndGame) = {
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_EldstarTalk3, 160, 40)
+    EVT_CALL(StartBossBattle, SONG_FAKE_BOWSER_BATTLE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(NpcInit_EldStar) = {
+    EVT_CALL(BindNpcIdle, NPC_SELF, N(EndGame))
+    EVT_RETURN
+    EVT_END
+};
+
+NpcSettings N(NpcSettings_EldStar) = {
+    .height = 64,
+    .radius = 28,
+    .level = 99,
+};
+
+NpcData N(NpcData_EldStar) = {
+    .id = 2,
+    .pos = { 0.0f, -213.0f, 16.0f },
+    .init = &N(NpcInit_EldStar),
+    .yaw = 270,
+    .settings = &N(NpcSettings_EldStar),
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .drops = NO_DROPS,
+    .animations = ELDSTAR_ANIMS,
+    .aiDetectFlags = AI_DETECT_SIGHT,
+};
+
+NpcGroupList N(DefaultNpcs) = {
+    NPC_GROUP(N(NpcData_EldStar), BTL_KPA_FORMATION_2A, BTL_STAGE_DEFAULT),
+    {}
+};
 
 EvtScript N(EVS_OpenAirshipDockDoor) = {
     EVT_CALL(PlaySoundAtCollider, COLLIDER_deilitts, SOUND_1DF, SOUND_SPACE_MODE_0)
@@ -206,27 +243,8 @@ EvtScript N(EVS_Main) = {
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_ALT_NO_LEAD()
     EVT_SET(GF_MAP_BowsersCastle, TRUE)
-    EVT_EXEC_WAIT(N(EVS_MakeEntities))
-    EVT_EXEC(N(EVS_EnterMap))
     EVT_EXEC(N(EVS_SetupMusic))
-    EVT_IF_EQ(GF_KPA16_ShutOffLava, FALSE)
-        EVT_CALL(EnableGroup, MODEL_after, FALSE)
-        EVT_EXEC(N(EVS_TexPan_Lava))
-    EVT_ELSE
-        EVT_CALL(EnableGroup, MODEL_before, FALSE)
-    EVT_END_IF
-    EVT_IF_EQ(GF_KPA16_ShutOffLava, FALSE)
-        EVT_THREAD
-            EVT_WAIT(3)
-            EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1508, SURFACE_TYPE_LAVA)
-            EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilie, SURFACE_TYPE_LAVA)
-            EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1705, SURFACE_TYPE_LAVA)
-            EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1706, SURFACE_TYPE_LAVA)
-            EVT_THREAD
-                EVT_CALL(ResetFromLava, EVT_PTR(N(SafeFloorColliders)))
-            EVT_END_THREAD
-        EVT_END_THREAD
-    EVT_END_IF
+    EVT_CALL(MakeNpcs, FALSE, N(DefaultNpcs))
     EVT_RETURN
     EVT_END
 };

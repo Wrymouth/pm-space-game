@@ -27,6 +27,11 @@ API_CALLABLE(N(DoWaterAttack)) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(N(DoFuzzyAttack)) {
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_FUZZY);
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(N(GetHeading)) {
     s32 enemyPosX  = evt_get_variable(script, LVar0);
     s32 enemyPosY  = evt_get_variable(script, LVar1); 
@@ -93,7 +98,7 @@ EvtScript N(NpcIdle_Whale) = {
                 EVT_SET(MV_WaterSubTimer, 0)
                 EVT_ADD(MV_WaterCount, 1)
             EVT_END_IF
-            EVT_IF_EQ(MV_WaterCount, 3)
+            EVT_IF_EQ(MV_WaterCount, 4)
                 EVT_SET(MV_WaterTimer, 0)
                 EVT_SET(MV_WaterCount, 0)
             EVT_ELSE
@@ -102,6 +107,11 @@ EvtScript N(NpcIdle_Whale) = {
         EVT_ELSE
             EVT_ADD(MV_WaterTimer, 1)
         EVT_END_IF
+        EVT_IF_EQ(MV_FuzzyTimer, 200)
+            EVT_CALL(N(DoFuzzyAttack))
+            EVT_SET(MV_FuzzyTimer, 0)
+        EVT_END_IF
+        EVT_ADD(MV_FuzzyTimer, 1)
         // damage
         EVT_SET(LVar0, ANIM_ParadeYoshi_StillGreen)
         EVT_SET(LVar1, ANIM_ParadeYoshi_StillBlue)
@@ -112,6 +122,7 @@ EvtScript N(NpcIdle_Whale) = {
         EVT_IF_TRUE(GF_WhaleDefeated)
             EVT_SET(MF_EnemyDefeated, TRUE)
             EVT_CALL(DoNpcDefeat)
+            EVT_CALL(TranslateGroup, Model_Whale, 0, -1000, 0)
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
@@ -148,7 +159,7 @@ NpcData N(NpcData_Whale) = {
     .drops = NO_DROPS,
     .animations = HAMMER_BRO_SHIP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
-    .maxHP = 16,
+    .maxHP = 24,
     .invFrames = 30,
     .defeatFlag = GF_WhaleDefeated,
 };

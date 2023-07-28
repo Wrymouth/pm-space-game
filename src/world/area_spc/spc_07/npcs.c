@@ -2,6 +2,8 @@
 #include "sprite/npc/HuffNPuff.h"
 #include "world/common/enemy/HuffNPuff.h"
 #include "world/action/enemy_bullet.h"
+#include "effects.h"
+#include "world/action/damage_system.h"
 
 API_CALLABLE(N(SetDamageAnimation)) {
     Bytecode* args = script->ptrReadPos;
@@ -67,6 +69,16 @@ API_CALLABLE(N(SetEnemyDestination)) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(N(LightningHurtPlayer)) {
+    s32 playerX = evt_get_variable(script, LVar0);
+    s32 lightningX = evt_get_variable(script, MV_LightningX);
+
+    if (playerX > lightningX - 30 && playerX < lightningX + 30) {
+        player_take_damage(1);
+    }
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(NpcIdle_HuffNPuff) = {
     EVT_SET(LVar3, 6) // moveSpeed
     EVT_LOOP(0)
@@ -79,6 +91,28 @@ EvtScript N(NpcIdle_HuffNPuff) = {
                 EVT_CALL(N(SetEnemyDestination))
             EVT_END_IF
         EVT_END_IF
+        // attacks
+        EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
+        EVT_IF_EQ(MV_LightningTimer, 120)
+            // save player position and start lightning anim
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_209, 0)
+            EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim01)
+            EVT_SET(MV_LightningX, LVar0)
+        EVT_END_IF
+        EVT_IF_EQ(MV_LightningTimer, 130)
+            // do lightning strike
+            EVT_CALL(PlaySound, SOUND_20A)
+            EVT_CALL(PlayEffect, EFFECT_LIGHTNING_BOLT, 0, MV_LightningX, 170, LVar2, MV_LightningX, -250, LVar2, EVT_FLOAT(2.5), 15)
+            EVT_SET(MF_LightningCanDamagePlayer, TRUE)
+        EVT_END_IF
+        EVT_IF_EQ(MV_LightningTimer, 135)
+            EVT_SET(MF_LightningCanDamagePlayer, FALSE)
+            EVT_SET(MV_LightningTimer, 0)
+        EVT_END_IF
+        EVT_IF_TRUE(MF_LightningCanDamagePlayer)
+            EVT_CALL(N(LightningHurtPlayer))
+        EVT_END_IF
+        EVT_ADD(MV_LightningTimer, 1)
         // damage
         EVT_SET(LVar0, ANIM_HuffNPuff_Anim00)
         EVT_SET(LVar1, ANIM_HuffNPuff_Anim01)

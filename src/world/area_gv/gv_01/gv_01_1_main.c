@@ -168,6 +168,10 @@ EvtScript N(EVS_Main) = {
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(N(DoCleanup))
     EVT_CALL(GetEntryID, LVar1)
+    EVT_IF_EQ(LVar1, 0)
+        EVT_CALL(GotoMap, EVT_PTR("spc_11"), 0)
+        EVT_RETURN
+    EVT_END_IF
     EVT_SET(GB_GameOverEntry, LVar1)
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_CALL(SetMenuType, MENU_TYPE_GAME_OVER)

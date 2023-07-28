@@ -1,5 +1,5 @@
 #include "spc_10.h"
-#include "sprite/npc/ParadeKolorado.h"
+#include "world/common/npc/Bowser.h"
 #include "world/action/enemy_bullet.h"
 
 API_CALLABLE(N(HammerShipUseHammer)) {
@@ -39,8 +39,8 @@ EvtScript N(NpcIdle_Bowser) = {
         //movement
         
         // damage
-        EVT_SET(LVar0, ANIM_ParadeKolorado_Idle)
-        EVT_SET(LVar1, ANIM_ParadeKolorado_WifeIdle)
+        EVT_SET(LVar0, ANIM_WorldBowser_ClownCarIdle)
+        EVT_SET(LVar1, ANIM_WorldBowser_ClownCarLaugh)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         // defeat
@@ -75,24 +75,7 @@ NpcData N(NpcData_Bowser) = {
     .settings = &N(NpcSettings_Bowser),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
-    .animations = {
-            .idle   = ANIM_ParadeKolorado_Idle,
-            .walk   = ANIM_ParadeKolorado_Idle,
-            .run    = ANIM_ParadeKolorado_Idle,
-            .chase  = ANIM_ParadeKolorado_Idle,
-            .anim_4 = ANIM_ParadeKolorado_Idle,
-            .anim_5 = ANIM_ParadeKolorado_Idle,
-            .death  = ANIM_ParadeKolorado_Idle,
-            .hit    = ANIM_ParadeKolorado_Idle,
-            .anim_8 = ANIM_ParadeKolorado_Idle,
-            .anim_9 = ANIM_ParadeKolorado_Idle,
-            .anim_A = ANIM_ParadeKolorado_Idle,
-            .anim_B = ANIM_ParadeKolorado_Idle,
-            .anim_C = ANIM_ParadeKolorado_Idle,
-            .anim_D = ANIM_ParadeKolorado_Idle,
-            .anim_E = ANIM_ParadeKolorado_Idle,
-            .anim_F = ANIM_ParadeKolorado_Idle,
-        },
+    .animations = BOWSER_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
     .maxHP = 32,
     .invFrames = 30,

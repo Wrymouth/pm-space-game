@@ -18,6 +18,7 @@ enum {
 
 #define NAMESPACE kpa_63
 
+extern NpcGroupList N(DefaultNpcs);
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_Starship_Arrive);

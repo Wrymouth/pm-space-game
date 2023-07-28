@@ -53,7 +53,6 @@ EvtScript N(EVS_AnimateStarship) = {
                 EVT_ADD(LVar0, 10)
             EVT_END_IF
             EVT_ADD(LVar2, 5)
-            EVT_CALL(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
             EVT_WAIT(1)
             EVT_IF_EQ(LVar1, 0)
                 EVT_BREAK_LOOP
@@ -177,9 +176,6 @@ EvtScript N(EVS_Starship_Return) = {
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(SetPlayerActionState, ACTION_STATE_LAND)
     EVT_CALL(InterpPlayerYaw, 225, 0)
-    EVT_CALL(DisablePartnerAI, 0)
-    EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
-    EVT_CALL(SetNpcYaw, NPC_PARTNER, 270)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     EVT_CALL(SetCamPitch, CAM_DEFAULT, EVT_FLOAT(18.5), EVT_FLOAT(-3.0))
@@ -190,40 +186,31 @@ EvtScript N(EVS_Starship_Return) = {
     EVT_EXEC(N(EVS_AnimateStarship))
     EVT_WAIT(2)
     EVT_CALL(PlaySound, SOUND_17C)
-    EVT_THREAD
-        EVT_CALL(MakeLerp, 300, 0, 120, EASING_QUADRATIC_OUT)
-        EVT_LOOP(0)
-            EVT_CALL(UpdateLerp)
-            EVT_SET(MV_Starship_PosX, LVar0)
-            EVT_WAIT(1)
-            EVT_IF_EQ(LVar1, 0)
-                EVT_BREAK_LOOP
-            EVT_END_IF
-        EVT_END_LOOP
-        EVT_WAIT(75)
-        EVT_CALL(PlaySound, SOUND_17C | SOUND_ID_TRIGGER_CHANGE_SOUND)
-        EVT_CALL(PlaySound, SOUND_20A1)
-        EVT_CALL(MakeLerp, 0, -300, 60, EASING_CUBIC_IN)
-        EVT_LOOP(0)
-            EVT_CALL(UpdateLerp)
-            EVT_SET(MV_Starship_PosX, LVar0)
-            EVT_WAIT(1)
-            EVT_IF_EQ(LVar1, 0)
-                EVT_BREAK_LOOP
-            EVT_END_IF
-        EVT_END_LOOP
-        EVT_WAIT(20)
-    EVT_END_THREAD
-    EVT_WAIT(60)
-    EVT_LOOP(215)
+    EVT_CALL(MakeLerp, 300, 0, 120, EASING_QUADRATIC_OUT)
+    EVT_LOOP(0)
+        EVT_CALL(UpdateLerp)
+        EVT_SET(MV_Starship_PosX, LVar0)
         EVT_WAIT(1)
-        EVT_CALL(N(CheckForSkipInput))
-        EVT_IF_EQ(LVar8, TRUE)
+        EVT_IF_EQ(LVar1, 0)
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
+    EVT_WAIT(20)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_GoodEnding, 160, 40)
+    EVT_WAIT(30)
     EVT_CALL(PlaySound, SOUND_17C | SOUND_ID_TRIGGER_CHANGE_SOUND)
-    EVT_CALL(GotoMap, EVT_PTR("hos_05"), hos_05_ENTRY_1)
+    EVT_CALL(PlaySound, SOUND_20A1)
+    EVT_CALL(MakeLerp, 0, -300, 60, EASING_CUBIC_IN)
+    EVT_LOOP(0)
+        EVT_CALL(UpdateLerp)
+        EVT_SET(MV_Starship_PosX, LVar0)
+        EVT_WAIT(1)
+        EVT_IF_EQ(LVar1, 0)
+            EVT_BREAK_LOOP
+        EVT_END_IF
+    EVT_END_LOOP
+    EVT_WAIT(15)
+    EVT_CALL(GotoMap, EVT_PTR("spc_01"), 0)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END

@@ -8,6 +8,7 @@
 #include "sprite/npc/ParadeTwink.h"
 #include "sprite/npc/ParadeShyGuy.h"
 #include "sprite/npc/ParadeWizard.h"
+#include "sprite/npc/Fuzzy.h"
 #include "sprite/player.h"
 #include "world/action/enemy_bullet.h"
 
@@ -40,6 +41,26 @@ void npc_move_angle_speed(Npc* npc, s32 moveSpeed, f32 angle) {
 
     npc->pos.x += distX;
     npc->pos.y += distY;
+}
+
+void npc_follow_player_vertical(Npc* npc, s32 moveSpeed) {
+    s32 targetPosX = gPlayerStatus.position.x;
+    s32 targetPosY = gPlayerStatus.position.y;
+
+    f32 distX;
+    f32 distY;
+
+    s32 diffX = targetPosX - npc->pos.x;
+    s32 diffY = targetPosY - npc->pos.y;
+    f32 dist = dist2D(targetPosX, targetPosY, npc->pos.x, npc->pos.y);
+    
+    if (dist > 0) {
+        distX = (diffX / dist) * moveSpeed;
+        distY = (diffY / dist) * moveSpeed;
+    }
+
+    npc->moveToPos.x = distX;
+    npc->moveToPos.y = distY;
 }
 
 s32 get_enemy_bullet_index_by_npc_id(s32 npcId) {
@@ -209,6 +230,7 @@ void bullet_render_water(Npc* bulletNpc) {
             bulletNpc->moveSpeed = 7;
             bulletNpc->pos.x = rand_int(500) - 250;
             bulletNpc->moveToPos.x = bulletNpc->pos.x; // used for base position in the down phase
+            bulletNpc->moveToPos.y = rand_int(200); // used for a random wave offset
             bulletNpc->pos.y = 180;
             bulletNpc->rotation.z = 0;
             UNSET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_WATER_UP);
@@ -216,8 +238,8 @@ void bullet_render_water(Npc* bulletNpc) {
         }
     } else if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_WATER_DOWN)) {
         bulletNpc->pos.y -= bulletNpc->moveSpeed;
-        bulletNpc->pos.x = 100 * sin_deg(bulletNpc->pos.y * 2) + bulletNpc->moveToPos.x;
-        if (bulletStatus->activeBulletTime > 180) {
+        bulletNpc->pos.x = 100 * sin_deg(bulletNpc->pos.y * 2 + bulletNpc->moveToPos.y) + bulletNpc->moveToPos.x;
+        if (bulletNpc->pos.y < -240) {
             destroy_enemy_bullet(bulletIndex);
         }
     } else {
@@ -234,6 +256,33 @@ void bullet_render_egg(Npc* bulletNpc) {
     bulletNpc->rotation.z += 20.0f;
     enemy_bullets[bulletIndex].activeBulletTime++;
     npc_move_angle_speed(bulletNpc, bulletNpc->moveSpeed, bulletNpc->moveAngle);
+}
+
+void bullet_render_fuzzy(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    EnemyBulletStatus* bulletStatus = &enemy_bullets[bulletIndex];
+
+    if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FUZZY_SEEKING)) {
+        bulletNpc->pos.x += bulletNpc->moveSpeed;
+        if (bulletNpc->pos.x > 300 || bulletNpc->pos.x < -300) {
+            bulletNpc->moveSpeed *= -1;
+            SET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FUZZY_TURNED);
+        }
+    } else {
+        bulletNpc->pos.y -= bulletNpc->moveSpeed;
+        if (bulletNpc->pos.y < -200) {
+            if (rand_int(1)) {
+                bulletNpc->moveSpeed *= -1;
+            }
+            SET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FUZZY_SEEKING);
+        }
+    }
+    if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FUZZY_TURNED)) {
+        bulletStatus->activeBulletTime++;
+        if (bulletStatus->activeBulletTime > ENEMY_BULLET_DECAY) {
+            destroy_enemy_bullet(bulletIndex);
+        }
+    }
 }
 
 void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
@@ -334,8 +383,15 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             bulletNpc->scale.z   = 2.0f;
             break;
         case ENEMY_BULLET_TYPE_WATER:
-            bulletNpc->moveSpeed = 13; 
+            bulletNpc->moveSpeed = 13;
+            bulletNpc->pos.y += 10;
             bulletNpc->rotation.z = 180;
+            break;
+        case ENEMY_BULLET_TYPE_FUZZY:
+            bulletNpc->moveSpeed = 13;
+            bulletNpc->scale.x = 2.2f;
+            bulletNpc->scale.y = 2.2f;
+            bulletNpc->scale.z = 2.2f;
             break;
     }
 }
@@ -425,6 +481,12 @@ void use_enemy_bullet(Enemy* enemy, EnemyBulletType type) {
             npcSettings.radius      = 16;
             bp->onRender    = bullet_render_water;
             break;
+        case ENEMY_BULLET_TYPE_FUZZY:
+            npcSettings.defaultAnim = ANIM_Fuzzy_Walk;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_fuzzy;
+            break;
         case ENEMY_BULLET_TYPE_EGG_DOWN:
         case ENEMY_BULLET_TYPE_EGG_UP:
         case ENEMY_BULLET_TYPE_EGG_MID:
@@ -487,6 +549,8 @@ void do_attack(Enemy* enemy, EnemyAttackType type) {
             use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_EGG_UP);
             use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_EGG_MID);
             break;
+        case ENEMY_ATTACK_TYPE_FUZZY:
+            use_enemy_bullet(enemy, ENEMY_BULLET_TYPE_FUZZY);
         default:
             break;
     }
@@ -498,7 +562,6 @@ void clear_enemy_bullets(void) {
     for (i = 0; i < ARRAY_COUNT(enemy_bullets); i++) {
         destroy_enemy_bullet(i);
     }
-    sfx_play_sound(SOUND_PERIL);
     enemyBulletCount = 0;
 }
 

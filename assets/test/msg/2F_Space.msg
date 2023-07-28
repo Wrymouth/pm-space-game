@@ -3,7 +3,7 @@
 }
 
 #message:2F:(Space_Credits) {
-	[Style Inspect]This mod was created by Wrymouth,[BR]
+	[Style Inspect]This mod was created by [Color 0x1]Wrymouth[Color 0x0],[BR]
 	for the second Paper Mario[BR]
 	Modding Jam.[BR]
 	[Wait][Next]
@@ -15,7 +15,8 @@
 	Projectile code by Pronyo[BR]
 	[Wait][Next]
 	Music[BR]
-	All custom music imported by me.[BR]
+	All custom music imported by[BR]
+	[Color 0x1]Wrymouth[Color 0x0].[BR]
 	Songs used:[BR]
 	[Wait][Next]
 	Boss Battle - Kirby Super Star[BR]
@@ -38,6 +39,13 @@
 	Midi created by Justin Morgan on[BR]
 	vgmusic.com.[BR]
 	[Wait][Next]
+	Options - Star Fox[BR]
+	Midi created by Forrest Riedl on[BR]
+	vgmusic.com.[BR]
+	[Wait][Next]
+	Opening - U.N. Squadron[BR]
+	Midi created by [Color 0x1]Wrymouth[Color 0x0].[BR]
+	[Wait][Next]
 	Title image font: Audiowide[BR]
 	[Wait][Next]
 	Enjoy!
@@ -56,7 +64,7 @@
 }
 
 #message:2F:(Space_IntroStoryTitle) {
-	[Color 0x20]PAPER MARIO[End]
+	[Color 0x20][Size 24,24]PAPER MARIO[End]
 }
 
 #message:2F:(Space_IntroStorySubtitle) {
@@ -96,7 +104,7 @@
 	[BR]
 	Will Mario be able to fight his way[BR]
 	through? Or will the entire Mushroom[BR]
-	Kingdom succumb to Bowser's power?[BR]
+	Kingdom succumb to Bowser's might?[BR]
 	[End]
 }
 
@@ -140,11 +148,87 @@
 	starting the game.[Wait][End]
 }
 
+#message:2F:(Space_CharacterSelectIntro) {
+	There are a few more enemies[BR]
+	to defeat.[End]
+}
+
+#message:2F:(Space_CharacterSelectHammer) {
+	This is the Hammer Bros'[BR]
+	Chuckster Mobile.[BR]
+	HP = 32.[End]
+}
+
+#message:2F:(Space_CharacterSelectLakitu) {
+	This is Lakithunder.[BR]
+	HP = 32.[End]
+}
+
+#message:2F:(Space_CharacterSelectWhale) {
+	This is a Space Whale.[BR]
+	HP = 24.[End]
+}
+
+#message:2F:(Space_CharacterSelectKoopa) {
+	This is the Koopa Bros. Cruiser.[BR]
+	HP = 32.[End]
+}
+
+#message:2F:(Space_EnemyDefeated) {
+	[InputOff]This enemy has already been[BR]
+	defeated![Pause 60][End]
+}
+
 #message:2F:(Space_EldstarTalk1) {
-	[Style Right]Test[Wait][End]
+	[Style Right]Excellent work, Mario![BR]
+	We've finally reached Bowser's[BR]
+	Castle![Wait][End]
+}
+
+#message:2F:(Space_EldstarTalk2) {
+	[Style Right]Hm?[BR]
+	[Pause 10]Goombario? [Pause 10]Kooper?[BR]
+	[Wait][Next]
+	Oh, are you talking about that[BR]
+	group that was following you[BR]
+	around on Star Haven?[BR]
+	[Wait][Next]
+	I didn't know they were supposed[BR]
+	to tag along...[BR]
+	[Wait][Next]
+	If they're as important as you[BR]
+	say, we'll need to go back for[BR]
+	them.[BR]
+	[Wait][Next]
+	Just hop back into the ship and[BR]
+	we'll go get them.[Wait][End]
+}
+
+#message:2F:(Space_EldstarTalk3) {
+	[Style Right]Oh, I should also mention...[BR]
+	[Wait][Next]
+	We found a star shaped necklace[BR]
+	lying around in Star Haven.[BR]
+	[Wait][Next]
+	That wouldn't happen to have[BR]
+	been yours, would it?[Wait][End]
+}
+
+#message:2F:(Space_BadEnding) {
+	[Style Inspect]You got the bad ending...[BR]
+	[Wait][Next]
+	(This one is canon, by the way)[Wait][End]
+}
+
+#message:2F:(Space_GoodEnding) {
+	[Style Inspect]You got the good ending![BR]
+	[Wait][Next]
+	But will Mario be able to stop[BR]
+	Bowser and save the princess?[BR]
+	[Wait][Next]
+	idk[Wait][End]
 }
 
 #message:2F:(Space_CharacterSelect) {
-	[Font title]
-	SELECT OPPONENT[End]
+	[Color 0x5][Size 24,24]SELECT OPPONENT[End]
 }
