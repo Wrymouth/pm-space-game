@@ -921,5 +921,6 @@ AreaConfig gAreas[] = {
     AREA(mgm, "ミニゲーム"),  // minige-mu [Minigames]
     AREA(gv, "ゲームオーバー"),  // ge-mu o-ba- [Game Over]
     AREA(tst, "テストマップ"),  // tesuto mappu [Test map]
+    AREA(spc, "Space Region"),
     {},
 };

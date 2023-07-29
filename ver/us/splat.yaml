@@ -27,6 +27,7 @@ options:
   ld_wildcard_sections: True
   ld_use_follows: False
 asset_stack:
+  - test
   - us
 segments:
   - name: header

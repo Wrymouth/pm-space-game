@@ -1003,17 +1003,32 @@ class Configure:
                             },
                             asset_deps=[f"mapfs/tex/{name}"],
                         )
-                    elif name.endswith("_shape"):
-                        map_name = "_".join(name.split("_")[:-1])
-
+                    elif name.endswith("_shape_built"):
                         # Handle map XML files, if they exist (TODO: have splat output these)
+                        map_name = "_".join(name.split("_")[:-2])
                         map_xml = self.resolve_asset_path(
+
                             Path(f"assets/{self.version}")
                             / "mapfs"
                             / "save"
                             / (map_name + ".xml")
                         )
-                    elif name.endswith("_shape_built"):
+                        if map_xml.exists():
+                            # Build a header file for this map
+                            build(
+                                self.build_path()
+                                / "include"
+                                / seg.dir
+                                / seg.name
+                                / (map_name + ".h"),
+                                [map_xml],
+                                "map_header",
+                            )
+
+                            # NOTE: we don't build the map xml into a _shape or _hit file (yet); the Star Rod Map Editor
+                            # is able to build the xml nonmatchingly into assets/star_rod_build/mapfs/*.bin for people
+                            # who want that (i.e. modders). 'star_rod_build' should be added to asset_stack also.
+
                         base_name = name[:-6]
                         raw_bin_path = self.resolve_asset_path(
                             f"assets/x/mapfs/geom/{base_name}.bin"
