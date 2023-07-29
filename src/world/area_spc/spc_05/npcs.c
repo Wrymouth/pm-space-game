@@ -9,6 +9,11 @@ API_CALLABLE(N(DoEggAttack)) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(N(DoSummonAttack)) {
+    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_SUMMON);
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(N(SetDamageAnimation)) {
     Bytecode* args = script->ptrReadPos;
     AnimID standardAnimID = evt_get_variable(script, *args++);
@@ -35,25 +40,33 @@ EvtScript N(NpcIdle_JrTroopa) = {
     EVT_LOOP(0)
         // movement
         EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-        EVT_IF_LT(LVar1, MapYBottom)
-            EVT_MUL(LVar3, -1)
+        EVT_IF_TRUE(MV_BattlePhase)
+            EVT_IF_LT(LVar1, MapYBottom)
+                EVT_MUL(LVar3, -1)
+            EVT_END_IF
+            EVT_IF_GT(LVar1, MapYTop)
+                EVT_MUL(LVar3, -1)
+            EVT_END_IF
+            EVT_ADD(LVar1, LVar3)
+            EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+            // attack
+            EVT_IF_EQ(MV_EggsTimer, 40)
+                EVT_CALL(N(DoEggAttack))
+                EVT_SET(MV_EggsTimer, 0)
+            EVT_END_IF
+            EVT_ADD(MV_EggsTimer, 1)
+            EVT_IF_EQ(MV_BattlePhase, 2)
+                EVT_IF_EQ(MV_SummonTimer, 60)
+                    EVT_CALL(N(DoSummonAttack))
+                EVT_END_IF
+                EVT_ADD(MV_SummonTimer, 1)
+            EVT_END_IF
+            // damage
+            EVT_SET(LVar0, ANIM_JrTroopa_Idle)
+            EVT_SET(LVar1, ANIM_JrTroopa_Ashen_BurnHurt)
+            EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
+            EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         EVT_END_IF
-        EVT_IF_GT(LVar1, MapYTop)
-            EVT_MUL(LVar3, -1)
-        EVT_END_IF
-        EVT_ADD(LVar1, LVar3)
-        EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-        // attack
-        EVT_IF_EQ(MV_EggsTimer, 40)
-            EVT_CALL(N(DoEggAttack))
-            EVT_SET(MV_EggsTimer, 0)
-        EVT_END_IF
-        EVT_ADD(MV_EggsTimer, 1)
-        // damage
-        EVT_SET(LVar0, ANIM_JrTroopa_Idle)
-        EVT_SET(LVar1, ANIM_JrTroopa_Ashen_BurnHurt)
-        EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
-        EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         EVT_WAIT(1)
         // defeat
         EVT_IF_TRUE(GF_JrTroopaDefeated)
@@ -80,7 +93,7 @@ NpcSettings N(NpcSettings_JrTroopa) = {
 
 NpcData N(NpcData_JrTroopa) = {
     .id = 3,
-    .pos = { 240.0f, 0.0f, 16.0f },
+    .pos = { 240.0f, -1000.0f, 16.0f },
     .init = &N(NpcInit_JrTroopa),
     .yaw = 270,
     .settings = &N(NpcSettings_JrTroopa),
