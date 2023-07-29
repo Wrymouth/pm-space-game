@@ -924,8 +924,8 @@ class Configure:
                         # Handle map XML files, if they exist (TODO: have splat output these)
                         map_xml = self.resolve_asset_path(
                             Path(f"assets/{self.version}")
-                            / seg.dir
-                            / seg.name
+                            / "mapfs"
+                            / "save"
                             / (map_name + ".xml")
                         )
                         if map_xml.exists():

@@ -58,10 +58,6 @@ if __name__ == "__main__":
 
     for i, entry in enumerate(entrys):
         print(f"#define {entry} {i}")
-    print(f"EntryList {map_name}_entryList = {{")
-    for entry in entrys:
-        print("    " + entry + "_vec4f,")
-    print("};")
 
     print("")
 
