@@ -148,6 +148,54 @@
 	starting the game.[Wait][End]
 }
 
+#message:2F:(Space_OpeningScene1) {
+	[Style Right]Alright Mario, welcome aboard the[BR]
+	Legendary Star Ship of Star[BR]
+	Haven.[BR]
+	[Wait][Next]
+	It's gonna be a long trip to[BR]
+	Bowser's Castle, so I'll quickly[BR]
+	explain how to control the vessel.[BR]
+	[Wait][Next]
+	You can use the joystick to[BR]
+	move around.[BR]
+	[Wait][Next]
+	Try it in this empty area![Wait][End]
+}
+
+#message:2F:(Space_OpeningScene2) {
+	[Style Right]Ha ha![BR]
+	[Pause 10]Found you, Mario![Wait][End]
+}
+
+#message:2F:(Space_OpeningScene3) {
+	[Style Right]Who was that?[Wait][End]
+}
+
+#message:2F:(Space_OpeningScene4) {
+	[Style Right]Mario![BR]
+	[Pause 10]With my new powers, you won't[BR]
+	stand a chance![Wait][End]
+}
+
+#message:2F:(Space_OpeningScene5) {
+	[Style Right]Oh dear, it looks like the[BR]
+	ride to Bowser's Castle won't[BR]
+	be as easy as I thought...[BR]
+	[Wait][Next]
+	Mario, there's one more feature[BR]
+	we've added to the Star Ship[BR]
+	that you can use to win this[BR]
+	battle.[BR]
+	[Wait][Next]
+	Press [A] to fire a blast of[BR]
+	star power![Wait][End]
+}
+
+#message:2F:(Space_OpeningScene6) {
+	[Style Right]Let's see you dodge this![Wait][End]
+}
+
 #message:2F:(Space_CharacterSelectIntro) {
 	There are a few more enemies[BR]
 	to defeat.[End]

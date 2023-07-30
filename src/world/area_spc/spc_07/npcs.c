@@ -4,27 +4,7 @@
 #include "world/action/enemy_bullet.h"
 #include "effects.h"
 #include "world/action/damage_system.h"
-
-API_CALLABLE(N(SetDamageAnimation)) {
-    Bytecode* args = script->ptrReadPos;
-    AnimID standardAnimID = evt_get_variable(script, *args++);
-    AnimID hurtAnimID = evt_get_variable(script, *args++);
-    AnimID outVar = *args++;
-    Enemy* enemy = script->owner1.enemy;
-    s32 blink;
-
-    if (enemy->invFrames >= enemy->invTimer) {
-        enemy->flags &= ~ENEMY_FLAG_INVINCIBLE;
-        enemy->invFrames = 0;
-    }
-    if (enemy->flags & ENEMY_FLAG_INVINCIBLE) {
-        enemy->invFrames++;
-        evt_set_variable(script, outVar, hurtAnimID);
-    } else {
-        evt_set_variable(script, outVar, standardAnimID);
-    }
-    return ApiStatus_DONE2;
-}
+#include "world/area_spc/common/enemy_behaviour.inc.c"
 
 API_CALLABLE(N(EnemyMoveToDestination)) {
     s32 enemyPosX = evt_get_variable(script, LVar0);
@@ -96,7 +76,7 @@ EvtScript N(NpcIdle_HuffNPuff) = {
         EVT_IF_EQ(MV_LightningTimer, 120)
             // save player position and start lightning anim
             EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_209, 0)
-            EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim01)
+            EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim02)
             EVT_SET(MV_LightningX, LVar0)
         EVT_END_IF
         EVT_IF_EQ(MV_LightningTimer, 130)
@@ -108,11 +88,36 @@ EvtScript N(NpcIdle_HuffNPuff) = {
         EVT_IF_EQ(MV_LightningTimer, 135)
             EVT_SET(MF_LightningCanDamagePlayer, FALSE)
             EVT_SET(MV_LightningTimer, 0)
+            EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim00)
         EVT_END_IF
         EVT_IF_TRUE(MF_LightningCanDamagePlayer)
             EVT_CALL(N(LightningHurtPlayer))
         EVT_END_IF
+
+        EVT_IF_GT(MV_AttackTimer, 60)
+            EVT_IF_EQ(MF_ThrowingSpinies, 0)
+                EVT_CALL(RandInt, 10, LVarC)
+            EVT_END_IF
+            EVT_IF_GT(LVarC, 5)
+                EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_BILL)
+                EVT_SET(MV_AttackTimer, 0)
+            EVT_ELSE
+                EVT_SET(MF_ThrowingSpinies, TRUE)
+                EVT_IF_EQ(MV_SpinyTimer, 8)
+                    EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPINIES)
+                    EVT_SET(MV_SpinyTimer, 0)
+                    EVT_ADD(MV_SpinyCount, 1)
+                    EVT_IF_EQ(MV_SpinyCount, 3)
+                        EVT_SET(MF_ThrowingSpinies, FALSE)
+                        EVT_SET(MV_AttackTimer, 0)
+                        EVT_SET(MV_SpinyCount, 0)
+                    EVT_END_IF
+                EVT_END_IF
+                EVT_ADD(MV_SpinyTimer, 1)
+            EVT_END_IF
+        EVT_END_IF
         EVT_ADD(MV_LightningTimer, 1)
+        EVT_ADD(MV_AttackTimer, 1)
         // damage
         EVT_SET(LVar0, ANIM_HuffNPuff_Anim00)
         EVT_SET(LVar1, ANIM_HuffNPuff_Anim01)
@@ -131,6 +136,7 @@ EvtScript N(NpcIdle_HuffNPuff) = {
 };
 
 EvtScript N(NpcInit_HuffNPuff) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_HuffNPuff)))
     EVT_RETURN
     EVT_END

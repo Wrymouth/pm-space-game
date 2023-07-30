@@ -1,43 +1,18 @@
 #include "spc_10.h"
 #include "world/common/npc/Bowser.h"
 #include "world/action/enemy_bullet.h"
-
-API_CALLABLE(N(HammerShipUseHammer)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_HAMMER);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(HammerShipUseBullet)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_LEFT);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(SetDamageAnimation)) {
-    Bytecode* args = script->ptrReadPos;
-    AnimID standardAnimID = evt_get_variable(script, *args++);
-    AnimID hurtAnimID = evt_get_variable(script, *args++);
-    AnimID outVar = *args++;
-    Enemy* enemy = script->owner1.enemy;
-    s32 blink;
-
-    if (enemy->invFrames >= enemy->invTimer) {
-        enemy->flags &= ~ENEMY_FLAG_INVINCIBLE;
-        enemy->invFrames = 0;
-    }
-    if (enemy->flags & ENEMY_FLAG_INVINCIBLE) {
-        enemy->invFrames++;
-        evt_set_variable(script, outVar, hurtAnimID);
-    } else {
-        evt_set_variable(script, outVar, standardAnimID);
-    }
-    return ApiStatus_DONE2;
-}
+#include "world/area_spc/common/enemy_behaviour.inc.c"
 
 EvtScript N(NpcIdle_Bowser) = {
     EVT_SET(LVar3, 20) // direction
     EVT_LOOP(0)
         //movement
-        
+        EVT_SWITCH(MV_BattlePhase)
+            EVT_CASE_EQ(0) // before battle
+            EVT_CASE_EQ(1) // move left to right at top of screen
+            EVT_CASE_EQ(2) // move up and down, switching sides at intervals
+            EVT_CASE_EQ(3) // bounce around screen
+        EVT_END_SWITCH
         // damage
         EVT_SET(LVar0, ANIM_WorldBowser_ClownCarIdle)
         EVT_SET(LVar1, ANIM_WorldBowser_ClownCarLaugh)
@@ -56,6 +31,7 @@ EvtScript N(NpcIdle_Bowser) = {
 };
 
 EvtScript N(NpcInit_Bowser) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_Bowser)))
     EVT_RETURN
     EVT_END
@@ -77,7 +53,7 @@ NpcData N(NpcData_Bowser) = {
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
-    .maxHP = 32,
+    .maxHP = 48,
     .invFrames = 30,
     .defeatFlag = GF_BowserDefeated,
 };

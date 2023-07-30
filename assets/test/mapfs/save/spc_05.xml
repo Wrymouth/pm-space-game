@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Map name="spc_05" author="unnamed" background="hos_bg" textures="hos_tex">
 	<Editor>
-		<Camera pos="350.574005,29.988865,466.965393" pitch="-4.559998" yaw="2.240092"/>
-		<Camera pos="-260.426849,65536.000000,68.693077"/>
-		<Camera pos="65536.000000,11.014858,-13.156513"/>
-		<Camera pos="-54.547127,7.607682,65536.000000"/>
+		<Camera pos="-142.000000,-56.963188,634.567749" pitch="9.999999" yaw="0.000000"/>
+		<Camera pos="-619.594543,65536.000000,375.837952"/>
+		<Camera pos="65536.000000,-185.791321,534.438232"/>
+		<Camera pos="-767.999939,-512.289551,65536.000000"/>
 	</Editor>
 	<ModelTree>
 		<Node name="Root" id="6">
@@ -23,16 +23,18 @@
 		</Node>
 	</ColliderTree>
 	<ZoneTree>
-		<Node name="Root" id="1">
+		<Node name="Root" id="2">
 			<Node name="Planar GridZone" id="0"/>
+			<Node name="Planar GridZone2" id="1"/>
 		</Node>
 	</ZoneTree>
 	<MarkerTree>
-		<Node name="Root" id="2">
+		<Node name="Root" id="3">
 			<Node name="Entrances" id="0">
 				<Node name="Entry0" id="FFFFFFFF"/>
 			</Node>
 			<Node name="PlayerController" id="1"/>
+			<Node name="Marker" id="2"/>
 		</Node>
 	</MarkerTree>
 	<LightSets>
@@ -1264,24 +1266,24 @@
 			<HitMesh ver="0">
 				<TriangleBatch ver="0">
 					<VertexTable>
-						<Vertex xyz="-264,-144,-133"/>
-						<Vertex xyz="-264,-102,-133" uv="0,1024"/>
-						<Vertex xyz="-264,-144,-73" uv="1024,0"/>
-						<Vertex xyz="-264,-102,-73" uv="1024,1024"/>
-						<Vertex xyz="-204,-144,-73" uv="2048,0"/>
-						<Vertex xyz="-204,-102,-73" uv="2048,1024"/>
-						<Vertex xyz="-204,-144,-133" uv="3072,0"/>
-						<Vertex xyz="-204,-102,-133" uv="3072,1024"/>
-						<Vertex xyz="-264,-144,-133" uv="4096,0"/>
-						<Vertex xyz="-264,-102,-133" uv="4096,1024"/>
-						<Vertex xyz="-264,-102,-133" uv="0,-2048"/>
-						<Vertex xyz="-204,-102,-133" uv="1024,-2048"/>
-						<Vertex xyz="-264,-102,-73" uv="0,-1024"/>
-						<Vertex xyz="-204,-102,-73" uv="1024,-1024"/>
-						<Vertex xyz="-264,-144,-133" uv="2048,-2048"/>
-						<Vertex xyz="-264,-144,-73" uv="2048,-1024"/>
-						<Vertex xyz="-204,-144,-133" uv="3072,-2048"/>
-						<Vertex xyz="-204,-144,-73" uv="3072,-1024"/>
+						<Vertex xyz="-990,-144,-133"/>
+						<Vertex xyz="-990,-102,-133" uv="0,1024"/>
+						<Vertex xyz="-990,-144,-73" uv="1024,0"/>
+						<Vertex xyz="-990,-102,-73" uv="1024,1024"/>
+						<Vertex xyz="-930,-144,-73" uv="2048,0"/>
+						<Vertex xyz="-930,-102,-73" uv="2048,1024"/>
+						<Vertex xyz="-930,-144,-133" uv="3072,0"/>
+						<Vertex xyz="-930,-102,-133" uv="3072,1024"/>
+						<Vertex xyz="-990,-144,-133" uv="4096,0"/>
+						<Vertex xyz="-990,-102,-133" uv="4096,1024"/>
+						<Vertex xyz="-990,-102,-133" uv="0,-2048"/>
+						<Vertex xyz="-930,-102,-133" uv="1024,-2048"/>
+						<Vertex xyz="-990,-102,-73" uv="0,-1024"/>
+						<Vertex xyz="-930,-102,-73" uv="1024,-1024"/>
+						<Vertex xyz="-990,-144,-133" uv="2048,-2048"/>
+						<Vertex xyz="-990,-144,-73" uv="2048,-1024"/>
+						<Vertex xyz="-930,-144,-133" uv="3072,-2048"/>
+						<Vertex xyz="-930,-144,-73" uv="3072,-1024"/>
 					</VertexTable>
 					<TriangleList>
 						<Triangle ijk="0,1,2"/>
@@ -1303,8 +1305,29 @@
 	</Colliders>
 	<Zones>
 		<Zone ver="0">
-			<MapObject name="Root" id="1"/>
+			<MapObject name="Root" id="2"/>
 			<HitObject type="ROOT"/>
+		</Zone>
+		<Zone ver="0">
+			<MapObject name="Planar GridZone2" id="1"/>
+			<HitObject type="HIT"/>
+			<HitMesh ver="0">
+				<TriangleBatch ver="0">
+					<VertexTable>
+						<Vertex xyz="-1517,-380,287" uv="-512,512"/>
+						<Vertex xyz="-417,-380,-313" uv="512,-512"/>
+						<Vertex xyz="-1517,-380,-313" uv="-512,-512"/>
+						<Vertex xyz="-417,-380,-313" uv="512,-512"/>
+						<Vertex xyz="-1517,-380,287" uv="-512,512"/>
+						<Vertex xyz="-417,-380,287" uv="512,512"/>
+					</VertexTable>
+					<TriangleList>
+						<Triangle ijk="0,1,2"/>
+						<Triangle ijk="3,4,5"/>
+					</TriangleList>
+				</TriangleBatch>
+			</HitMesh>
+			<Camera type="TYPE_4" flag="false" boomLength="450.000000" boomPitch="16.000000" viewPitch="-6.000000" posA="-142,-181,302" posB="-142,-181,202" posC="10,0,10"/>
 		</Zone>
 		<Zone ver="0">
 			<MapObject name="Planar GridZone" id="0"/>
@@ -1313,8 +1336,8 @@
 				<TriangleBatch ver="0">
 					<VertexTable>
 						<Vertex xyz="-417,-380,287" uv="-512,512"/>
-						<Vertex xyz="683,-380,-273" uv="512,-512"/>
-						<Vertex xyz="-417,-380,-273" uv="-512,-512"/>
+						<Vertex xyz="683,-380,-317" uv="512,-512"/>
+						<Vertex xyz="-417,-380,-317" uv="-512,-512"/>
 						<Vertex xyz="683,-380,287" uv="512,512"/>
 					</VertexTable>
 					<TriangleList>
@@ -1328,7 +1351,10 @@
 	</Zones>
 	<Markers>
 		<Marker ver="4" type="Root">
-			<MapObject name="Root" id="2"/>
+			<MapObject name="Root" id="3"/>
+		</Marker>
+		<Marker ver="4" type="Position" pos="386,88,-6" yaw="0.000000">
+			<MapObject name="Marker" id="2"/>
 		</Marker>
 		<Marker ver="4" type="NPC" pos="0,0,0" yaw="0.000000">
 			<MapObject name="PlayerController" id="1"/>
@@ -1338,7 +1364,7 @@
 		<Marker ver="4" type="Group">
 			<MapObject name="Entrances" id="0"/>
 		</Marker>
-		<Marker ver="4" type="Entry" pos="-246,-144,-105" yaw="90.000000">
+		<Marker ver="4" type="Entry" pos="-972,-144,-105" yaw="90.000000">
 			<MapObject name="Entry0" id="FFFFFFFF"/>
 		</Marker>
 	</Markers>

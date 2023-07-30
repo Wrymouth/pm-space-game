@@ -510,7 +510,7 @@ s32 check_input_jump(void) {
             }
         }
     }
-    if (playerStatus->flags & PS_FLAG_IN_SPACESHIP) {
+    if (playerStatus->flags & PS_FLAG_IN_SPACESHIP && evt_get_variable(NULL, GF_LearnedToShoot) && evt_get_variable(NULL, GF_StartedSpaceShip)) {
         use_bullet();
     }
     return TRUE;

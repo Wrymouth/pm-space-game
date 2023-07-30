@@ -15,6 +15,7 @@ typedef enum EnemyAttackType {
     ENEMY_ATTACK_TYPE_LIGHTNING,
     ENEMY_ATTACK_TYPE_FUZZY,
     ENEMY_ATTACK_TYPE_SUMMON,
+    ENEMY_ATTACK_TYPE_BILL,
 } EnemyAttackType;
 
 typedef enum EnemyBulletType {
@@ -33,6 +34,10 @@ typedef enum EnemyBulletType {
     ENEMY_BULLET_TYPE_FUZZY,
     ENEMY_BULLET_TYPE_SUMMON,
     ENEMY_BULLET_TYPE_GOOMBA,
+    ENEMY_BULLET_TYPE_BILL_UP,
+    ENEMY_BULLET_TYPE_BILL_MID,
+    ENEMY_BULLET_TYPE_BILL_DOWN,
+    ENEMY_BULLET_TYPE_SPINY,
 } EnemyBulletType;
 
 enum EnemyBulletFlags {

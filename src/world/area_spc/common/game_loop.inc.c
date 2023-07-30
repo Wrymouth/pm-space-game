@@ -172,40 +172,42 @@ EvtScript N(GameLoop) = {
             EVT_BREAK_LOOP
         EVT_END_IF
         // get stick input and process
-        EVT_CALL(GetPlayerPos, LVar4, LVar5, LVar6)
-        EVT_CALL(N(CheckStickInput), LVar0, LVar1)
-        EVT_DIV(LVar0, GB_Settings_ShipSpeed)
-        EVT_DIV(LVar1, GB_Settings_ShipSpeed)
-        // check position against map borders
-        EVT_IF_LT(LVar4, MapXLeft)
-            EVT_IF_LT(LVar0, 0)
-                EVT_SET(LVar0, 0)
+        EVT_IF_TRUE(GF_StartedSpaceShip)
+            EVT_CALL(GetPlayerPos, LVar4, LVar5, LVar6)
+            EVT_CALL(N(CheckStickInput), LVar0, LVar1)
+            EVT_DIV(LVar0, GB_Settings_ShipSpeed)
+            EVT_DIV(LVar1, GB_Settings_ShipSpeed)
+            // check position against map borders
+            EVT_IF_LT(LVar4, MapXLeft)
+                EVT_IF_LT(LVar0, 0)
+                    EVT_SET(LVar0, 0)
+                EVT_END_IF
             EVT_END_IF
-        EVT_END_IF
-        EVT_IF_GT(LVar4, MapXRight)
-            EVT_IF_GT(LVar0, 0)
-                EVT_SET(LVar0, 0)
+            EVT_IF_GT(LVar4, MapXRight)
+                EVT_IF_GT(LVar0, 0)
+                    EVT_SET(LVar0, 0)
+                EVT_END_IF
             EVT_END_IF
-        EVT_END_IF
-        EVT_IF_LT(LVar5, MapYBottom)
-            EVT_IF_LT(LVar1, 0)
-                EVT_SET(LVar1, 0)
+            EVT_IF_LT(LVar5, MapYBottom)
+                EVT_IF_LT(LVar1, 0)
+                    EVT_SET(LVar1, 0)
+                EVT_END_IF
             EVT_END_IF
-        EVT_END_IF
-        EVT_IF_GT(LVar5, MapYTop)
-            EVT_IF_GT(LVar1, 0)
-                EVT_SET(LVar1, 0)
+            EVT_IF_GT(LVar5, MapYTop)
+                EVT_IF_GT(LVar1, 0)
+                    EVT_SET(LVar1, 0)
+                EVT_END_IF
             EVT_END_IF
+            // move ship
+            EVT_ADD(MV_ShipPosX, LVar0)
+            EVT_ADD(MV_ShipPosY, LVar1)
+            EVT_CALL(TranslateGroup, Model_Spaceship, MV_ShipPosX, MV_ShipPosY, 0)
+            EVT_SET(LVar4, MV_ShipPosX)
+            EVT_SUB(LVar4, 12) 
+            EVT_SET(LVar5, MV_ShipPosY)
+            EVT_ADD(LVar5, 20) 
+            EVT_CALL(SetPlayerPos, LVar4, LVar5, 12)
         EVT_END_IF
-        // move ship
-        EVT_ADD(MV_ShipPosX, LVar0)
-        EVT_ADD(MV_ShipPosY, LVar1)
-        EVT_CALL(TranslateGroup, Model_Spaceship, MV_ShipPosX, MV_ShipPosY, 0)
-        EVT_SET(LVar4, MV_ShipPosX)
-        EVT_SUB(LVar4, 12) 
-        EVT_SET(LVar5, MV_ShipPosY)
-        EVT_ADD(LVar5, 20) 
-        EVT_CALL(SetPlayerPos, LVar4, LVar5, 12)
         // handle player damage
         EVT_CALL(N(CheckBulletDamage))
         EVT_CALL(N(SetInvFrames))

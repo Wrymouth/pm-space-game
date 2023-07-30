@@ -1,48 +1,18 @@
 #include "spc_09.h"
 #include "sprite/npc/ParadeKolorado.h"
 #include "world/action/enemy_bullet.h"
-
-API_CALLABLE(N(KoopaShipUseSplit)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_SPLIT);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(KoopaShipUseShell)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_KOOPA_SHELLS);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(SetDamageAnimation)) {
-    Bytecode* args = script->ptrReadPos;
-    AnimID standardAnimID = evt_get_variable(script, *args++);
-    AnimID hurtAnimID = evt_get_variable(script, *args++);
-    AnimID outVar = *args++;
-    Enemy* enemy = script->owner1.enemy;
-    s32 blink;
-
-    if (enemy->invFrames >= enemy->invTimer) {
-        enemy->flags &= ~ENEMY_FLAG_INVINCIBLE;
-        enemy->invFrames = 0;
-    }
-    if (enemy->flags & ENEMY_FLAG_INVINCIBLE) {
-        enemy->invFrames++;
-        evt_set_variable(script, outVar, hurtAnimID);
-    } else {
-        evt_set_variable(script, outVar, standardAnimID);
-    }
-    return ApiStatus_DONE2;
-}
+#include "world/area_spc/common/enemy_behaviour.inc.c"
 
 EvtScript N(NpcIdle_KoopaBrosShip) = {
     EVT_SET(LVar3, 20) // direction
     EVT_LOOP(0)
         //movement
         EVT_IF_EQ(MV_SplitTimer, 50)
-            EVT_CALL(N(KoopaShipUseSplit))
+            EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPLIT)
             EVT_SET(MV_SplitTimer, 0)
         EVT_END_IF
         EVT_IF_EQ(MV_ShellTimer, 15)
-            EVT_CALL(N(KoopaShipUseShell))
+            EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_KOOPA_SHELLS)
         EVT_END_IF
         EVT_ADD(MV_SplitTimer, 1)
         EVT_ADD(MV_ShellTimer, 1)
@@ -64,6 +34,7 @@ EvtScript N(NpcIdle_KoopaBrosShip) = {
 };
 
 EvtScript N(NpcInit_KoopaBrosShip) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_KoopaBrosShip)))
     EVT_RETURN
     EVT_END

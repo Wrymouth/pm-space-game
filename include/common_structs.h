@@ -301,6 +301,7 @@ typedef struct Npc {
                     f32 moveAngle;
                 };
                 f32 distToGoal;
+                s32 isBullet;
 } Npc; // size = 0x340
 
 typedef Npc* NpcList[MAX_NPCS];

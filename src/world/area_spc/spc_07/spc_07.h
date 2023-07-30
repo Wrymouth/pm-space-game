@@ -16,6 +16,7 @@ enum {
     MF_EnemyDefeated = MapFlag(0),
     MF_EnemyHasDestination = MapFlag(1),
     MF_LightningCanDamagePlayer = MapFlag(2),
+    MF_ThrowingSpinies = MapFlag(3),
 };
 
 enum {
@@ -23,10 +24,12 @@ enum {
     MV_ShipPosY = MapVar(1),
     MV_BattlePhase = MapVar(2),
     MV_LightningTimer = MapVar(3),
-    MV_ShotTimer = MapVar(4),
+    MV_AttackTimer = MapVar(4),
     MV_DestX = MapVar(5),
     MV_DestY = MapVar(6),
-    MV_LightningX = MapVar(7)
+    MV_LightningX = MapVar(7),
+    MV_SpinyTimer = MapVar(8),
+    MV_SpinyCount = MapVar(9),
 };
 
 #define NAMESPACE spc_07

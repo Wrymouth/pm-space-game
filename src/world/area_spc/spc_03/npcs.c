@@ -9,6 +9,7 @@
 
 
 EvtScript N(NpcInit_EldStar) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_RETURN
     EVT_END
 };
@@ -32,6 +33,7 @@ NpcData N(NpcData_EldStar) = {
 };
 
 EvtScript N(NpcInit_Hammer) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_RETURN
     EVT_END
 };
@@ -55,6 +57,7 @@ NpcData N(NpcData_Hammer) = {
 };
 
 EvtScript N(NpcInit_Lakitu) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_RETURN
     EVT_END
 };
@@ -78,6 +81,7 @@ NpcData N(NpcData_Lakitu) = {
 };
 
 EvtScript N(NpcInit_Whale) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_RETURN
     EVT_END
 };
@@ -101,6 +105,7 @@ NpcData N(NpcData_Whale) = {
 };
 
 EvtScript N(NpcInit_Koopa) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_RETURN
     EVT_END
 };
@@ -124,6 +129,7 @@ NpcData N(NpcData_Koopa) = {
 };
 
 EvtScript N(NpcInit_Static) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_RETURN
     EVT_END
 };

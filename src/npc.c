@@ -159,6 +159,7 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
     npc->screenSpaceOffset2D[0] = 0.0f;
     npc->screenSpaceOffset2D[1] = 0.0f;
     npc->verticalStretch = 1.0f;
+    npc->isBullet = FALSE;
 
     for (j = 0; j < ARRAY_COUNT(npc->decorations); j++) {
         npc->decorations[j] = 0;
@@ -811,6 +812,9 @@ f32 npc_get_render_yaw(Npc* npc) {
         }
     } else {
         yaw = npc->renderYaw;
+    }
+    if (npc->isBullet) {
+        yaw = npc->yaw;
     }
     return yaw;
 }

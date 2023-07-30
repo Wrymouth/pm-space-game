@@ -1,6 +1,7 @@
 #include "spc_06.h"
 #include "sprite/npc/ParadeYoshi.h"
 #include "world/action/enemy_bullet.h"
+#include "world/area_spc/common/enemy_behaviour.inc.c"
 
 #define HAMMER_BRO_SHIP_ANIMS \
 { \
@@ -29,27 +30,6 @@ API_CALLABLE(N(HammerShipUseHammer)) {
 
 API_CALLABLE(N(HammerShipUseBullet)) {
     do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_LEFT);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(SetDamageAnimation)) {
-    Bytecode* args = script->ptrReadPos;
-    AnimID standardAnimID = evt_get_variable(script, *args++);
-    AnimID hurtAnimID = evt_get_variable(script, *args++);
-    AnimID outVar = *args++;
-    Enemy* enemy = script->owner1.enemy;
-    s32 blink;
-
-    if (enemy->invFrames >= enemy->invTimer) {
-        enemy->flags &= ~ENEMY_FLAG_INVINCIBLE;
-        enemy->invFrames = 0;
-    }
-    if (enemy->flags & ENEMY_FLAG_INVINCIBLE) {
-        enemy->invFrames++;
-        evt_set_variable(script, outVar, hurtAnimID);
-    } else {
-        evt_set_variable(script, outVar, standardAnimID);
-    }
     return ApiStatus_DONE2;
 }
 
@@ -104,6 +84,7 @@ EvtScript N(NpcDefeat_HammerBroShip) = {
 };
 
 EvtScript N(NpcInit_HammerBroShip) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(SetNpcScale, NPC_SELF, 2.0f, 2.0f, 1.0f)
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_HammerBroShip)))
     EVT_CALL(BindNpcDefeat, NPC_SELF, EVT_PTR(N(NpcDefeat_HammerBroShip)))

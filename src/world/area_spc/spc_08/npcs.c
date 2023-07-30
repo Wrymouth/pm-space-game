@@ -1,6 +1,7 @@
 #include "spc_08.h"
 #include "sprite/npc/ParadeYoshi.h"
 #include "world/action/enemy_bullet.h"
+#include "world/area_spc/common/enemy_behaviour.inc.c"
 
 #define HAMMER_BRO_SHIP_ANIMS \
 { \
@@ -20,16 +21,6 @@
     .anim_D = ANIM_ParadeYoshi_StillGreen, \
     .anim_E = ANIM_ParadeYoshi_StillGreen, \
     .anim_F = ANIM_ParadeYoshi_StillGreen, \
-}
-
-API_CALLABLE(N(DoWaterAttack)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_WATER);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(DoFuzzyAttack)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_FUZZY);
-    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(GetHeading)) {
@@ -59,27 +50,6 @@ API_CALLABLE(N(GetHeading)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetDamageAnimation)) {
-    Bytecode* args = script->ptrReadPos;
-    AnimID standardAnimID = evt_get_variable(script, *args++);
-    AnimID hurtAnimID = evt_get_variable(script, *args++);
-    AnimID outVar = *args++;
-    Enemy* enemy = script->owner1.enemy;
-    s32 blink;
-
-    if (enemy->invFrames >= enemy->invTimer) {
-        enemy->flags &= ~ENEMY_FLAG_INVINCIBLE;
-        enemy->invFrames = 0;
-    }
-    if (enemy->flags & ENEMY_FLAG_INVINCIBLE) {
-        enemy->invFrames++;
-        evt_set_variable(script, outVar, hurtAnimID);
-    } else {
-        evt_set_variable(script, outVar, standardAnimID);
-    }
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(NpcIdle_Whale) = {
     EVT_SET(LVar3, 4) // moveSpeed
     EVT_LOOP(0)
@@ -94,7 +64,7 @@ EvtScript N(NpcIdle_Whale) = {
         // attack
         EVT_IF_EQ(MV_WaterTimer, 90)
             EVT_IF_EQ(MV_WaterSubTimer, 8)
-                EVT_CALL(N(DoWaterAttack))
+                EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_WATER)
                 EVT_SET(MV_WaterSubTimer, 0)
                 EVT_ADD(MV_WaterCount, 1)
             EVT_END_IF
@@ -108,7 +78,7 @@ EvtScript N(NpcIdle_Whale) = {
             EVT_ADD(MV_WaterTimer, 1)
         EVT_END_IF
         EVT_IF_EQ(MV_FuzzyTimer, 200)
-            EVT_CALL(N(DoFuzzyAttack))
+            EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_FUZZY)
             EVT_SET(MV_FuzzyTimer, 0)
         EVT_END_IF
         EVT_ADD(MV_FuzzyTimer, 1)
@@ -121,8 +91,8 @@ EvtScript N(NpcIdle_Whale) = {
         // defeat
         EVT_IF_TRUE(GF_WhaleDefeated)
             EVT_SET(MF_EnemyDefeated, TRUE)
-            EVT_CALL(DoNpcDefeat)
             EVT_CALL(TranslateGroup, Model_Whale, 0, -1000, 0)
+            EVT_CALL(DoNpcDefeat)
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
@@ -137,6 +107,7 @@ EvtScript N(NpcDefeat_Whale) = {
 };
 
 EvtScript N(NpcInit_Whale) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_Whale)))
     EVT_CALL(BindNpcDefeat, NPC_SELF, EVT_PTR(N(NpcDefeat_Whale)))
     EVT_RETURN
@@ -155,7 +126,7 @@ NpcData N(NpcData_Whale) = {
     .init = &N(NpcInit_Whale),
     .yaw = 270,
     .settings = &N(NpcSettings_Whale),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = HAMMER_BRO_SHIP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,

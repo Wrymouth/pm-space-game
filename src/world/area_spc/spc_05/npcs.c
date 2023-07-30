@@ -3,34 +3,13 @@
 #include "world/common/npc/JrTroopa.h"
 #include "world/common/npc/StarSpirit.h"
 #include "world/action/enemy_bullet.h"
+#include "world/area_spc/common/enemy_behaviour.inc.c"
 
-API_CALLABLE(N(DoEggAttack)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_EGGS);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(DoSummonAttack)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_SUMMON);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(SetDamageAnimation)) {
-    Bytecode* args = script->ptrReadPos;
-    AnimID standardAnimID = evt_get_variable(script, *args++);
-    AnimID hurtAnimID = evt_get_variable(script, *args++);
-    AnimID outVar = *args++;
+API_CALLABLE(N(CheckPhase)) {
     Enemy* enemy = script->owner1.enemy;
-    s32 blink;
 
-    if (enemy->invFrames >= enemy->invTimer) {
-        enemy->flags &= ~ENEMY_FLAG_INVINCIBLE;
-        enemy->invFrames = 0;
-    }
-    if (enemy->flags & ENEMY_FLAG_INVINCIBLE) {
-        enemy->invFrames++;
-        evt_set_variable(script, outVar, hurtAnimID);
-    } else {
-        evt_set_variable(script, outVar, standardAnimID);
+    if (enemy->curHP <= 8) {
+        evt_set_variable(script, MV_BattlePhase, 2);
     }
     return ApiStatus_DONE2;
 }
@@ -51,13 +30,14 @@ EvtScript N(NpcIdle_JrTroopa) = {
             EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             // attack
             EVT_IF_EQ(MV_EggsTimer, 40)
-                EVT_CALL(N(DoEggAttack))
+                EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_EGGS)
                 EVT_SET(MV_EggsTimer, 0)
             EVT_END_IF
             EVT_ADD(MV_EggsTimer, 1)
             EVT_IF_EQ(MV_BattlePhase, 2)
                 EVT_IF_EQ(MV_SummonTimer, 60)
-                    EVT_CALL(N(DoSummonAttack))
+                    EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SUMMON)
+                    EVT_SET(MV_SummonTimer, 0)
                 EVT_END_IF
                 EVT_ADD(MV_SummonTimer, 1)
             EVT_END_IF
@@ -67,6 +47,7 @@ EvtScript N(NpcIdle_JrTroopa) = {
             EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
             EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         EVT_END_IF
+        EVT_CALL(N(CheckPhase))
         EVT_WAIT(1)
         // defeat
         EVT_IF_TRUE(GF_JrTroopaDefeated)
@@ -80,7 +61,9 @@ EvtScript N(NpcIdle_JrTroopa) = {
 };
 
 EvtScript N(NpcInit_JrTroopa) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_JrTroopa)))
+    EVT_CALL(SetNpcScale, NPC_SELF, EVT_FLOAT(2.0), EVT_FLOAT(2.0), EVT_FLOAT(2.0))
     EVT_RETURN
     EVT_END
 };
@@ -93,7 +76,7 @@ NpcSettings N(NpcSettings_JrTroopa) = {
 
 NpcData N(NpcData_JrTroopa) = {
     .id = 3,
-    .pos = { 240.0f, -1000.0f, 16.0f },
+    .pos = { 0.0f, -1000.0f, 0.0f },
     .init = &N(NpcInit_JrTroopa),
     .yaw = 270,
     .settings = &N(NpcSettings_JrTroopa),
@@ -107,6 +90,7 @@ NpcData N(NpcData_JrTroopa) = {
 };
 
 EvtScript N(NpcInit_EldStar) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_RETURN
     EVT_END
 };
@@ -123,7 +107,7 @@ NpcData N(NpcData_EldStar) = {
     .init = &N(NpcInit_EldStar),
     .yaw = 270,
     .settings = &N(NpcSettings_EldStar),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = ELDSTAR_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
