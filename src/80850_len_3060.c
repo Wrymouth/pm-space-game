@@ -687,7 +687,7 @@ void update_status_bar(void) {
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 12, 20, SCREEN_WIDTH - 12, SCREEN_HEIGHT - 20);
     x = uiStatus->drawPosX;
     y = uiStatus->drawPosY;
-    draw_box(0, WINDOW_STYLE_4, x,         y, 0, 110, 35, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+    draw_box(0, WINDOW_STYLE_4, x,         y, 0, 110, 35, 200, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
     // draw_box(0, WINDOW_STYLE_4, x + 174, y, 0, 122, 25, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
 
     if (uiStatus->hpBlinkTimer > 0) {

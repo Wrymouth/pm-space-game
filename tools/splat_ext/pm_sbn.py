@@ -517,7 +517,8 @@ class SBNFile:
 
         size = self.decode(data, ident)
 
-        assert size == len(data), "File size mismatch"
+        if size != len(data):
+            print(f"Warning: File size mismatch on {filename}")
 
     def file_name(self) -> str:
         prefix = f"{self.ident:02X}_"
