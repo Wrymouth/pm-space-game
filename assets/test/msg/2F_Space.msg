@@ -8,13 +8,15 @@
 	Modding Jam.[BR]
 	[Wait][Next]
 	It was created using Merlon,[BR]
-	a modding tool created by Alex[BR]
+	a modding tool created by [Color 0x5]Alex[Color 0x0][BR]
 	which makes use of the Paper Mario[BR]
 	decomp.[BR]
 	[Wait][Next]
-	Projectile code by Pronyo[BR]
+	Projectile code by [Color 0x20]Pronyo[Color 0x0].[BR]
+	His work saved me a lot of time in[BR]
+	the early stages of the project.[BR]
 	[Wait][Next]
-	Music[BR]
+	[Color 0x3]Music[Color 0x0][BR]
 	All custom music imported by[BR]
 	[Color 0x1]Wrymouth[Color 0x0].[BR]
 	Songs used:[BR]
@@ -148,6 +150,22 @@
 	starting the game.[Wait][End]
 }
 
+#message:2F:(Space_SettingsExplain_Speed) {
+	[Style Inspect]This setting changes the speed[BR]
+	of your spaceship.[BR]
+	[Wait][Next]
+	Project64 handles the ship speed[BR]
+	slightly differently for some[BR]
+	reason, so if that's the emulator[BR]
+	you're using, please select Slow.[BR]
+	[Wait][Next]
+	If you're playing this on console[BR]
+	or any emulator that isn't[BR]
+	Project64, select Fast.[BR]
+	[Wait][Next]
+	Default: Fast.[Wait][End]
+}
+
 #message:2F:(Space_OpeningScene1) {
 	[Style Right]Alright Mario, welcome aboard the[BR]
 	Legendary Star Ship of Star[BR]
@@ -209,7 +227,7 @@
 
 #message:2F:(Space_CharacterSelectLakitu) {
 	This is Lakithunder.[BR]
-	HP = 32.[End]
+	HP = 24.[End]
 }
 
 #message:2F:(Space_CharacterSelectWhale) {

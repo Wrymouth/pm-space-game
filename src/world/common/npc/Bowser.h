@@ -3,20 +3,20 @@
 
 #define BOWSER_ANIMS \
 { \
-    .idle   = ANIM_WorldBowser_Idle, \
-    .walk   = ANIM_WorldBowser_Idle, \
-    .run    = ANIM_WorldBowser_Idle, \
-    .chase  = ANIM_WorldBowser_Idle, \
-    .anim_4 = ANIM_WorldBowser_Idle, \
-    .anim_5 = ANIM_WorldBowser_Idle, \
-    .death  = ANIM_WorldBowser_Idle, \
-    .hit    = ANIM_WorldBowser_Idle, \
-    .anim_8 = ANIM_WorldBowser_Idle, \
-    .anim_9 = ANIM_WorldBowser_Idle, \
-    .anim_A = ANIM_WorldBowser_Idle, \
-    .anim_B = ANIM_WorldBowser_Idle, \
-    .anim_C = ANIM_WorldBowser_Idle, \
-    .anim_D = ANIM_WorldBowser_Idle, \
-    .anim_E = ANIM_WorldBowser_Idle, \
-    .anim_F = ANIM_WorldBowser_Idle, \
+    .idle   = ANIM_WorldBowser_ClownCarIdle, \
+    .walk   = ANIM_WorldBowser_ClownCarIdle, \
+    .run    = ANIM_WorldBowser_ClownCarIdle, \
+    .chase  = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_4 = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_5 = ANIM_WorldBowser_ClownCarIdle, \
+    .death  = ANIM_WorldBowser_ClownCarIdle, \
+    .hit    = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_8 = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_9 = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_A = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_B = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_C = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_D = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_E = ANIM_WorldBowser_ClownCarIdle, \
+    .anim_F = ANIM_WorldBowser_ClownCarIdle, \
 }

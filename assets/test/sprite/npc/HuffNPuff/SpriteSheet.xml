@@ -69,54 +69,14 @@
     </RasterList>
     <AnimationList>
         <Animation name="Anim00">
-            <Component name="Comp_0" xyz="31,54,-6">
-                <SetRaster raster="36" />
-                <Wait duration="2" />
-                <Goto pos="0" />
-            </Component>
-            <Component name="Comp_1" xyz="-77,-76,-4">
-                <SetRaster raster="1A" />
-                <Wait duration="2" />
-                <Goto pos="0" />
-            </Component>
-            <Component name="Comp_2" xyz="11,-59,-2">
+            <Component name="Comp_2" xyz="0,0,0">
                 <SetRaster raster="0" />
-                <Wait duration="2" />
-                <Goto pos="0" />
-            </Component>
-            <Component name="Comp_3" xyz="-55,-22,0">
-                <SetRaster raster="29" />
-                <Wait duration="2" />
-                <Goto pos="0" />
-            </Component>
-            <Component name="Comp_4" xyz="-23,0,2">
-                <SetRaster raster="2D" />
-                <Wait duration="2" />
-                <Goto pos="0" />
-            </Component>
-            <Component name="Comp_5" xyz="-25,-39,4">
-                <SetRaster raster="2E" />
-                <Wait duration="2" />
-                <Goto pos="0" />
-            </Component>
-            <Component name="Comp_6" xyz="-16,-24,6">
-                <SetRaster raster="2A" />
-                <Wait duration="2" />
-                <Goto pos="0" />
-            </Component>
-            <Component name="Comp_7" xyz="20,-90,8">
-                <SetRaster raster="4" />
                 <Wait duration="2" />
                 <Goto pos="0" />
             </Component>
         </Animation>
         <Animation name="Anim01">
-            <Component name="Comp_0" xyz="31,54,-6">
-                <SetRaster raster="36" />
-                <Wait duration="2" />
-                <Goto pos="0" />
-            </Component>
-            <Component name="Comp_1" xyz="11,-59,-2">
+            <Component name="Comp_1" xyz="0,0,0">
                 <SetRaster raster="0" />
                 <Wait duration="2" />
                 <Goto pos="0" />

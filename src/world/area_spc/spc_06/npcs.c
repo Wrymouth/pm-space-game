@@ -23,15 +23,15 @@
     .anim_F = ANIM_ParadeYoshi_StillGreen, \
 }
 
-API_CALLABLE(N(HammerShipUseHammer)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_HAMMER);
-    return ApiStatus_DONE2;
-}
+// API_CALLABLE(N(HammerShipUseHammer)) {
+//     do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_HAMMER);
+//     return ApiStatus_DONE2;
+// }
 
-API_CALLABLE(N(HammerShipUseBullet)) {
-    do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_LEFT);
-    return ApiStatus_DONE2;
-}
+// API_CALLABLE(N(HammerShipUseBullet)) {
+//     do_attack(script->owner1.enemy, ENEMY_ATTACK_TYPE_LEFT);
+//     return ApiStatus_DONE2;
+// }
 
 EvtScript N(NpcIdle_HammerBroShip) = {
     EVT_SET(LVar3, 20) // direction
@@ -47,11 +47,11 @@ EvtScript N(NpcIdle_HammerBroShip) = {
         EVT_ADD(LVar0, LVar3)
         EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         EVT_IF_EQ(MV_HammerTimer, 20)
-            EVT_CALL(N(HammerShipUseHammer))
+            EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_HAMMER)
             EVT_SET(MV_HammerTimer, 0)
         EVT_END_IF
         EVT_IF_EQ(MV_ShotTimer, 15)
-            EVT_CALL(N(HammerShipUseBullet))
+            EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_LEFT)
             EVT_SET(MV_ShotTimer, 0)
         EVT_END_IF
         EVT_ADD(MV_HammerTimer, 1)

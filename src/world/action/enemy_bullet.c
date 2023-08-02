@@ -8,10 +8,14 @@
 #include "sprite/npc/ParadeTwink.h"
 #include "sprite/npc/ParadeShyGuy.h"
 #include "sprite/npc/ParadeWizard.h"
+#include "sprite/npc/Chan.h"
+#include "sprite/npc/Goompa.h"
+#include "sprite/npc/Yakkey.h"
 #include "sprite/npc/Fuzzy.h"
 #include "sprite/npc/Goomba.h"
 #include "sprite/npc/BulletBill.h"
 #include "sprite/npc/Lakitu.h"
+#include "sprite/npc/LavaBubble.h"
 #include "sprite/player.h"
 #include "world/action/enemy_bullet.h"
 
@@ -67,6 +71,9 @@ void npc_move_to_target(Npc* npc, s32 moveSpeed, s32 targetPosX, s32 targetPosY)
         distY = 0;
     }
 
+    npc->moveDist.x = distX;
+    npc->moveDist.y = distY;
+    
     npc->pos.x += distX;
     npc->pos.y += distY;
 }
@@ -111,9 +118,9 @@ s32 test_enemy_bullet_first_strike() {
         return FALSE;
     }
 
-    playerX          = playerStatus->position.x;
-    playerY          = playerStatus->position.y;
-    playerZ          = playerStatus->position.z;
+    playerX          = playerStatus->pos.x;
+    playerY          = playerStatus->pos.y;
+    playerZ          = playerStatus->pos.z;
     playerCollHeight = playerStatus->colliderHeight;
     playerCollRadius = playerStatus->colliderDiameter * 0.55;
 
@@ -192,8 +199,8 @@ void hammer_jump(Npc* bulletNpc) {
 
     npc_move_heading(bulletNpc, bulletNpc->moveSpeed, clamp_angle(bulletNpc->yaw - 90));
 
-    bulletNpc->pos.y += bulletNpc->jumpVelocity;
-    bulletNpc->jumpVelocity -= bulletNpc->jumpScale;
+    bulletNpc->pos.y += bulletNpc->jumpVel;
+    bulletNpc->jumpVel -= bulletNpc->jumpScale;
 
     bulletNpc->duration--;
 
@@ -210,9 +217,9 @@ void bullet_render_hammer(Npc* bulletNpc) {
     enemy_bullets[bulletIndex].activeBulletTime++;
     hammer_jump(bulletNpc);
     if (enemy_bullets[bulletIndex].flags & ENEMY_BULLET_FLAG_FACING_LEFT) {
-        bulletNpc->rotation.z += 20.0f;
+        bulletNpc->rot.z += 20.0f;
     } else {
-        bulletNpc->rotation.z -= 20.0f;
+        bulletNpc->rot.z -= 20.0f;
     }
 }
 
@@ -250,7 +257,7 @@ void bullet_render_water(Npc* bulletNpc) {
             bulletNpc->moveToPos.x = bulletNpc->pos.x; // used for base position in the down phase
             bulletNpc->moveToPos.y = rand_int(200); // used for a random wave offset
             bulletNpc->pos.y = 180;
-            bulletNpc->rotation.z = 0;
+            bulletNpc->rot.z = 0;
             UNSET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_WATER_UP);
             SET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_WATER_DOWN);
         }
@@ -266,12 +273,22 @@ void bullet_render_water(Npc* bulletNpc) {
     bulletStatus->activeBulletTime++;
 }
 
+void bullet_render_raining_fire(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    EnemyBulletStatus* bulletStatus = &enemy_bullets[bulletIndex];
+    bulletNpc->pos.y -= bulletNpc->moveSpeed;
+    bulletNpc->pos.x = 85 * sin_deg(bulletNpc->pos.y * 0.8 + bulletNpc->moveToPos.y) + bulletNpc->moveToPos.x;
+    if (bulletNpc->pos.y < -240) {
+        destroy_enemy_bullet(bulletIndex);
+    }
+}
+
 void bullet_render_egg(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
     if (enemy_bullets[bulletIndex].activeBulletTime >= ENEMY_BULLET_DECAY) {
         destroy_enemy_bullet(bulletIndex);
     }
-    bulletNpc->rotation.z += 20.0f;
+    bulletNpc->rot.z += 20.0f;
     enemy_bullets[bulletIndex].activeBulletTime++;
     npc_move_angle_speed(bulletNpc, bulletNpc->moveSpeed, bulletNpc->moveAngle);
 }
@@ -280,7 +297,7 @@ void bullet_render_fuzzy(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
     EnemyBulletStatus* bulletStatus = &enemy_bullets[bulletIndex];
 
-    if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FUZZY_SEEKING)) {
+    if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_SEEKING)) {
         bulletNpc->pos.x += bulletNpc->moveSpeed;
         if (bulletNpc->pos.x > 300 || bulletNpc->pos.x < -300) {
             bulletNpc->moveSpeed *= -1;
@@ -292,7 +309,7 @@ void bullet_render_fuzzy(Npc* bulletNpc) {
             if (rand_int(1)) {
                 bulletNpc->moveSpeed *= -1;
             }
-            SET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FUZZY_SEEKING);
+            SET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_SEEKING);
         }
     }
     if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FUZZY_TURNED)) {
@@ -306,7 +323,7 @@ void bullet_render_fuzzy(Npc* bulletNpc) {
 void bullet_render_summon(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
     npc_move_to_target(bulletNpc, bulletNpc->moveSpeed, bulletNpc->moveToPos.x, bulletNpc->moveToPos.y);
-    bulletNpc->rotation.z += 20;
+    bulletNpc->rot.z += 20;
     if (bulletNpc->pos.y == bulletNpc->moveToPos.y) {
         use_enemy_bullet(bulletNpc, ENEMY_BULLET_TYPE_GOOMBA);
         destroy_enemy_bullet(bulletIndex);
@@ -320,32 +337,68 @@ void bullet_render_goomba(Npc* bulletNpc) {
         destroy_enemy_bullet(bulletIndex);
     }
     bulletNpc->pos.y -= bulletNpc->moveSpeed;
-    bulletNpc->rotation.z += 20.0f;
+    bulletNpc->rot.z += 20.0f;
     bulletStatus->activeBulletTime++;
 }
 
 void bullet_render_bill(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
     EnemyBulletStatus* bulletStatus = &enemy_bullets[bulletIndex];
-    s32 distY = bulletNpc->pos.y - bulletNpc->moveToPos.y;
+    s32 distY = bulletNpc->moveToPos.y - bulletNpc->pos.y;
 
     bulletNpc->pos.x += bulletNpc->moveSpeed;
 
-    if (abs(bulletNpc->moveSpeed) > abs(distY)) {
+    if (abs(bulletNpc->vertSpeed) > abs(distY)) {
         bulletNpc->pos.y = bulletNpc->moveToPos.y;
     } else {
-        if (distY < 0) {
-            bulletNpc->pos.y += abs(bulletNpc->moveSpeed);
-        } else {
-            bulletNpc->pos.y -= abs(bulletNpc->moveSpeed);
-        }
+        bulletNpc->pos.y += bulletNpc->vertSpeed;
     }
 
     if (bulletStatus->activeBulletTime > ENEMY_BULLET_DECAY) {
         destroy_enemy_bullet(bulletIndex);
     }
     bulletStatus->activeBulletTime++;
+}
 
+void bullet_render_fireball(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    if (enemy_bullets[bulletIndex].activeBulletTime >= ENEMY_BULLET_DECAY) {
+        destroy_enemy_bullet(bulletIndex);
+    }
+    enemy_bullets[bulletIndex].activeBulletTime++;
+    npc_move_angle_speed(bulletNpc, bulletNpc->moveSpeed, bulletNpc->moveAngle);
+}
+
+void bullet_render_chase_fireball(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    EnemyBulletStatus* bulletStatus = &enemy_bullets[bulletIndex];
+    if (CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_SEEKING)) {
+        bulletNpc->moveToPos.x = gPlayerStatus.pos.x;
+        bulletNpc->moveToPos.y = gPlayerStatus.pos.y;
+        npc_move_to_target(bulletNpc, bulletNpc->moveSpeed, bulletNpc->moveToPos.x, bulletNpc->moveToPos.y);
+        if (bulletStatus->activeBulletTime > 40) {
+            UNSET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_SEEKING);
+        }
+    } else {
+        bulletNpc->pos.x += bulletNpc->moveDist.x;
+        bulletNpc->pos.y += bulletNpc->moveDist.y;
+    }
+    if (bulletStatus->activeBulletTime > 65) {
+        destroy_enemy_bullet(bulletIndex);
+    }
+    bulletStatus->activeBulletTime++;
+}
+
+void bullet_render_large_ball(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    EnemyBulletStatus* bulletStatus = &enemy_bullets[bulletIndex];
+
+    if (bulletStatus->activeBulletTime > ENEMY_BULLET_DECAY) {
+        destroy_enemy_bullet(bulletIndex);
+    }
+    bulletNpc->pos.y -= bulletNpc->moveToPos.y;
+    bulletNpc->moveToPos.y += bulletNpc->jumpVel;
+    bulletStatus->activeBulletTime++;
 }
 
 void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
@@ -358,25 +411,26 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
 
     s32 initialDistanceX = (bulletStatus->flags & ENEMY_BULLET_FLAG_FACING_LEFT) ? -25.0f : 25.0f;
     s32 hammerOffset;
+    s32 billDistY;
     s32 facingLeft = FALSE;
 
     bulletNpc->pos.x = enemyPosX + initialDistanceX;
     bulletNpc->pos.y = enemyPosY + 30.0f;
-    bulletNpc->pos.z = enemyPosZ;
-    bulletNpc->rotation.x           = 0.0f;
-    bulletNpc->rotation.z           = 0.0f;
+    bulletNpc->pos.z = enemyPosZ + 1;
+    bulletNpc->rot.x           = 0.0f;
+    bulletNpc->rot.z           = 0.0f;
     bulletNpc->moveSpeed = 13;
     
     switch (type) {
         case ENEMY_BULLET_TYPE_HAMMER:
-            if (gPlayerStatus.position.x < bulletNpc->pos.x) {
+            if (gPlayerStatus.pos.x < bulletNpc->pos.x) {
                 bulletStatus->flags |= ENEMY_BULLET_FLAG_FACING_LEFT;
                 facingLeft = TRUE;
             }
             hammerOffset = facingLeft ? -20.0f : 20.0f;
-            bulletNpc->moveToPos.x = gPlayerStatus.position.x + hammerOffset;
+            bulletNpc->moveToPos.x = gPlayerStatus.pos.x + hammerOffset;
             bulletNpc->moveToPos.y = -240;
-            bulletNpc->moveToPos.z = gPlayerStatus.position.z;
+            bulletNpc->moveToPos.z = gPlayerStatus.pos.z;
             bulletNpc->yaw = facingLeft ? 0 : 180;
             bulletNpc->jumpScale = 1.1f;
             bulletNpc->duration   = ENEMY_BULLET_DECAY;
@@ -387,19 +441,20 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             bulletNpc->goalY = bulletNpc->moveToPos.y - bulletNpc->pos.y;
             bulletNpc->distToGoal = dist2D(bulletNpc->pos.x, bulletNpc->pos.z, bulletNpc->moveToPos.x, bulletNpc->moveToPos.z);
             bulletNpc->moveSpeed = bulletNpc->distToGoal / bulletNpc->duration;
-            bulletNpc->jumpVelocity = (bulletNpc->jumpScale * bulletNpc->duration * 0.5f) + (bulletNpc->goalY / bulletNpc->duration);
+            bulletNpc->jumpVel = (bulletNpc->jumpScale * bulletNpc->duration * 0.5f) + (bulletNpc->goalY / bulletNpc->duration);
             break;
+        case ENEMY_BULLET_TYPE_BOWSER_HAMMER:
         case ENEMY_BULLET_TYPE_SPINY:
-            if (gPlayerStatus.position.x < bulletNpc->pos.x) {
+            if (gPlayerStatus.pos.x < bulletNpc->pos.x) {
                 bulletStatus->flags |= ENEMY_BULLET_FLAG_FACING_LEFT;
                 facingLeft = TRUE;
             }
             hammerOffset = facingLeft ? -20.0f : 20.0f;
-            bulletNpc->moveToPos.x = gPlayerStatus.position.x + hammerOffset;
+            bulletNpc->moveToPos.x = gPlayerStatus.pos.x + hammerOffset;
             bulletNpc->moveToPos.y = -240;
-            bulletNpc->moveToPos.z = gPlayerStatus.position.z;
+            bulletNpc->moveToPos.z = gPlayerStatus.pos.z;
             bulletNpc->yaw = facingLeft ? 0 : 180;
-            if (gPlayerStatus.position.y > bulletNpc->pos.y) {
+            if ((bulletStatus->bulletType == ENEMY_BULLET_TYPE_SPINY && gPlayerStatus.pos.y > bulletNpc->pos.y) || (bulletStatus->bulletType == ENEMY_BULLET_TYPE_BOWSER_HAMMER && rand_int(1))) {
                 bulletNpc->jumpScale = 0.9f;
             } else {
                 bulletNpc->jumpScale = 0.5f;
@@ -412,7 +467,7 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             bulletNpc->goalY = bulletNpc->moveToPos.y - bulletNpc->pos.y;
             bulletNpc->distToGoal = dist2D(bulletNpc->pos.x, bulletNpc->pos.z, bulletNpc->moveToPos.x, bulletNpc->moveToPos.z);
             bulletNpc->moveSpeed = bulletNpc->distToGoal / bulletNpc->duration;
-            bulletNpc->jumpVelocity = (bulletNpc->jumpScale * bulletNpc->duration * 0.5f) + (bulletNpc->goalY / bulletNpc->duration);
+            bulletNpc->jumpVel = (bulletNpc->jumpScale * bulletNpc->duration * 0.5f) + (bulletNpc->goalY / bulletNpc->duration);
             break;
         case ENEMY_BULLET_TYPE_LEFT:
             bulletNpc->moveToPos.x = enemyPosX;
@@ -471,7 +526,7 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             break;
         case ENEMY_BULLET_TYPE_WATER:
             bulletNpc->pos.y += 10;
-            bulletNpc->rotation.z = 180;
+            bulletNpc->rot.z = 180;
             break;
         case ENEMY_BULLET_TYPE_FUZZY:
             bulletNpc->scale.x = 2.2f;
@@ -482,7 +537,7 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             bulletNpc->scale.x = 1.5f;
             bulletNpc->scale.y = 1.5f;
             bulletNpc->scale.z = 1.5f;
-            bulletNpc->moveToPos.x = gPlayerStatus.position.x;
+            bulletNpc->moveToPos.x = gPlayerStatus.pos.x - 10;
             bulletNpc->moveToPos.y = 150;
             break;
         case ENEMY_BULLET_TYPE_GOOMBA:
@@ -493,21 +548,81 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
         case ENEMY_BULLET_TYPE_BILL_DOWN:
         case ENEMY_BULLET_TYPE_BILL_MID:
         case ENEMY_BULLET_TYPE_BILL_UP:
-            if (gPlayerStatus.position.x < bulletNpc->pos.x) {
+            if (gPlayerStatus.pos.x < bulletNpc->pos.x) {
                 bulletNpc->yaw         = 0;
-                bulletNpc->moveSpeed *= -1;
+                bulletNpc->moveSpeed = -9;
             } else {
+                bulletNpc->moveSpeed = 9;
                 bulletNpc->yaw         = 180;
             }
+            
             if (bulletStatus->bulletType == ENEMY_BULLET_TYPE_BILL_DOWN) {
-                bulletNpc->moveToPos.y = gPlayerStatus.position.y - 60;
-                bulletNpc->pos.y -= 60;
+                bulletNpc->moveToPos.y = gPlayerStatus.pos.y - 110;
+                bulletNpc->pos.y -= 20;
             } else if (bulletStatus->bulletType == ENEMY_BULLET_TYPE_BILL_UP) {
-                bulletNpc->moveToPos.y = gPlayerStatus.position.y + 60;
-                bulletNpc->pos.y += 60;
+                bulletNpc->moveToPos.y = gPlayerStatus.pos.y + 110;
+                bulletNpc->pos.y += 20;
             } else {
-                bulletNpc->moveToPos.y = gPlayerStatus.position.y;
+                bulletNpc->moveToPos.y = gPlayerStatus.pos.y;
             }
+            billDistY = bulletNpc->moveToPos.y - bulletNpc->pos.y;
+            bulletNpc->vertSpeed = billDistY / 24;
+            break;
+        case ENEMY_BULLET_TYPE_FIRE_1:
+            bulletNpc->moveAngle = 140;
+            if (!CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FACING_LEFT)) {
+                bulletNpc->moveAngle = clamp_angle(bulletNpc->moveAngle-180);
+            }
+            bulletNpc->rot.z = clamp_angle(bulletNpc->moveAngle + 90);
+            break;
+        case ENEMY_BULLET_TYPE_FIRE_2:
+            bulletNpc->moveAngle = 160;
+            if (!CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FACING_LEFT)) {
+                bulletNpc->moveAngle = clamp_angle(bulletNpc->moveAngle-180);
+            }
+            bulletNpc->rot.z = clamp_angle(bulletNpc->moveAngle + 90);
+            break;
+        case ENEMY_BULLET_TYPE_FIRE_3:
+            bulletNpc->moveAngle = 180;
+            if (!CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FACING_LEFT)) {
+                bulletNpc->moveAngle = clamp_angle(bulletNpc->moveAngle-180);
+            }
+            bulletNpc->rot.z = clamp_angle(bulletNpc->moveAngle + 90);
+            break;
+        case ENEMY_BULLET_TYPE_FIRE_4:
+            bulletNpc->moveAngle = 200;
+            if (!CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FACING_LEFT)) {
+                bulletNpc->moveAngle = clamp_angle(bulletNpc->moveAngle-180);
+            }
+            bulletNpc->rot.z = clamp_angle(bulletNpc->moveAngle + 90);
+            break;
+        case ENEMY_BULLET_TYPE_FIRE_5:
+            bulletNpc->moveAngle = 220;
+            if (!CHECK_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_FACING_LEFT)) {
+                bulletNpc->moveAngle = clamp_angle(bulletNpc->moveAngle-180);
+            }
+            bulletNpc->rot.z = clamp_angle(bulletNpc->moveAngle + 90);
+            break;
+        case ENEMY_BULLET_TYPE_LARGE_BALL:
+            bulletNpc->scale.x = 2.0f;
+            bulletNpc->scale.y = 2.0f;
+            bulletNpc->scale.z = 2.0f;
+            bulletNpc->moveToPos.y = 2;
+            bulletNpc->jumpVel = 0.8;
+            break;
+        case ENEMY_BULLET_TYPE_CHASE_FIREBALL:
+            bulletNpc->scale.x = 2.0f;
+            bulletNpc->scale.y = 2.0f;
+            bulletNpc->scale.z = 2.0f;
+            bulletNpc->moveSpeed = 10.0f;
+            SET_FLAG(bulletStatus->flags, ENEMY_BULLET_FLAG_SEEKING);
+            break;
+        case ENEMY_BULLET_TYPE_RAINING_FIRE:
+            bulletNpc->moveSpeed = 7;
+            bulletNpc->pos.y = 170;
+            bulletNpc->pos.x = rand_int(500) - 250;
+            bulletNpc->moveToPos.x = bulletNpc->pos.x; // used for base position in the down phase
+            bulletNpc->moveToPos.y = rand_int(200); // used for a random wave offset
             break;
     }
 }
@@ -547,7 +662,7 @@ void use_enemy_bullet(Npc* enemyNpc, EnemyBulletType type) {
     switch (type) {
         case ENEMY_BULLET_TYPE_HAMMER:
             npcSettings.defaultAnim = ANIM_HammerBros_Anim0D;
-            npcSettings.height      = 12;
+            npcSettings.height      = 32;
             npcSettings.radius      = 32;
             bp->onRender    = bullet_render_hammer;
             break;
@@ -610,7 +725,7 @@ void use_enemy_bullet(Npc* enemyNpc, EnemyBulletType type) {
             bp->onRender    = bullet_render_egg;
             break;
         case ENEMY_BULLET_TYPE_SUMMON:
-            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
+            npcSettings.defaultAnim = ANIM_Goompa_Still;
             npcSettings.height      = 16;
             npcSettings.radius      = 16;
             bp->onRender    = bullet_render_summon;
@@ -625,8 +740,8 @@ void use_enemy_bullet(Npc* enemyNpc, EnemyBulletType type) {
         case ENEMY_BULLET_TYPE_BILL_UP:
         case ENEMY_BULLET_TYPE_BILL_MID:
             npcSettings.defaultAnim = ANIM_BulletBill_Tense;
-            npcSettings.height      = 32;
-            npcSettings.radius      = 32;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
             bp->onRender    = bullet_render_bill;
             break;
         case ENEMY_BULLET_TYPE_SPINY:
@@ -634,6 +749,45 @@ void use_enemy_bullet(Npc* enemyNpc, EnemyBulletType type) {
             npcSettings.height      = 32;
             npcSettings.radius      = 32;
             bp->onRender    = bullet_render_spiny;
+            break;
+        case ENEMY_BULLET_TYPE_BOWSER_HAMMER:
+            npcSettings.defaultAnim = ANIM_Chan_Still;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_hammer;
+            break;
+        case ENEMY_BULLET_TYPE_FIRE_1:
+        case ENEMY_BULLET_TYPE_FIRE_2:
+        case ENEMY_BULLET_TYPE_FIRE_3:
+        case ENEMY_BULLET_TYPE_FIRE_4:
+        case ENEMY_BULLET_TYPE_FIRE_5:
+            if (!(enemyNpc->yaw >= 90.0f) || !(enemyNpc->yaw < 270.0f)) {
+                SET_FLAG(enemy_bullets[i].flags, ENEMY_BULLET_FLAG_FACING_LEFT);
+            } else {
+                UNSET_FLAG(enemy_bullets[i].flags, ENEMY_BULLET_FLAG_FACING_LEFT);
+            }
+            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
+            npcSettings.height      = 16;
+            npcSettings.radius      = 16;
+            bp->onRender    = bullet_render_fireball;
+            break;
+        case ENEMY_BULLET_TYPE_LARGE_BALL:
+            npcSettings.defaultAnim = ANIM_Yakkey_Still;
+            npcSettings.height      = 32;
+            npcSettings.radius      = 32;
+            bp->onRender    = bullet_render_large_ball;
+            break;
+        case ENEMY_BULLET_TYPE_CHASE_FIREBALL:
+            npcSettings.defaultAnim = ANIM_LavaBubble_Blue_Anim02;
+            npcSettings.height      = 32;
+            npcSettings.radius      = 24;
+            bp->onRender    = bullet_render_chase_fireball;
+            break;
+        case ENEMY_BULLET_TYPE_RAINING_FIRE:
+            npcSettings.defaultAnim = ANIM_Fire_Brighest_Burn;
+            npcSettings.height      = 24;
+            npcSettings.radius      = 24;
+            bp->onRender    = bullet_render_raining_fire;
             break;
     }
 
@@ -703,6 +857,30 @@ void do_attack(Enemy* enemy, EnemyAttackType type) {
             break;
         case ENEMY_ATTACK_TYPE_SPINIES:
             use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_SPINY);
+            break;
+        case ENEMY_ATTACK_TYPE_BOWSER_HAMMER:
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_BOWSER_HAMMER);
+            break;
+        case ENEMY_ATTACK_TYPE_LARGE_BALL:
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_LARGE_BALL);
+            break;
+        case ENEMY_ATTACK_TYPE_SPREAD_FIRE:
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_FIRE_1);
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_FIRE_2);
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_FIRE_3);
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_FIRE_4);
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_FIRE_5);
+            break;
+        case ENEMY_ATTACK_TYPE_SPREAD_FIRE_WIDE:
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_FIRE_1);
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_FIRE_3);
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_FIRE_5);
+            break;
+        case ENEMY_ATTACK_TYPE_CHASE_FIREBALL:
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_CHASE_FIREBALL);
+            break;
+        case ENEMY_ATTACK_TYPE_FIRE_RAIN:
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_RAINING_FIRE);
             break;
         default:
             break;

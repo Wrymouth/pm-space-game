@@ -46,7 +46,7 @@ void clear_player_data(void) {
     D_8010CD10 = 0;
     D_8010CD12 = 0;
 
-    playerData->hammerLevel = -1;
+    playerData->hammerLevel = 2;
     playerData->curHP = 5;
     playerData->curMaxHP = 5;
     playerData->hardMaxHP = 5;
@@ -55,7 +55,7 @@ void clear_player_data(void) {
     playerData->hardMaxFP = 5;
     playerData->maxBP = 3;
     playerData->level = 1;
-    playerData->bootsLevel = 0;
+    playerData->bootsLevel = 2;
     playerData->hasActionCommands = FALSE;
     playerData->coins = 0;
     playerData->fortressKeyCount = 0;

@@ -1,5 +1,4 @@
 #include "spc_07.h"
-#include "sprite/npc/HuffNPuff.h"
 #include "world/common/enemy/HuffNPuff.h"
 #include "world/action/enemy_bullet.h"
 #include "effects.h"
@@ -49,7 +48,7 @@ API_CALLABLE(N(SetEnemyDestination)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(LightningHurtPlayer)) {
+API_CALLABLE(N(LightningDamagePlayer)) {
     s32 playerX = evt_get_variable(script, LVar0);
     s32 lightningX = evt_get_variable(script, MV_LightningX);
 
@@ -73,25 +72,27 @@ EvtScript N(NpcIdle_HuffNPuff) = {
         EVT_END_IF
         // attacks
         EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
-        EVT_IF_EQ(MV_LightningTimer, 120)
-            // save player position and start lightning anim
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_209, 0)
-            EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim02)
-            EVT_SET(MV_LightningX, LVar0)
-        EVT_END_IF
-        EVT_IF_EQ(MV_LightningTimer, 130)
-            // do lightning strike
-            EVT_CALL(PlaySound, SOUND_20A)
-            EVT_CALL(PlayEffect, EFFECT_LIGHTNING_BOLT, 0, MV_LightningX, 170, LVar2, MV_LightningX, -250, LVar2, EVT_FLOAT(2.5), 15)
-            EVT_SET(MF_LightningCanDamagePlayer, TRUE)
-        EVT_END_IF
-        EVT_IF_EQ(MV_LightningTimer, 135)
-            EVT_SET(MF_LightningCanDamagePlayer, FALSE)
-            EVT_SET(MV_LightningTimer, 0)
-            EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim00)
-        EVT_END_IF
+        EVT_SWITCH(MV_LightningTimer)
+            EVT_CASE_EQ(110)
+                // announce lightning attack
+                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_209, 0)
+                EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim02)
+            EVT_CASE_EQ(125)
+                // set lightning X to player X
+                EVT_SET(MV_LightningX, LVar0)
+            EVT_CASE_EQ(130)
+                // do lightning strike
+                EVT_CALL(PlaySound, SOUND_20A)
+                EVT_CALL(PlayEffect, EFFECT_LIGHTNING_BOLT, 0, MV_LightningX, 170, LVar2, MV_LightningX, -250, LVar2, EVT_FLOAT(2.5), 15)
+                EVT_SET(MF_LightningCanDamagePlayer, TRUE)
+            EVT_CASE_EQ(135)
+                // end lightning strike
+                EVT_SET(MF_LightningCanDamagePlayer, FALSE)
+                EVT_SET(MV_LightningTimer, 0)
+                EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim00)
+        EVT_END_SWITCH
         EVT_IF_TRUE(MF_LightningCanDamagePlayer)
-            EVT_CALL(N(LightningHurtPlayer))
+            EVT_CALL(N(LightningDamagePlayer))
         EVT_END_IF
 
         EVT_IF_GT(MV_AttackTimer, 60)
@@ -99,11 +100,13 @@ EvtScript N(NpcIdle_HuffNPuff) = {
                 EVT_CALL(RandInt, 10, LVarC)
             EVT_END_IF
             EVT_IF_GT(LVarC, 5)
+                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_2078, 0)
                 EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_BILL)
                 EVT_SET(MV_AttackTimer, 0)
             EVT_ELSE
                 EVT_SET(MF_ThrowingSpinies, TRUE)
                 EVT_IF_EQ(MV_SpinyTimer, 8)
+                    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_THROW, 0)
                     EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPINIES)
                     EVT_SET(MV_SpinyTimer, 0)
                     EVT_ADD(MV_SpinyCount, 1)
@@ -158,7 +161,7 @@ NpcData N(NpcData_HuffNPuff) = {
     .drops = NO_DROPS,
     .animations = HUFF_N_PUFF_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
-    .maxHP = 32,
+    .maxHP = 24,
     .invFrames = 30,
     .defeatFlag = GF_HuffNPuffDefeated,
 };

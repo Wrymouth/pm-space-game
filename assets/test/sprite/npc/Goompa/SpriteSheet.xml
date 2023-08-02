@@ -1,0 +1,213 @@
+<SpriteSheet maxComponents="1" paletteGroups="1">
+    <PaletteList>
+        <Palette id="0" src="Default.png"/>
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="Step1.png"/>
+        <Raster id="1" palette="0" src="Step2.png"/>
+        <Raster id="2" palette="0" src="Step3.png"/>
+        <Raster id="3" palette="0" src="Injured.png"/>
+        <Raster id="4" palette="0" src="Hurt.png"/>
+        <Raster id="5" palette="0" src="Idle1.png"/>
+        <Raster id="6" palette="0" src="Idle2.png"/>
+        <Raster id="7" palette="0" src="Idle3.png"/>
+        <Raster id="8" palette="0" src="Talk1.png"/>
+        <Raster id="9" palette="0" src="Talk2.png"/>
+        <Raster id="A" palette="0" src="Jump.png"/>
+        <Raster id="B" palette="0" src="Fall.png"/>
+        <Raster id="C" palette="0" src="Happy1.png"/>
+        <Raster id="D" palette="0" src="Happy2.png"/>
+        <Raster id="E" palette="0" src="WearyTalk1.png"/>
+        <Raster id="F" palette="0" src="WearyTalk2.png"/>
+        <Raster id="10" palette="0" src="WearyTalk3.png"/>
+        <Raster id="11" palette="0" src="WearyIdle1.png"/>
+        <Raster id="12" palette="0" src="WearyIdle2.png"/>
+        <Raster id="13" palette="0" src="WearyIdle3.png"/>
+        <Raster id="14" palette="0" src="WearyStep1.png"/>
+        <Raster id="15" palette="0" src="WearyStep2.png"/>
+        <Raster id="16" palette="0" src="WearyStep3.png"/>
+        <Raster id="17" palette="0" src="Rummage1.png"/>
+        <Raster id="18" palette="0" src="Rummage2.png"/>
+        <Raster id="19" palette="0" src="Rummage3.png"/>
+    </RasterList>
+    <AnimationList>
+        <Animation name="Still">
+            <Component name="Comp_0" xyz="0,-18,0">
+                <Label name="Start"/>
+                <SetRaster raster="1"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Idle">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="5"/>
+                <Wait duration="48"/>
+                <SetRaster raster="6"/>
+                <Wait duration="4"/>
+                <SetRaster raster="7"/>
+                <Wait duration="16"/>
+                <SetRaster raster="6"/>
+                <Wait duration="4"/>
+                <SetRaster raster="5"/>
+                <Wait duration="16"/>
+                <SetRaster raster="6"/>
+                <Wait duration="4"/>
+                <SetRaster raster="7"/>
+                <Wait duration="16"/>
+                <SetRaster raster="6"/>
+                <Wait duration="4"/>
+                <SetRaster raster="5"/>
+                <Wait duration="16"/>
+                <SetRaster raster="6"/>
+                <Wait duration="4"/>
+                <SetRaster raster="7"/>
+                <Wait duration="16"/>
+                <SetRaster raster="6"/>
+                <Wait duration="4"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Walk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="0"/>
+                <Wait duration="16"/>
+                <SetRaster raster="1"/>
+                <Wait duration="4"/>
+                <SetRaster raster="2"/>
+                <Wait duration="16"/>
+                <SetRaster raster="1"/>
+                <Wait duration="8"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Run">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="0"/>
+                <Wait duration="4"/>
+                <SetRaster raster="1"/>
+                <Wait duration="2"/>
+                <SetRaster raster="2"/>
+                <Wait duration="4"/>
+                <SetRaster raster="1"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Jump">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="A"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Fall">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="B"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Hurt">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="4"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Injured">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="3"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Talk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="5"/>
+                <Wait duration="6"/>
+                <SetRaster raster="8"/>
+                <Wait duration="4"/>
+                <SetRaster raster="9"/>
+                <Wait duration="6"/>
+                <SetRaster raster="8"/>
+                <Wait duration="4"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Celebrate">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="C"/>
+                <Wait duration="4"/>
+                <SetRaster raster="D"/>
+                <Wait duration="4"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="WearyIdle">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="11"/>
+                <Wait duration="16"/>
+                <SetRaster raster="12"/>
+                <Wait duration="4"/>
+                <SetRaster raster="13"/>
+                <Wait duration="16"/>
+                <SetRaster raster="12"/>
+                <Wait duration="4"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="WearyTalk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="E"/>
+                <Wait duration="8"/>
+                <SetRaster raster="F"/>
+                <Wait duration="8"/>
+                <SetRaster raster="10"/>
+                <Wait duration="8"/>
+                <SetRaster raster="F"/>
+                <Wait duration="8"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="WearyWalk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="14"/>
+                <Wait duration="10"/>
+                <SetRaster raster="15"/>
+                <Wait duration="4"/>
+                <SetRaster raster="16"/>
+                <Wait duration="16"/>
+                <SetRaster raster="15"/>
+                <Wait duration="4"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Rummage">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="19"/>
+                <Wait duration="8"/>
+                <SetRaster raster="18"/>
+                <Wait duration="8"/>
+                <SetRaster raster="19"/>
+                <Wait duration="8"/>
+                <SetRaster raster="17"/>
+                <Wait duration="8"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

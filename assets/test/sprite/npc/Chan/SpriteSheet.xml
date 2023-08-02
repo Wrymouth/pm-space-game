@@ -1,0 +1,294 @@
+<SpriteSheet maxComponents="1" paletteGroups="1">
+    <PaletteList>
+        <Palette id="0" src="Default.png"/>
+        <Palette id="1" src="Poisoned.png"/>
+        <Palette id="2" src="Dizzy.png"/>
+        <Palette id="3" src="Shocked.png"/>
+        <Palette id="4" src="Burnt.png"/>
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="Idle1.png"/>
+        <Raster id="1" palette="0" src="Idle2.png"/>
+        <Raster id="2" palette="0" src="Idle3.png"/>
+        <Raster id="3" palette="0" src="ToppledIdle1.png"/>
+        <Raster id="4" palette="0" src="ToppledIdle2.png"/>
+        <Raster id="5" palette="0" src="Hurt1.png"/>
+        <Raster id="6" palette="0" src="Hurt2.png"/>
+        <Raster id="7" palette="0" src="Step1.png"/>
+        <Raster id="8" palette="0" src="Step2.png"/>
+        <Raster id="9" palette="0" src="ShellSpin1.png"/>
+        <Raster id="A" palette="0" src="ShellSpin2.png"/>
+        <Raster id="B" palette="0" src="ShellSpin3.png"/>
+        <Raster id="C" palette="0" src="ShellSpin4.png"/>
+        <Raster id="D" palette="0" src="ShellSpin5.png"/>
+        <Raster id="E" palette="0" src="ShellSpin6.png"/>
+        <Raster id="F" palette="4" src="Empty1.png"/>
+        <Raster id="10" palette="4" src="Empty2.png"/>
+        <Raster id="11" palette="0" src="Step3.png"/>
+        <Raster id="12" palette="0" src="EnterShell1.png"/>
+        <Raster id="13" palette="0" src="EnterShell2.png"/>
+        <Raster id="14" palette="0" src="EnterShell3.png"/>
+        <Raster id="15" palette="0" src="Sleep.png"/>
+        <Raster id="16" palette="0" src="Dizzy1.png"/>
+        <Raster id="17" palette="0" src="Dizzy2.png"/>
+        <Raster id="18" palette="0" src="Dizzy3.png"/>
+        <Raster id="19" palette="0" src="Dizzy4.png"/>
+        <Raster id="1A" palette="0" src="ToppledHurt1.png"/>
+        <Raster id="1B" palette="0" src="ToppledHurt2.png"/>
+        <Raster id="1C" palette="4" src="ToppledBurnHurt1.png"/>
+        <Raster id="1D" palette="4" src="ToppledBurnHurt2.png"/>
+    </RasterList>
+    <AnimationList>
+        <Animation name="Still">
+            <Component name="Comp_0" xyz="0,-18,0">
+                <Label name="Start"/>
+                <SetRaster raster="0"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Idle">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="0"/>
+                <Wait duration="60"/>
+                <SetRaster raster="1"/>
+                <Wait duration="8"/>
+                <SetRaster raster="2"/>
+                <Wait duration="30"/>
+                <SetRaster raster="1"/>
+                <Wait duration="4"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Toppled">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="3"/>
+                <Wait duration="12"/>
+                <SetRaster raster="4"/>
+                <Wait duration="12"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Walk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="7"/>
+                <Wait duration="8"/>
+                <SetRaster raster="8"/>
+                <Wait duration="6"/>
+                <SetRaster raster="11"/>
+                <Wait duration="8"/>
+                <SetRaster raster="8"/>
+                <Wait duration="6"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Run">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="7"/>
+                <Wait duration="2"/>
+                <SetRaster raster="8"/>
+                <Wait duration="2"/>
+                <SetRaster raster="11"/>
+                <Wait duration="4"/>
+                <SetRaster raster="8"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="ShellSpin">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="9"/>
+                <Wait duration="2"/>
+                <SetRaster raster="A"/>
+                <Wait duration="2"/>
+                <SetRaster raster="B"/>
+                <Wait duration="2"/>
+                <SetRaster raster="C"/>
+                <Wait duration="2"/>
+                <SetRaster raster="D"/>
+                <Wait duration="2"/>
+                <SetRaster raster="E"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Hurt">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="5"/>
+                <Wait duration="6"/>
+                <SetRaster raster="6"/>
+                <Wait duration="6"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="ToppledHurt">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="3"/>
+                <Wait duration="4"/>
+                <SetRaster raster="4"/>
+                <Wait duration="6"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="HurtAlt">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="5"/>
+                <Wait duration="8"/>
+                <SetRaster raster="6"/>
+                <Wait duration="8"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="ShellStill">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="14"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Sleep">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetPos flag="1" xyz="2,0,0"/>
+                <SetRaster raster="15"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Dizzy">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="16"/>
+                <Wait duration="6"/>
+                <SetRaster raster="17"/>
+                <Wait duration="6"/>
+                <SetRaster raster="18"/>
+                <Wait duration="6"/>
+                <SetRaster raster="19"/>
+                <Wait duration="6"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="EnterShell">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="0"/>
+                <Wait duration="2"/>
+                <SetRaster raster="12"/>
+                <Wait duration="4"/>
+                <SetRaster raster="13"/>
+                <Wait duration="4"/>
+                <Label name="Pos_6"/>
+                <SetRaster raster="14"/>
+                <Wait duration="2"/>
+                <Goto dest="Pos_6"/>
+            </Component>
+        </Animation>
+        <Animation name="ExitShell">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="14"/>
+                <Wait duration="2"/>
+                <SetRaster raster="13"/>
+                <Wait duration="4"/>
+                <SetRaster raster="12"/>
+                <Wait duration="4"/>
+                <Label name="Pos_6"/>
+                <SetRaster raster="0"/>
+                <Wait duration="2"/>
+                <Goto dest="Pos_6"/>
+            </Component>
+        </Animation>
+        <Animation name="ToppledHurtAlt">
+            <Component name="Comp_0" xyz="-1,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="1A"/>
+                <Wait duration="6"/>
+                <SetRaster raster="1B"/>
+                <Wait duration="6"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="ToppledStill">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="4"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="ToppledSleep">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="3"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="ToppledDizzy">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="3"/>
+                <Wait duration="2"/>
+                <SetRaster raster="4"/>
+                <Wait duration="2"/>
+                <SetRaster raster="3"/>
+                <Wait duration="4"/>
+                <SetRaster raster="4"/>
+                <Wait duration="4"/>
+                <SetRaster raster="3"/>
+                <Wait duration="4"/>
+                <SetRaster raster="4"/>
+                <Wait duration="4"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Empty">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="F"/>
+                <Wait duration="6"/>
+                <SetPos flag="1" xyz="-2,-2,0"/>
+                <SetRaster raster="10"/>
+                <Wait duration="8"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="EmptyStill">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetPos flag="1" xyz="-2,-2,0"/>
+                <SetRaster raster="10"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="ToppledBurnHurt">
+            <Component name="Comp_0" xyz="-1,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="1C"/>
+                <Wait duration="6"/>
+                <SetRaster raster="1D"/>
+                <Wait duration="6"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="ToppledBurnStill">
+            <Component name="Comp_0" xyz="-1,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="1C"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

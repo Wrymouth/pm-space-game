@@ -8,19 +8,19 @@ API_CALLABLE(N(DoAttack)) {
 }
 
 API_CALLABLE(N(SetDamageAnimation)) {
-    Bytecode* args = script->ptrReadPos;
-    AnimID standardAnimID = evt_get_variable(script, *args++);
-    AnimID hurtAnimID = evt_get_variable(script, *args++);
-    AnimID currentAnimID;
-    AnimID outVar = *args++;
-    Enemy* enemy = script->owner1.enemy;
-    Npc* enemyNpc = get_npc_safe(enemy->npcID);
+    Bytecode* args           = script->ptrReadPos;
+    AnimID    standardAnimID = evt_get_variable(script, *args++);
+    AnimID    hurtAnimID     = evt_get_variable(script, *args++);
+    AnimID    currentAnimID;
+    AnimID    outVar   = *args++;
+    Enemy*    enemy    = script->owner1.enemy;
+    Npc*      enemyNpc = get_npc_safe(enemy->npcID);
 
-    currentAnimID = enemyNpc->currentAnim;
+    currentAnimID = enemyNpc->curAnim;
 
     if (enemy->invFrames >= enemy->invTimer) {
-        enemy->flags &= ~ENEMY_FLAG_INVINCIBLE;
-        enemy->invFrames = 0;
+        enemy->flags     &= ~ENEMY_FLAG_INVINCIBLE;
+        enemy->invFrames  = 0;
     }
     if (enemy->flags & ENEMY_FLAG_INVINCIBLE) {
         enemy->invFrames++;
@@ -30,5 +30,19 @@ API_CALLABLE(N(SetDamageAnimation)) {
     } else {
         evt_set_variable(script, outVar, currentAnimID);
     }
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(N(Fast_NpcFacePlayer)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 npcID = evt_get_variable(script, *args++);
+    Npc* npc = resolve_npc(script, npcID);
+
+    if (gPlayerStatus.pos.x < npc->pos.x) {
+        npc->yaw       = 270;
+    } else {
+        npc->yaw       = 90;
+    }
+
     return ApiStatus_DONE2;
 }

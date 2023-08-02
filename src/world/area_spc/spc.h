@@ -29,6 +29,11 @@ enum {
     MapXRight = 300,
     MapYBottom = -200,
     MapYTop = 150,
+    BowserYTop = 120,
+    BowserYBottom = -220,
+    BowserXLeft = -270,
+    BowserXRight = 270,
+    BowserDefeatYBottom = -540,
 };
 
 extern MapSettings spc_00_settings;

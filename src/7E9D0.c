@@ -453,7 +453,7 @@ s32 check_input_hammer(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
 
-    if (playerStatus->pressedButtons & BUTTON_B) {
+    if (FALSE && playerStatus->pressedButtons & BUTTON_B) {
         if (playerStatus->flags & PS_FLAG_FALLING) {
             return FALSE;
         }

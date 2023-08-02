@@ -158,7 +158,7 @@ void on_bullet_render(Npc* bulletNpc) {
     }
     bullets[bulletIndex].activeBulletTime++;
     update_collision(bulletNpc, bulletIndex);
-    npc_move_heading(bulletNpc, bulletNpc->moveSpeed, bulletNpc->yaw);
+    npc_move_heading(bulletNpc, bulletNpc->moveSpeed, clamp_angle(bulletNpc->yaw - 90));
 }
 
 void use_bullet(void) {
@@ -187,9 +187,9 @@ void use_bullet(void) {
 
     bulletCount++;
 
-    playerPosX = playerStatus->position.x;
-    playerPosY = playerStatus->position.y;
-    playerPosZ = playerStatus->position.z;
+    playerPosX = playerStatus->pos.x;
+    playerPosY = playerStatus->pos.y;
+    playerPosZ = playerStatus->pos.z;
 
     npcSettings.defaultAnim = ANIM_Leaf_Pivot;
     npcSettings.height      = 12;
@@ -222,21 +222,22 @@ void use_bullet(void) {
     bulletNpc->unk_96            = 0;
     bulletNpc->planarFlyDist     = 0.0f;
     bulletNpc->flags             = NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_8;
+    bulletNpc->isBullet = TRUE;
 
     initialDistanceX = bullets[i].facingLeft ? -25.0f : 25.0f;
 
-    bulletNpc->moveToPos.x = playerStatus->position.x;
-    bulletNpc->moveToPos.y = playerStatus->position.y;
-    bulletNpc->moveToPos.z = playerStatus->position.z;
+    bulletNpc->moveToPos.x = playerStatus->pos.x;
+    bulletNpc->moveToPos.y = playerStatus->pos.y;
+    bulletNpc->moveToPos.z = playerStatus->pos.z;
     bulletNpc->moveSpeed   = bulletSpeed;
-    bulletNpc->yaw         = 90.0f;
+    bulletNpc->yaw         = 180.0f;
 
     bulletNpc->pos.x = playerPosX + initialDistanceX;
     bulletNpc->pos.y = playerPosY + 10.0f;
     bulletNpc->pos.z = playerPosZ;
 
-    bulletNpc->rotation.z           = 0.0f;
-    bulletNpc->rotationPivotOffsetY = 10.0f;
+    bulletNpc->rot.z           = 0.0f;
+    bulletNpc->rotPivotOffsetY = 10.0f;
 
     sfx_play_sound_at_player(0x2096, SOUND_SPACE_MODE_0);
 }

@@ -42,8 +42,9 @@ struct title_menu {
     .previous = NULL,
 };
 
-Evt *credits_script = NULL;
-Evt *credits_notif_script = NULL;
+Evt *script_credits = NULL;
+Evt *script_credits_notif = NULL;
+Evt *script_settings_explain_speed;
 
 MenuType menuType = MENU_TYPE_NONE;
 
@@ -176,19 +177,27 @@ void title_menu_draw_contents(void* arg0, s32 baseX, s32 baseY, s32 width, s32 h
 }
 
 EvtScript ShowCreditsMessage = {
-    EVT_SET(GF_CreditsDisplayed, TRUE)
+    EVT_SET(GF_TitleStringDisplayed, TRUE)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Space_Credits, 160, 40)
-    EVT_SET(GF_CreditsDisplayed, FALSE)
+    EVT_SET(GF_TitleStringDisplayed, FALSE)
     EVT_SET(GF_CreditsSeen, TRUE)
     EVT_RETURN
     EVT_END
 };
 
 EvtScript ShowCreditsNotif = {
-    EVT_SET(GF_CreditsDisplayed, TRUE)
+    EVT_SET(GF_TitleStringDisplayed, TRUE)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Space_CreditsNotif, 160, 40)
-    EVT_SET(GF_CreditsDisplayed, FALSE)
+    EVT_SET(GF_TitleStringDisplayed, FALSE)
     EVT_SET(GF_CreditsSeen, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript EVS_SettingsExplainSpeed = {
+    EVT_SET(GF_TitleStringDisplayed, TRUE)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_SettingsExplain_Speed, 160, 40)
+    EVT_SET(GF_TitleStringDisplayed, FALSE)
     EVT_RETURN
     EVT_END
 };
@@ -196,7 +205,7 @@ EvtScript ShowCreditsNotif = {
 // Callback for the "New Game" option
 void title_menu_cb_newgame(void* arg) {
     if (!evt_get_variable(NULL, GF_CreditsSeen)) {
-        credits_notif_script = start_script(&ShowCreditsNotif, 0xA, 0);
+        script_credits_notif = start_script(&ShowCreditsNotif, 0xA, 0);
     } else {
         if (evt_get_variable(NULL, GF_JrTroopaDefeated)) {
             menu_gotomap("spc_03", 0);
@@ -211,10 +220,14 @@ void settings_set_speed(void* arg) {
     evt_set_variable(NULL, GB_Settings_ShipSpeed, arg);
 }
 
+void settings_explain_speed(void* arg) {
+    script_settings_explain_speed = start_script(&EVS_SettingsExplainSpeed, 0xA, 0);
+}
+
 void title_menu_settings_speed(void* arg) {
     struct title_menu_item* items;
 
-    items = general_heap_malloc((2 + 1) * sizeof(struct title_menu_item));
+    items = general_heap_malloc((3 + 1) * sizeof(struct title_menu_item));
 
     items[0].name = "Slow (PJ64)";
     items[0].callback = settings_set_speed;
@@ -224,9 +237,13 @@ void title_menu_settings_speed(void* arg) {
     items[1].callback = settings_set_speed;
     items[1].callbackArg = 6;
 
-    items[2].name = NULL;
-    items[2].callback = NULL;
+    items[2].name = "(Explain)";
+    items[2].callback = settings_explain_speed;
     items[2].callbackArg = NULL;
+
+    items[3].name = NULL;
+    items[3].callback = NULL;
+    items[3].callbackArg = NULL;
 
     // Push new menu
     title_menu_push();
@@ -237,9 +254,10 @@ void title_menu_settings_speed(void* arg) {
 
 // Callback for the "Settings" option
 void title_menu_cb_settings(void* arg) {
+    const s32 settingsCount = 2;
+    
     struct title_menu_item* items;
 
-    s32 settingsCount = 1;
 
     // Allocate the items list with space for the terminator
     items = general_heap_malloc((settingsCount + 1) * sizeof(struct title_menu_item));
@@ -262,7 +280,7 @@ void title_menu_cb_settings(void* arg) {
 }
 
 void title_menu_cb_credits(void* arg) {
-    credits_script = start_script(&ShowCreditsMessage, 0xF, 0);
+    script_credits = start_script(&ShowCreditsMessage, 0xF, 0);
 }
 
 void init_character_icons(void) {
@@ -371,7 +389,7 @@ void render_title_menu(void) {
     s32 height = 150;
     char msgbuf[0x100];
 
-    if (evt_get_variable(credits_script, GF_CreditsDisplayed)) {
+    if (evt_get_variable(script_credits, GF_TitleStringDisplayed)) {
         return;
     }
 

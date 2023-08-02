@@ -299,6 +299,8 @@ typedef struct Npc {
                 union {
                     f32 goalY;
                     f32 moveAngle;
+                    f32 vertSpeed;
+                    Vec3f moveDist;
                 };
                 f32 distToGoal;
                 s32 isBullet;
