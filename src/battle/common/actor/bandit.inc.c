@@ -232,7 +232,7 @@ EvtScript N(EVS_DropCoin) = {
             EVT_CALL(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
             EVT_ADD(LVar2, 30)
             EVT_CALL(SetActorPos, LVarA, LVar1, LVar2, LVar3)
-            EVT_CALL(SetActorSounds, LVarA, ACTOR_SOUND_JUMP, SOUND_0, 0)
+            EVT_CALL(SetActorSounds, LVarA, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
             EVT_CALL(AddVectorPolar, LVar1, LVar3, EVT_FLOAT(40.0), LVar0)
             EVT_CALL(SetGoalPos, LVarA, LVar1, 0, LVar3)
             EVT_CALL(JumpToGoal, LVarA, 20, FALSE, TRUE, FALSE)
@@ -296,7 +296,7 @@ EvtScript N(EVS_DropCoin) = {
             EVT_END_IF
             EVT_GOTO(5)
             EVT_LABEL(10)
-            EVT_CALL(EnableActorBlur, LVarA, 1)
+            EVT_CALL(EnableActorBlur, LVarA, IDLE_SCRIPT_DISABLE)
             EVT_CALL(SetTargetActor, LVarA, ACTOR_PLAYER)
             EVT_CALL(SetGoalToTarget, LVarA)
             EVT_CALL(JumpToGoal, LVarA, 15, FALSE, FALSE, FALSE)
@@ -314,7 +314,7 @@ EvtScript N(EVS_DropCoin) = {
 EvtScript N(EVS_HandleEvent) = {
     EVT_USE_ARRAY(EVT_PTR(N(DropCoinScript)))
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 0)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(GetLastEvent, ACTOR_SELF, LVar0)
     EVT_SWITCH(LVar0)
         EVT_CASE_EQ(EVENT_HIT_COMBO)
@@ -492,7 +492,7 @@ EvtScript N(EVS_HandleEvent) = {
         EVT_CASE_DEFAULT
     EVT_END_SWITCH
     EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Bandit_Idle)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN
     EVT_END
@@ -500,7 +500,7 @@ EvtScript N(EVS_HandleEvent) = {
 
 EvtScript N(EVS_TakeTurn) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 0)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     // if carrying a coin, run away
     EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_HasCoin, LVar0)
@@ -541,7 +541,7 @@ EvtScript N(EVS_TakeTurn) = {
     EVT_CALL(AddGoalPos, ACTOR_SELF, 35, 0, 0)
     EVT_CALL(RunToGoal, ACTOR_SELF, 0, FALSE)
     EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_20C2)
-    EVT_CALL(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_0, SOUND_0)
+    EVT_CALL(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_NONE, SOUND_NONE)
     EVT_CALL(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 1, BS_FLAGS1_10)
     EVT_SWITCH(LVar0)
         EVT_CASE_OR_EQ(HIT_RESULT_MISS)
@@ -577,7 +577,7 @@ EvtScript N(EVS_TakeTurn) = {
             EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Bandit_Idle)
             EVT_CALL(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             EVT_CALL(SetActorYaw, ACTOR_SELF, 0)
-            EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+            EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
             EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
             EVT_RETURN
         EVT_END_CASE_GROUP
@@ -699,7 +699,7 @@ EvtScript N(EVS_TakeTurn) = {
             EVT_CALL(RunToGoal, ACTOR_SELF, 0, FALSE)
         EVT_END_CASE_GROUP
     EVT_END_SWITCH
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN
     EVT_END

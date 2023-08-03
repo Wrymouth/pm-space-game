@@ -119,7 +119,7 @@ EvtScript N(bow_idle) = {
 
 EvtScript N(bow_handleEvent) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 0)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(GetLastEvent, ACTOR_SELF, LVar0)
     EVT_SWITCH(LVar0)
         EVT_CASE_OR_EQ(EVENT_HIT_COMBO)
@@ -220,7 +220,7 @@ EvtScript N(bow_handleEvent) = {
             EVT_RETURN
         EVT_CASE_DEFAULT
     EVT_END_SWITCH
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN
     EVT_END
@@ -228,9 +228,9 @@ EvtScript N(bow_handleEvent) = {
 
 EvtScript N(bow_takeTurn) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 0)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_WAIT(10)
-    EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_APPEAR)
+    EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_APPEAR_A)
     EVT_THREAD
         EVT_SET(LVar0, 200)
         EVT_LOOP(20)
@@ -259,7 +259,7 @@ EvtScript N(bow_takeTurn) = {
     EVT_CALL(BattleCamTargetActor, ACTOR_SELF)
     EVT_CALL(MoveBattleCamOver, 30)
     EVT_CALL(func_8024ECF8, BTL_CAM_MODEY_MINUS_1, BTL_CAM_MODEX_1, FALSE)
-    EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_VANISH)
+    EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_VANISH_A)
     EVT_SET(LVar0, 55)
     EVT_LOOP(20)
         EVT_ADD(LVar0, 10)
@@ -297,7 +297,7 @@ EvtScript N(bow_takeTurn) = {
             EVT_CALL(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBow_Idle)
             EVT_WAIT(10)
-            EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_APPEAR)
+            EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_APPEAR_A)
             EVT_THREAD
                 EVT_SET(LVar0, 200)
                 EVT_LOOP(20)
@@ -312,7 +312,7 @@ EvtScript N(bow_takeTurn) = {
             EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBow_Run)
             EVT_CALL(FlyToGoal, ACTOR_SELF, 30, 0, EASING_COS_IN_OUT)
             EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBow_Idle)
-            EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_VANISH)
+            EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_VANISH_A)
             EVT_CALL(YieldTurn)
             EVT_SET(LVar0, 55)
             EVT_LOOP(20)
@@ -321,7 +321,7 @@ EvtScript N(bow_takeTurn) = {
                 EVT_WAIT(1)
             EVT_END_LOOP
             EVT_CALL(SetPartAlpha, ACTOR_SELF, PRT_MAIN, 255)
-            EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+            EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
             EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
             EVT_RETURN
         EVT_END_CASE_GROUP
@@ -389,7 +389,7 @@ EvtScript N(bow_takeTurn) = {
         EVT_CASE_OR_EQ(HIT_RESULT_HIT)
         EVT_CASE_OR_EQ(HIT_RESULT_NO_DAMAGE)
             EVT_WAIT(10)
-            EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_APPEAR)
+            EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_APPEAR_A)
             EVT_THREAD
                 EVT_SET(LVar0, 200)
                 EVT_LOOP(20)
@@ -404,7 +404,7 @@ EvtScript N(bow_takeTurn) = {
             EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBow_Run)
             EVT_CALL(FlyToGoal, ACTOR_SELF, 30, 0, EASING_COS_IN_OUT)
             EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBow_Idle)
-            EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_VANISH)
+            EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_VANISH_A)
             EVT_CALL(YieldTurn)
             EVT_SET(LVar0, 55)
             EVT_LOOP(20)
@@ -415,7 +415,7 @@ EvtScript N(bow_takeTurn) = {
             EVT_CALL(SetPartAlpha, ACTOR_SELF, PRT_MAIN, 255)
         EVT_END_CASE_GROUP
     EVT_END_SWITCH
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN
     EVT_END

@@ -793,7 +793,7 @@ EvtScript EVS_ExecuteMarioAction = {
             EVT_CALL(LoadStarPowerScript)
             EVT_EXEC_WAIT(LVar0)
     EVT_END_SWITCH
-    EVT_CALL(EnablePlayerBlur, 0)
+    EVT_CALL(EnablePlayerBlur, BLUR_ENABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_PLAYER, TRUE)
     EVT_RETURN
     EVT_END
@@ -823,7 +823,7 @@ EvtScript EVS_PlayerFirstStrike = {
             EVT_CALL(LoadMoveScript)
             EVT_EXEC_WAIT(LVar0)
     EVT_END_SWITCH
-    EVT_CALL(EnablePlayerBlur, 0)
+    EVT_CALL(EnablePlayerBlur, BLUR_ENABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_PLAYER, TRUE)
     EVT_RETURN
     EVT_END
@@ -1285,7 +1285,7 @@ EvtScript EVS_PlayerDies = {
     EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Dying)
     EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_24)
     EVT_WAIT(15)
-    EVT_CALL(EnablePlayerBlur, 1)
+    EVT_CALL(EnablePlayerBlur, BLUR_DISABLE)
     EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_371)
     EVT_SET(LVar0, 0)
     EVT_LOOP(30)
@@ -1299,7 +1299,7 @@ EvtScript EVS_PlayerDies = {
         EVT_CALL(SetActorYaw, ACTOR_PLAYER, LVar0)
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(EnablePlayerBlur, 0)
+    EVT_CALL(EnablePlayerBlur, BLUR_ENABLE)
     EVT_WAIT(30)
     EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_3FB)
     EVT_SET(LVar0, 0)
@@ -1811,26 +1811,26 @@ EvtScript EVS_PlayerRegainAbility = {
     EVT_SWITCH(LVarA)
         EVT_CASE_EQ(2)
             EVT_SET(LVarE, 0)
-            EVT_SET(LVarA, ITEM_ITEMS_ICON)
+            EVT_SET(LVarA, ITEM_MENU_ITEMS)
         EVT_CASE_EQ(1)
             EVT_SET(LVarE, 1)
             EVT_SWITCH(LVarC)
                 EVT_CASE_EQ(0)
-                    EVT_SET(LVarA, ITEM_HAMMER1_ICON)
+                    EVT_SET(LVarA, ITEM_MENU_HAMMER1)
                 EVT_CASE_EQ(1)
-                    EVT_SET(LVarA, ITEM_HAMMER2_ICON)
+                    EVT_SET(LVarA, ITEM_MENU_HAMMER2)
                 EVT_CASE_EQ(2)
-                    EVT_SET(LVarA, ITEM_HAMMER3_ICON)
+                    EVT_SET(LVarA, ITEM_MENU_HAMMER3)
             EVT_END_SWITCH
         EVT_CASE_EQ(0)
             EVT_SET(LVarE, 2)
             EVT_SWITCH(LVarB)
                 EVT_CASE_EQ(0)
-                    EVT_SET(LVarA, ITEM_BOOTS1_ICON)
+                    EVT_SET(LVarA, ITEM_MENU_BOOTS1)
                 EVT_CASE_EQ(1)
-                    EVT_SET(LVarA, ITEM_BOOTS2_ICON)
+                    EVT_SET(LVarA, ITEM_MENU_BOOTS2)
                 EVT_CASE_EQ(2)
-                    EVT_SET(LVarA, ITEM_BOOTS3_ICON)
+                    EVT_SET(LVarA, ITEM_MENU_BOOTS3)
             EVT_END_SWITCH
     EVT_END_SWITCH
     EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)

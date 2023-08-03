@@ -11,7 +11,7 @@ extern EvtScript N(EVS_UseMove_ImplB);
 extern EvtScript N(EVS_UseMove_ImplC);
 
 EvtScript N(EVS_UseMove) = {
-    EVT_CALL(EnablePlayerBlur, 1)
+    EVT_CALL(EnablePlayerBlur, BLUR_DISABLE)
     EVT_CALL(ShowActionHud, TRUE)
     EVT_CALL(GetMenuSelection, LVar0, LVar1, LVar2)
     EVT_SWITCH(LVar1)
@@ -22,7 +22,7 @@ EvtScript N(EVS_UseMove) = {
         EVT_CASE_EQ(2)
             EVT_EXEC_WAIT(N(EVS_UseMove_ImplC))
     EVT_END_SWITCH
-    EVT_CALL(EnablePlayerBlur, 0)
+    EVT_CALL(EnablePlayerBlur, BLUR_ENABLE)
     EVT_RETURN
     EVT_END
 };
@@ -51,10 +51,10 @@ EvtScript N(EVS_UseMove_ImplA) = {
     EVT_CALL(DidActionSucceed, LVar0)
     EVT_SWITCH(LVar0)
         EVT_CASE_GT(FALSE)
-            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15A, SOUND_0)
+            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15A, SOUND_NONE)
             EVT_CALL(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 4, 112)
         EVT_CASE_DEFAULT
-            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15A, SOUND_0)
+            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15A, SOUND_NONE)
             EVT_CALL(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 3, 48)
     EVT_END_SWITCH
     EVT_SWITCH(LVar0)
@@ -79,10 +79,10 @@ EvtScript N(EVS_UseMove_ImplB) = {
     EVT_CALL(DidActionSucceed, LVar0)
     EVT_SWITCH(LVar0)
         EVT_CASE_GT(FALSE)
-            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15B, SOUND_0)
+            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15B, SOUND_NONE)
             EVT_CALL(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 6, 112)
         EVT_CASE_DEFAULT
-            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15B, SOUND_0)
+            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15B, SOUND_NONE)
             EVT_CALL(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 4, 48)
     EVT_END_SWITCH
     EVT_SWITCH(LVar0)
@@ -107,10 +107,10 @@ EvtScript N(EVS_UseMove_ImplC) = {
     EVT_CALL(DidActionSucceed, LVar0)
     EVT_SWITCH(LVar0)
         EVT_CASE_GT(FALSE)
-            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15C, SOUND_0)
+            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15C, SOUND_NONE)
             EVT_CALL(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 8, 112)
         EVT_CASE_DEFAULT
-            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15C, SOUND_0)
+            EVT_CALL(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_15C, SOUND_NONE)
             EVT_CALL(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 5, 48)
     EVT_END_SWITCH
     EVT_SWITCH(LVar0)

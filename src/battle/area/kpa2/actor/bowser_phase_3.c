@@ -581,7 +581,7 @@ EvtScript N(onDeath) = {
             EVT_CALL(SetActorScale, ACTOR_SELF, EVT_FLOAT(1.0), EVT_FLOAT(1.0), EVT_FLOAT(1.0))
         EVT_END_IF
     EVT_END_THREAD
-    EVT_CALL(EnableActorBlur, ACTOR_SELF, 1)
+    EVT_CALL(EnableActorBlur, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(MakeLerp, 0, 0x00001950, 100, EASING_COS_IN_OUT)
     EVT_LABEL(2)
     EVT_CALL(UpdateLerp)
@@ -591,7 +591,7 @@ EvtScript N(onDeath) = {
     EVT_IF_EQ(LVar1, 1)
         EVT_GOTO(2)
     EVT_END_IF
-    EVT_CALL(EnableActorBlur, ACTOR_SELF, 0)
+    EVT_CALL(EnableActorBlur, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_HurtStill)
     EVT_WAIT(15)
     EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_2129)
@@ -1114,7 +1114,7 @@ EvtScript N(attackHeavyJump) = {
             EVT_CALL(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             EVT_SUB(LVar0, 30)
             EVT_SET(LVar1, 0)
-            EVT_CALL(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_JUMP, SOUND_0, 0)
+            EVT_CALL(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
             EVT_CALL(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             EVT_CALL(JumpToGoal, ACTOR_SELF, 18, FALSE, TRUE, FALSE)
             EVT_THREAD
@@ -1257,7 +1257,7 @@ EvtScript N(attackHeavyJump) = {
         EVT_CALL(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         EVT_ADD(LVar0, 40)
         EVT_SET(LVar1, 0)
-        EVT_CALL(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_JUMP, SOUND_0, 0)
+        EVT_CALL(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         EVT_CALL(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         EVT_CALL(JumpToGoal, ACTOR_SELF, 18, FALSE, TRUE, FALSE)
         EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_20EA)
