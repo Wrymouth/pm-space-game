@@ -237,9 +237,11 @@ void bullet_render_spiny(Npc* bulletNpc) {
 void bullet_render_koopa(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
     if (bulletNpc->pos.x > 300 || bulletNpc->pos.x < -300) {
+        sfx_play_sound(SOUND_2118);
         bulletNpc->moveToPos.x *= -1;
     }
     if (bulletNpc->pos.y > 150 || bulletNpc->pos.y < -200) {
+        sfx_play_sound(SOUND_2118);
         bulletNpc->moveToPos.y *= -1;
     }
     bulletNpc->pos.x += bulletNpc->moveToPos.x;
@@ -325,6 +327,7 @@ void bullet_render_summon(Npc* bulletNpc) {
     npc_move_to_target(bulletNpc, bulletNpc->moveSpeed, bulletNpc->moveToPos.x, bulletNpc->moveToPos.y);
     bulletNpc->rot.z += 20;
     if (bulletNpc->pos.y == bulletNpc->moveToPos.y) {
+        sfx_play_sound(SOUND_201D);
         use_enemy_bullet(bulletNpc, ENEMY_BULLET_TYPE_GOOMBA);
         destroy_enemy_bullet(bulletIndex);
     }

@@ -64,6 +64,7 @@ EvtScript N(NpcIdle_Whale) = {
         // attack
         EVT_IF_EQ(MV_WaterTimer, 90)
             EVT_IF_EQ(MV_WaterSubTimer, 8)
+                EVT_CALL(PlaySound, SOUND_2015)
                 EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_WATER)
                 EVT_SET(MV_WaterSubTimer, 0)
                 EVT_ADD(MV_WaterCount, 1)
@@ -78,6 +79,7 @@ EvtScript N(NpcIdle_Whale) = {
             EVT_ADD(MV_WaterTimer, 1)
         EVT_END_IF
         EVT_IF_EQ(MV_FuzzyTimer, 200)
+            EVT_CALL(PlaySound, SOUND_2108)
             EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_FUZZY)
             EVT_SET(MV_FuzzyTimer, 0)
         EVT_END_IF

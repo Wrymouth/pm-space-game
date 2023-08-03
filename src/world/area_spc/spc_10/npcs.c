@@ -13,8 +13,6 @@ API_CALLABLE(N(CheckPhase)) {
         newPhase = 3; 
     } else if (enemy->curHP <= 36) {
         newPhase = 2; 
-    } else {
-        newPhase = 1; 
     }
 
     if (newPhase != evt_get_variable(script,MV_BattlePhase)) {
@@ -83,6 +81,7 @@ EvtScript N(JumpAround) = {
         EVT_ADD(LVar0, LVar3)
         EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(2.3))
         EVT_CALL(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 30)
+        EVT_CALL(PlaySound, SOUND_15C)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN
@@ -97,6 +96,7 @@ EvtScript N(DoGiantJump) = {
     EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(0.3))
     EVT_CALL(NpcJump0, NPC_SELF, LVarC, BowserDefeatYBottom, LVar2, 40)
     EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(2.6))
+    EVT_CALL(PlaySound, SOUND_3E7)
     EVT_CALL(NpcJump0, NPC_SELF, LVarC, BowserDefeatYBottom, LVar2, 40)
     EVT_SET(MF_IsGiantJumping, FALSE)
     EVT_RETURN
@@ -129,10 +129,12 @@ EvtScript N(NpcIdle_Bowser) = {
                 EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 // attacks
                 EVT_IF_EQ(MV_HammersTimer, 12)
+                    EVT_CALL(PlaySound, SOUND_2004)
                     EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_BOWSER_HAMMER)
                     EVT_SET(MV_HammersTimer, 0)
                 EVT_END_IF
                 EVT_IF_EQ(MV_BallTimer, 50)
+                    EVT_CALL(PlaySound, SOUND_20DE)
                     EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_LARGE_BALL)
                     EVT_SET(MV_BallTimer, 0)
                 EVT_END_IF
@@ -160,11 +162,13 @@ EvtScript N(NpcIdle_Bowser) = {
                     EVT_ADD(MV_SwitchTimer, 1)
                     // attacks
                     EVT_IF_EQ(MV_FlamesTimer, 25)
+                        EVT_CALL(PlaySound, SOUND_3C4)
                         EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPREAD_FIRE)
                         EVT_SET(MV_FlamesTimer, 0)
                     EVT_END_IF
                     EVT_ADD(MV_FlamesTimer, 1)
                     EVT_IF_EQ(MV_ChaseTimer, 40)
+                        EVT_CALL(PlaySound, SOUND_20D2)
                         EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_CHASE_FIREBALL)
                         EVT_SET(MV_ChaseTimer, 0)
                     EVT_END_IF
@@ -182,6 +186,7 @@ EvtScript N(NpcIdle_Bowser) = {
                 EVT_END_IF
                 // attacks
                 EVT_IF_EQ(MV_FlamesTimer, 30)
+                    EVT_CALL(PlaySound, SOUND_3C4)
                     EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPREAD_FIRE_WIDE)
                     EVT_SET(MV_FlamesTimer, 0)
                 EVT_END_IF

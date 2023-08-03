@@ -1,0 +1,1512 @@
+# Mapping of filenames to entry IDs. Use 'id: auto' to automatically assign a unique ID.
+
+# 'fakesize is an interesting case. In the final ROM, the size of a file is stored in the file header and the entry table.
+# For bank files, however, the entry table has seemingly random data stored for file size. This data appears to be unused.
+# It would take a lot of time for no clear benefit to figure out how this data is generated, so instead it's extracted.
+# Modders: the fakesize field needs to be set for any file larger than 65536 bytes, however what it's set to doesn't seem to matter
+files:
+  - id: 0x00
+    file: 00_117.bgm
+  - id: 0x01
+    file: 01_118.bgm
+  - id: 0x02
+    file: 02_191.bgm
+  - id: 0x03
+    file: 03_120.bgm
+  - id: 0x04
+    file: 04_119.bgm
+  - id: 0x05
+    file: 05_121.bgm
+  - id: 0x06
+    file: 06_192.bgm
+  - id: 0x07
+    file: 07_193.bgm
+  - id: 0x08
+    file: 08_194.bgm
+  - id: 0x09
+    file: 09_195.bgm
+  - id: 0x0A
+    file: 0A_196.bgm
+  - id: 0x0B
+    file: 0B_122.bgm
+  - id: 0x0C
+    file: 0C_328.bgm
+  - id: 0x0D
+    file: 0D_184.bgm
+  - id: 0x0E
+    file: 0E_187.bgm
+  - id: 0x0F
+    file: 0F_306.bgm
+  - id: 0x10
+    file: 10_135.bgm
+  - id: 0x11
+    file: 11_134.bgm
+  - id: 0x12
+    file: 12_224.bgm
+  - id: 0x13
+    file: 13_814.bgm
+  - id: 0x14
+    file: 14_124.bgm
+  - id: 0x15
+    file: 15_123.bgm
+  - id: 0x16
+    file: 16_186.bgm
+  - id: 0x17
+    file: 17_125.bgm
+  - id: 0x18
+    file: 18_126.bgm
+  - id: 0x19
+    file: 19_127.bgm
+  - id: 0x1A
+    file: 1A_128.bgm
+  - id: 0x1B
+    file: 1B_187.bgm
+  - id: 0x1C
+    file: 1C_129.bgm
+  - id: 0x1D
+    file: 1D_188.bgm
+  - id: 0x1E
+    file: 1E_189.bgm
+  - id: 0x1F
+    file: 1F_190.bgm
+  - id: 0x20
+    file: 20_309.bgm
+  - id: 0x21
+    file: 21_307.bgm
+  - id: 0x22
+    file: 22_308.bgm
+  - id: 0x23
+    file: 23_112.bgm
+  - id: 0x24
+    file: 24_108.bgm
+  - id: 0x25
+    file: 25_198.bgm
+  - id: 0x26
+    file: 26_210.bgm
+  - id: 0x27
+    file: 27_311.bgm
+  - id: 0x28
+    file: 28_312.bgm
+  - id: 0x29
+    file: 29_303.bgm
+  - id: 0x2A
+    file: 2A_305.bgm
+  - id: 0x2B
+    file: 2B_304.bgm
+  - id: 0x2C
+    file: 2C_220.bgm
+  - id: 0x2D
+    file: 2D_301.bgm
+  - id: 0x2E
+    file: 2E_302.bgm
+  - id: 0x2F
+    file: 2F_104.bgm
+  - id: 0x30
+    file: 30_103.bgm
+  - id: 0x31
+    file: 31_105.bgm
+  - id: 0x32
+    file: 32_106.bgm
+  - id: 0x33
+    file: 33_107.bgm
+  - id: 0x34
+    file: 34_110.bgm
+  - id: 0x35
+    file: 35_111.bgm
+  - id: 0x36
+    file: 36_827.bgm
+  - id: 0x37
+    file: 37_202.bgm
+  - id: 0x38
+    file: 38_109.bgm
+  - id: 0x39
+    file: 39_113.bgm
+  - id: 0x3A
+    file: 3A_114.bgm
+  - id: 0x3B
+    file: 3B_141.bgm
+  - id: 0x3C
+    file: 3C_203.bgm
+  - id: 0x3D
+    file: 3D_115.bgm
+  - id: 0x3E
+    file: 3E_116.bgm
+  - id: 0x3F
+    file: 3F_838.bgm
+  - id: 0x40
+    file: 40_205.bgm
+  - id: 0x41
+    file: 41_291.bgm
+  - id: 0x42
+    file: 42_144.bgm
+  - id: 0x43
+    file: 43_145.bgm
+  - id: 0x44
+    file: 44_142.bgm
+  - id: 0x45
+    file: 45_143.bgm
+  - id: 0x46
+    file: 46_148.bgm
+  - id: 0x47
+    file: 47_146.bgm
+  - id: 0x48
+    file: 48_147.bgm
+  - id: 0x49
+    file: 49_139.bgm
+  - id: 0x4A
+    file: 4A_149.bgm
+  - id: 0x4B
+    file: 4B_137.bgm
+  - id: 0x4C
+    file: 4C_138.bgm
+  - id: 0x4D
+    file: 4D_150.bgm
+  - id: 0x4E
+    file: 4E_151.bgm
+  - id: 0x4F
+    file: 4F_208.bgm
+  - id: 0x50
+    file: 50_177.bgm
+  - id: 0x51
+    file: 51_178.bgm
+  - id: 0x52
+    file: 52_209.bgm
+  - id: 0x53
+    file: 53_207.bgm
+  - id: 0x54
+    file: 54_179.bgm
+  - id: 0x55
+    file: 55_178.bgm
+  - id: 0x56
+    file: 56_154.bgm
+  - id: 0x57
+    file: 57_155.bgm
+  - id: 0x58
+    file: 58_157.bgm
+  - id: 0x59
+    file: 59_156.bgm
+  - id: 0x5A
+    file: 5A_169.bgm
+  - id: 0x5B
+    file: 5B_170.bgm
+  - id: 0x5C
+    file: 5C_153.bgm
+  - id: 0x5D
+    file: 5D_185.bgm
+  - id: 0x5E
+    file: 5E_167.bgm
+  - id: 0x5F
+    file: 5F_161.bgm
+  - id: 0x60
+    file: 60_162.bgm
+  - id: 0x61
+    file: 61_158.bgm
+  - id: 0x62
+    file: 62_159.bgm
+  - id: 0x63
+    file: 63_160.bgm
+  - id: 0x64
+    file: 64_163.bgm
+  - id: 0x65
+    file: 65_164.bgm
+  - id: 0x66
+    file: 66_166.bgm
+  - id: 0x67
+    file: 67_152.bgm
+  - id: 0x68
+    file: 68_165.bgm
+  - id: 0x69
+    file: 69_175.bgm
+  - id: 0x6A
+    file: 6A_176.bgm
+  - id: 0x6B
+    file: 6B_174.bgm
+  - id: 0x6C
+    file: 6C_181.bgm
+  - id: 0x6D
+    file: 6D_183.bgm
+  - id: 0x6E
+    file: 6E_001.bgm
+  - id: 0x6F
+    file: 6F_168.bgm
+  - id: 0x70
+    file: 70_171.bgm
+  - id: 0x71
+    file: 71_172.bgm
+  - id: 0x72
+    file: 72_182.bgm
+  - id: 0x73
+    file: 73_199.bgm
+  - id: 0x74
+    file: 74_136.bgm
+  - id: 0x75
+    file: 75_311.bgm
+  - id: 0x76
+    file: 76_310.bgm
+  - id: 0x77
+    file: 77_313.bgm
+  - id: 0x78
+    file: 78_130.bgm
+  - id: 0x79
+    file: 79_132.bgm
+  - id: 0x7A
+    file: 7A_130.bgm
+  - id: 0x7B
+    file: 7B_314.bgm
+  - id: 0x7C
+    file: 7C_323.bgm
+  - id: 0x7D
+    file: 7D_315.bgm
+  - id: 0x7E
+    file: 7E_322.bgm
+  - id: 0x7F
+    file: 7F_316.bgm
+  - id: 0x80
+    file: 80_319.bgm
+  - id: 0x81
+    file: 81_318.bgm
+  - id: 0x82
+    file: 82_320.bgm
+  - id: 0x83
+    file: 83_321.bgm
+  - id: 0x84
+    file: 84_317.bgm
+  - id: 0x85
+    file: 85_327.bgm
+  - id: 0x86
+    file: 86_102.bgm
+  - id: 0x87
+    file: 87_101.bgm
+  - id: 0x88
+    file: 88_324.bgm
+  - id: 0x89
+    file: 89_325.bgm
+  - id: 0x8A
+    file: 8A_326.bgm
+  - id: 0x8B
+    file: 8B_221.bgm
+  - id: 0x8C
+    file: 8C_222.bgm
+  - id: 0x8D
+    file: 8D_223.bgm
+  - id: 0x8E
+    file: 8E_226.bgm
+  - id: 0x8F
+    file: 8F_DAT1.sef
+  - id: 0x90
+    file: 90_PS01.bk
+    fakesize: 1296
+  - id: 0x91
+    file: 91_PS02.bk
+    fakesize: 1472
+  - id: 0x92
+    file: 92_PS03.bk
+    fakesize: 1280
+  - id: 0x93
+    file: 93_PS04.bk
+    fakesize: 1360
+  - id: 0x94
+    file: 94_PS05.bk
+    fakesize: 1248
+  - id: 0x95
+    file: 95_PS11.bk
+    fakesize: 1312
+  - id: 0x96
+    file: 96_GM01.bk
+    fakesize: 2064
+  - id: 0x97
+    file: 97_GM02.bk
+    fakesize: 1808
+  - id: 0x98
+    file: 98_GM03.bk
+    fakesize: 2448
+  - id: 0x99
+    file: 99_GM04.bk
+    fakesize: 1984
+  - id: 0x9A
+    file: 9A_GM05.bk
+    fakesize: 1888
+  - id: 0x9B
+    file: 9B_GM06.bk
+    fakesize: 2112
+  - id: 0x9C
+    file: 9C_GM07.bk
+    fakesize: 1952
+  - id: 0x9D
+    file: 9D_GM08.bk
+    fakesize: 2960
+  - id: 0x9E
+    file: 9E_GM09.bk
+    fakesize: 2208
+  - id: 0x9F
+    file: 9F_GM10.bk
+    fakesize: 1872
+  - id: 0xA0
+    file: A0_GM11.bk
+    fakesize: 1088
+  - id: 0xA1
+    file: A1_SPC0.bk
+    fakesize: 320
+  - id: 0xA2
+    file: A2_SPC1.bk
+    fakesize: 304
+  - id: 0xA3
+    file: A3_SPC2.bk
+    fakesize: 160
+  - id: 0xA4
+    file: A4_SPC3.bk
+    fakesize: 1632
+  - id: 0xA5
+    file: A5_REC1.bk
+    fakesize: 1152
+  - id: 0xA6
+    file: A6_STG5.bk
+    fakesize: 640
+  - id: 0xA7
+    file: A7_STG8.bk
+    fakesize: 160
+  - id: 0xA8
+    file: A8_CHO1.bk
+    fakesize: 160
+  - id: 0xA9
+    file: A9_SYS0.bk
+    fakesize: 1216
+  - id: 0xAA
+    file: AA_SYS1.bk
+    fakesize: 1472
+  - id: 0xAB
+    file: AB_SYS2.bk
+    fakesize: 1136
+  - id: 0xAC
+    file: AC_MAR0.bk
+    fakesize: 1360
+  - id: 0xAD
+    file: AD_MAR1.bk
+    fakesize: 1312
+  - id: 0xAE
+    file: AE_ENV0.bk
+    fakesize: 1232
+  - id: 0xAF
+    file: AF_PAR0.bk
+    fakesize: 1296
+  - id: 0xB0
+    file: B0_PAR1.bk
+    fakesize: 1296
+  - id: 0xB1
+    file: B1_PAR2.bk
+    fakesize: 368
+  - id: 0xB2
+    file: B2_ETC0.bk
+    fakesize: 1168
+  - id: 0xB3
+    file: B3_ETC1.bk
+    fakesize: 912
+  - id: 0xB4
+    file: B4_ETC2.bk
+    fakesize: 768
+  - id: 0xB5
+    file: B5_ENE0.bk
+    fakesize: 1360
+  - id: 0xB6
+    file: B6_ENE1.bk
+    fakesize: 1200
+  - id: 0xB7
+    file: B7_EVT0.bk
+    fakesize: 1520
+  - id: 0xB8
+    file: B8_EVT1.bk
+    fakesize: 1360
+  - id: 0xB9
+    file: B9_EVT2.bk
+    fakesize: 1424
+  - id: 0xBA
+    file: BA_EVT3.bk
+    fakesize: 1392
+  - id: 0xBB
+    file: BB_EVT4.bk
+    fakesize: 1264
+  - id: 0xBC
+    file: BC_EVT5.bk
+    fakesize: 1456
+  - id: 0xBD
+    file: BD_EVT6.bk
+    fakesize: 1392
+  - id: 0xBE
+    file: BE_EVT7.bk
+    fakesize: 1424
+  - id: 0xBF
+    file: BF_EVT8.bk
+    fakesize: 1312
+  - id: 0xC0
+    file: C0_MOB0.bk
+    fakesize: 992
+  - id: 0xC1
+    file: C1_PEA0.bk
+    fakesize: 880
+  - id: 0xC2
+    file: C2_MAR2.bk
+    fakesize: 1328
+  - id: 0xC3
+    file: C3_MAR3.bk
+    fakesize: 1392
+  - id: 0xC4
+    file: C4_MAR4.bk
+    fakesize: 800
+  - id: 0xC5
+    file: C5_BTL0.bk
+    fakesize: 1344
+  - id: 0xC6
+    file: C6_BTL1.bk
+    fakesize: 1456
+  - id: 0xC7
+    file: C7_BTL2.bk
+    fakesize: 1424
+  - id: 0xC8
+    file: C8_BTL3.bk
+    fakesize: 880
+  - id: 0xC9
+    file: C9_BT20.bk
+    fakesize: 1088
+  - id: 0xCA
+    file: CA_BT21.bk
+    fakesize: 1136
+  - id: 0xCB
+    file: CB_BT22.bk
+    fakesize: 1296
+  - id: 0xCC
+    file: CC_BT23.bk
+    fakesize: 1232
+  - id: 0xCD
+    file: CD_BT24.bk
+    fakesize: 1232
+  - id: 0xCE
+    file: CE_BT25.bk
+    fakesize: 1392
+  - id: 0xCF
+    file: CF_BT26.bk
+    fakesize: 1424
+  - id: 0xD0
+    file: D0_BT27.bk
+    fakesize: 1360
+  - id: 0xD1
+    file: D1_BT28.bk
+    fakesize: 1360
+  - id: 0xD2
+    file: D2_BT29.bk
+    fakesize: 1264
+  - id: 0xD3
+    file: D3_BT2A.bk
+    fakesize: 1264
+  - id: 0xD4
+    file: D4_BT2B.bk
+    fakesize: 1392
+  - id: 0xD5
+    file: D5_BT2C.bk
+    fakesize: 1360
+  - id: 0xD6
+    file: D6_BT2D.bk
+    fakesize: 272
+  - id: 0xD7
+    file: D7_PHR1.bk
+    fakesize: 560
+  - id: 0xD8
+    file: D8_ENV1.bk
+    fakesize: 1520
+  - id: 0xD9
+    file: D9_SET1.per
+  - id: 0xDA
+    file: DA_SET1.prg
+  - id: 0xDB
+    file: DB_501.mseq
+  - id: 0xDC
+    file: DC_502.mseq
+  - id: 0xDD
+    file: DD_503.mseq
+  - id: 0xDE
+    file: DE_504.mseq
+  - id: 0xDF
+    file: DF_505.mseq
+  - id: 0xE0
+    file: E0_506.mseq
+  - id: 0xE1
+    file: E1_507.mseq
+  - id: 0xE2
+    file: E2_508.mseq
+  - id: 0xE3
+    file: E3_509.mseq
+  - id: 0xE4
+    file: E4_510.mseq
+  - id: 0xE5
+    file: E5_511.mseq
+  - id: 0xE6
+    file: E6_512.mseq
+  - id: 0xE7
+    file: E7_513.mseq
+  - id: 0xE8
+    file: E8_521.mseq
+  - id: 0xE9
+    file: E9_522.mseq
+  - id: 0xEA
+    file: EA_523.mseq
+  - id: 0xEB
+    file: EB_521.mseq
+  - id: auto
+    file: shroobfinal2.bgm
+
+# Songs. Use 'id: auto' to automatically assign a unique ID.
+# Symbols are used to generate the SongIDs C enum.
+songs:
+  - id: 0x00
+    symbol: SONG_TOAD_TOWN
+    file: 26_210.bgm
+    bk_files: [A1_SPC0.bk, null, null]
+  - id: 0x01
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x02
+    symbol: SONG_NORMAL_BATTLE
+    file: 00_117.bgm
+    bk_files: [null, null, null]
+  - id: 0x03
+    symbol: SONG_SPECIAL_BATTLE
+    file: 01_118.bgm
+    bk_files: [null, null, null]
+  - id: 0x04
+    symbol: SONG_JR_TROOPA_BATTLE
+    file: 0D_184.bgm
+    bk_files: [null, null, null]
+  - id: 0x05
+    symbol: SONG_FINAL_BOWSER_BATTLE
+    file: 0E_187.bgm
+    bk_files: [null, null, null]
+  - id: 0x06
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x07
+    symbol: SONG_GOOMBA_KING_BATTLE
+    file: 02_191.bgm
+    bk_files: [null, null, null]
+  - id: 0x08
+    symbol: SONG_KOOPA_BROS_BATTLE
+    file: 03_120.bgm
+    bk_files: [null, null, null]
+  - id: 0x09
+    symbol: SONG_FAKE_BOWSER_BATTLE
+    file: 04_119.bgm
+    bk_files: [null, null, null]
+  - id: 0x0a
+    symbol: SONG_TUTANKOOPA_BATTLE
+    file: 05_121.bgm
+    bk_files: [null, null, null]
+  - id: 0x0b
+    symbol: SONG_TUBBA_BLUBBA_BATTLE
+    file: 06_192.bgm
+    bk_files: [null, null, null]
+  - id: 0x0c
+    symbol: SONG_GENERAL_GUY_BATTLE
+    file: 07_193.bgm
+    bk_files: [A2_SPC1.bk, null, null]
+  - id: 0x0d
+    symbol: SONG_LAVA_PIRANHA_BATTLE
+    file: 08_194.bgm
+    bk_files: [null, null, null]
+  - id: 0x0e
+    symbol: SONG_HUFF_N_PUFF_BATTLE
+    file: 09_195.bgm
+    bk_files: [null, null, null]
+  - id: 0x0f
+    symbol: SONG_CRYSTAL_KING_BATTLE
+    file: 0A_196.bgm
+    bk_files: [null, null, null]
+  - id: 0x10
+    symbol: SONG_GOOMBA_VILLAGE
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x11
+    symbol: SONG_PLEASANT_PATH
+    file: 30_103.bgm
+    bk_files: [null, null, null]
+  - id: 0x12
+    symbol: SONG_FUZZY_ATTACK
+    file: 31_105.bgm
+    bk_files: [null, null, null]
+  - id: 0x13
+    symbol: SONG_KOOPA_VILLAGE
+    file: 32_106.bgm
+    bk_files: [null, null, null]
+  - id: 0x14
+    symbol: SONG_KOOPA_FORTRESS
+    file: 33_107.bgm
+    bk_files: [null, null, null]
+  - id: 0x15
+    symbol: SONG_DRY_DRY_OUTPOST
+    file: 38_109.bgm
+    bk_files: [null, null, null]
+  - id: 0x16
+    symbol: SONG_MT_RUGGED
+    file: 36_827.bgm
+    bk_files: [null, null, null]
+  - id: 0x17
+    symbol: SONG_DRY_DRY_DESERT
+    file: 37_202.bgm
+    bk_files: [null, null, null]
+  - id: 0x18
+    symbol: SONG_DRY_DRY_RUINS
+    file: 34_110.bgm
+    bk_files: [null, null, null]
+  - id: 0x19
+    symbol: SONG_RUINS_BASEMENT
+    file: 35_111.bgm
+    bk_files: [null, null, null]
+  - id: 0x1a
+    symbol: SONG_FOREVER_FOREST
+    file: 39_113.bgm
+    bk_files: [null, null, null]
+  - id: 0x1b
+    symbol: SONG_BOOS_MANSION
+    file: 3A_114.bgm
+    bk_files: [null, null, null]
+  - id: 0x1c
+    symbol: SONG_CHEERFUL_BOOS_MANSION
+    file: 3B_141.bgm
+    bk_files: [null, null, null]
+  - id: 0x1d
+    symbol: SONG_GUSTY_GULCH
+    file: 3C_203.bgm
+    bk_files: [null, null, null]
+  - id: 0x1e
+    symbol: SONG_TUBBAS_MANOR
+    file: 3D_115.bgm
+    bk_files: [null, null, null]
+  - id: 0x1f
+    symbol: SONG_TUBBA_ESCAPE
+    file: 3E_116.bgm
+    bk_files: [null, null, null]
+  - id: 0x20
+    symbol: SONG_SHY_GUY_TOYBOX
+    file: 3F_838.bgm
+    bk_files: [null, null, null]
+  - id: 0x21
+    symbol: SONG_TOYBOX_TRAIN
+    file: 40_205.bgm
+    bk_files: [A2_SPC1.bk, null, null]
+  - id: 0x22
+    symbol: SONG_CREEPY_TOYBOX
+    file: 41_291.bgm
+    bk_files: [null, null, null]
+  - id: 0x23
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x24
+    symbol: SONG_JADE_JUNGLE
+    file: 42_144.bgm
+    bk_files: [95_PS11.bk, A6_STG5.bk, null]
+  - id: 0x25
+    symbol: SONG_DEEP_JUNGLE
+    file: 43_145.bgm
+    bk_files: [95_PS11.bk, A6_STG5.bk, null]
+  - id: 0x26
+    symbol: SONG_YOSHIS_VILLAGE
+    file: 44_142.bgm
+    bk_files: [95_PS11.bk, A6_STG5.bk, null]
+  - id: 0x27
+    symbol: SONG_YOSHIS_PANIC
+    file: 45_143.bgm
+    bk_files: [95_PS11.bk, A6_STG5.bk, null]
+  - id: 0x28
+    symbol: SONG_RAPHAEL_RAVEN
+    file: 46_148.bgm
+    bk_files: [95_PS11.bk, A6_STG5.bk, null]
+  - id: 0x29
+    symbol: SONG_MT_LAVALAVA
+    file: 47_146.bgm
+    bk_files: [95_PS11.bk, A6_STG5.bk, null]
+  - id: 0x2a
+    symbol: SONG_VOLCANO_ESCAPE
+    file: 48_147.bgm
+    bk_files: [95_PS11.bk, A6_STG5.bk, null]
+  - id: 0x2b
+    symbol: SONG_STAR_WAY_OPENS
+    file: 5C_153.bgm
+    bk_files: [A7_STG8.bk, null, null]
+  - id: 0x2c
+    symbol: SONG_MASTER_BATTLE
+    file: 0F_306.bgm
+    bk_files: [null, null, null]
+  - id: 0x2d
+    symbol: SONG_RADIO_ISLAND_SOUNDS
+    file: 8B_221.bgm
+    bk_files: [A4_SPC3.bk, null, null]
+  - id: 0x2e
+    symbol: SONG_RADIO_HOT_HITS
+    file: 8C_222.bgm
+    bk_files: [A4_SPC3.bk, null, null]
+  - id: 0x2f
+    symbol: SONG_RADIO_GOLDEN_OLDIES
+    file: 8D_223.bgm
+    bk_files: [A4_SPC3.bk, null, null]
+  - id: 0x30
+    symbol: SONG_FLOWER_FIELDS_CLOUDY
+    file: 4B_137.bgm
+    bk_files: [null, null, null]
+  - id: 0x31
+    symbol: SONG_FLOWER_FIELDS_SUNNY
+    file: 4C_138.bgm
+    bk_files: [null, null, null]
+  - id: 0x32
+    symbol: SONG_CLOUDY_CLIMB
+    file: 49_139.bgm
+    bk_files: [null, null, null]
+  - id: 0x33
+    symbol: SONG_PUFF_PUFF_MACHINE
+    file: 4A_149.bgm
+    bk_files: [95_PS11.bk, null, null]
+  - id: 0x34
+    symbol: SONG_SUN_TOWER_CLOUDY
+    file: 4D_150.bgm
+    bk_files: [95_PS11.bk, null, null]
+  - id: 0x35
+    symbol: SONG_SUN_TOWER_SUNNY
+    file: 4E_151.bgm
+    bk_files: [null, null, null]
+  - id: 0x36
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x37
+    symbol: SONG_CRYSTAL_PALACE
+    file: 55_178.bgm
+    bk_files: [null, null, null]
+  - id: 0x38
+    symbol: SONG_SHIVER_CITY
+    file: 4F_208.bgm
+    bk_files: [A3_SPC2.bk, null, null]
+  - id: 0x39
+    symbol: SONG_PENGUIN_MYSTERY
+    file: 50_177.bgm
+    bk_files: [null, null, null]
+  - id: 0x3a
+    symbol: SONG_SHIVER_SNOWFIELD
+    file: 51_178.bgm
+    bk_files: [null, null, null]
+  - id: 0x3b
+    symbol: SONG_SHIVER_MOUNTAIN
+    file: 52_209.bgm
+    bk_files: [95_PS11.bk, A3_SPC2.bk, null]
+  - id: 0x3c
+    symbol: SONG_STARBORN_VALLEY
+    file: 53_207.bgm
+    bk_files: [null, null, null]
+  - id: 0x3d
+    symbol: SONG_MERLAR_THEME
+    file: 54_179.bgm
+    bk_files: [null, null, null]
+  - id: 0x3e
+    symbol: SONG_MAIL_CALL
+    file: 2D_301.bgm
+    bk_files: [null, null, null]
+  - id: 0x3f
+    symbol: SONG_PEACHS_CASTLE_PARTY
+    file: 2E_302.bgm
+    bk_files: [null, null, null]
+  - id: 0x40
+    symbol: SONG_CHAPTER_END
+    file: 75_311.bgm
+    bk_files: [null, null, null]
+  - id: 0x41
+    symbol: SONG_CHAPTER_START
+    file: 76_310.bgm
+    bk_files: [null, null, null]
+  - id: 0x42
+    symbol: SONG_ITEM_UPGRADE
+    file: 77_313.bgm
+    bk_files: [null, null, null]
+  - id: 0x43
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x44
+    symbol: SONG_PHONOGRAPH_MUSIC
+    file: 25_198.bgm
+    bk_files: [A5_REC1.bk, null, null]
+  - id: 0x45
+    symbol: SONG_TUTANKOOPA_THEME
+    file: 13_814.bgm
+    bk_files: [null, null, null]
+  - id: 0x46
+    symbol: SONG_KAMMY_KOOPA_THEME
+    file: 14_124.bgm
+    bk_files: [null, null, null]
+  - id: 0x47
+    symbol: SONG_JR_TROOPA_THEME
+    file: 15_123.bgm
+    bk_files: [null, null, null]
+  - id: 0x48
+    symbol: SONG_BULLET_BILL_ASSAULT
+    file: 27_311.bgm
+    bk_files: [95_PS11.bk, null, null]
+  - id: 0x49
+    symbol: SONG_MONTY_MOLE_ASSAULT
+    file: 28_312.bgm
+    bk_files: [95_PS11.bk, null, null]
+  - id: 0x4a
+    symbol: SONG_SHY_GUY_INVASION
+    file: 29_303.bgm
+    bk_files: [null, null, null]
+  - id: 0x4b
+    symbol: SONG_TOAD_TOWN_TUNNELS
+    file: 2B_304.bgm
+    bk_files: [null, null, null]
+  - id: 0x4c
+    symbol: SONG_WHALE_THEME
+    file: 2A_305.bgm
+    bk_files: [null, null, null]
+  - id: 0x4d
+    symbol: SONG_FOREVER_FOREST_WARNING
+    file: 2C_220.bgm
+    bk_files: [null, null, null]
+  - id: 0x4e
+    symbol: SONG_YOSHI_KIDS_FOUND
+    file: 78_130.bgm
+    bk_files: [null, null, null]
+  - id: 0x4f
+    symbol: SONG_UNUSED_FANFARE
+    file: 7A_130.bgm
+    bk_files: [null, null, null]
+  - id: 0x50
+    symbol: SONG_GOOMBA_KING_THEME
+    file: 16_186.bgm
+    bk_files: [null, null, null]
+  - id: 0x51
+    symbol: SONG_KOOPA_BROS_INTERLUDE
+    file: 17_125.bgm
+    bk_files: [null, null, null]
+  - id: 0x52
+    symbol: SONG_KOOPA_BROS_THEME
+    file: 18_126.bgm
+    bk_files: [null, null, null]
+  - id: 0x53
+    symbol: SONG_TUTANKOOPA_WARNING
+    file: 19_127.bgm
+    bk_files: [null, null, null]
+  - id: 0x54
+    symbol: SONG_TUTANKOOPA_REVEALED
+    file: 1A_128.bgm
+    bk_files: [null, null, null]
+  - id: 0x55
+    symbol: SONG_TUBBA_BLUBBA_THEME
+    file: 1B_187.bgm
+    bk_files: [null, null, null]
+  - id: 0x56
+    symbol: SONG_GENERAL_GUY_THEME
+    file: 1C_129.bgm
+    bk_files: [null, null, null]
+  - id: 0x57
+    symbol: SONG_LAVA_PIRANHA_THEME
+    file: 1D_188.bgm
+    bk_files: [null, null, null]
+  - id: 0x58
+    symbol: SONG_HUFF_N_PUFF_THEME
+    file: 1E_189.bgm
+    bk_files: [null, null, null]
+  - id: 0x59
+    symbol: SONG_CRYSTAL_KING_THEME
+    file: 1F_190.bgm
+    bk_files: [null, null, null]
+  - id: 0x5a
+    symbol: SONG_BLOOPER_THEME
+    file: 20_309.bgm
+    bk_files: [null, null, null]
+  - id: 0x5b
+    symbol: SONG_MINIBOSS_BATTLE
+    file: 21_307.bgm
+    bk_files: [null, null, null]
+  - id: 0x5c
+    symbol: SONG_MONSTAR_THEME
+    file: 22_308.bgm
+    bk_files: [null, null, null]
+  - id: 0x5d
+    symbol: SONG_CLUB64
+    file: 7B_314.bgm
+    bk_files: [A5_REC1.bk, null, null]
+  - id: 0x5e
+    symbol: SONG_UNUSED_OPENING
+    file: 7C_323.bgm
+    bk_files: [null, null, null]
+  - id: 0x5f
+    symbol: SONG_BOWSERS_CASTLE_FALLS
+    file: 7E_322.bgm
+    bk_files: [null, null, null]
+  - id: 0x60
+    symbol: SONG_STAR_HAVEN
+    file: 56_154.bgm
+    bk_files: [null, null, null]
+  - id: 0x61
+    symbol: SONG_SHOOTING_STAR_SUMMIT
+    file: 57_155.bgm
+    bk_files: [null, null, null]
+  - id: 0x62
+    symbol: SONG_STARSHIP_THEME
+    file: 58_157.bgm
+    bk_files: [null, null, null]
+  - id: 0x63
+    symbol: SONG_STAR_SANCTUARY
+    file: 59_156.bgm
+    bk_files: [null, null, null]
+  - id: 0x64
+    symbol: SONG_BOWSERS_CASTLE
+    file: 5B_170.bgm
+    bk_files: [null, null, null]
+  - id: 0x65
+    symbol: SONG_BOWSERS_CASTLE_CAVES
+    file: 5A_169.bgm
+    bk_files: [null, null, null]
+  - id: 0x66
+    symbol: SONG_BOWSER_THEME
+    file: 6F_168.bgm
+    bk_files: [null, null, null]
+  - id: 0x67
+    symbol: SONG_BOWSER_BATTLE
+    file: 7D_315.bgm
+    bk_files: [null, null, null]
+  - id: 0x68
+    symbol: SONG_PEACH_WISHES
+    file: 7F_316.bgm
+    bk_files: [null, null, null]
+  - id: 0x69
+    symbol: SONG_FILE_SELECT
+    file: 80_319.bgm
+    bk_files: [null, null, null]
+  - id: 0x6a
+    symbol: SONG_MAIN_THEME
+    file: 81_318.bgm
+    bk_files: [null, null, null]
+  - id: 0x6b
+    symbol: SONG_BOWSER_ATTACKS
+    file: 82_320.bgm
+    bk_files: [null, null, null]
+  - id: 0x6c
+    symbol: SONG_MARIO_FALLS
+    file: 83_321.bgm
+    bk_files: [null, null, null]
+  - id: 0x6d
+    symbol: SONG_PEACH_APPEARS
+    file: 84_317.bgm
+    bk_files: [null, null, null]
+  - id: 0x6e
+    symbol: SONG_THE_END
+    file: 8A_326.bgm
+    bk_files: [null, null, null]
+  - id: 0x6f
+    symbol: SONG_RECOVERED_STAR_ROD
+    file: 85_327.bgm
+    bk_files: [null, null, null]
+  - id: 0x70
+    symbol: SONG_TWINK_THEME
+    file: 5E_167.bgm
+    bk_files: [null, null, null]
+  - id: 0x71
+    symbol: SONG_STIRRING_CAKE
+    file: 5F_161.bgm
+    bk_files: [null, null, null]
+  - id: 0x72
+    symbol: SONG_GOURMET_GUY_FREAKOUT
+    file: 60_162.bgm
+    bk_files: [null, null, null]
+  - id: 0x73
+    symbol: SONG_PRISONER_PEACH_THEME
+    file: 61_158.bgm
+    bk_files: [null, null, null]
+  - id: 0x74
+    symbol: SONG_PEACH_MISSION
+    file: 62_159.bgm
+    bk_files: [null, null, null]
+  - id: 0x75
+    symbol: SONG_PEACH_SNEAKING
+    file: 63_160.bgm
+    bk_files: [null, null, null]
+  - id: 0x76
+    symbol: SONG_PEACH_CAUGHT
+    file: 64_163.bgm
+    bk_files: [null, null, null]
+  - id: 0x77
+    symbol: SONG_PEACH_QUIZ_INTRO
+    file: 65_164.bgm
+    bk_files: [null, null, null]
+  - id: 0x78
+    symbol: SONG_STAR_SPIRIT_THEME
+    file: 66_166.bgm
+    bk_files: [null, null, null]
+  - id: 0x79
+    symbol: SONG_PENGUIN_WHODUNIT
+    file: 6C_181.bgm
+    bk_files: [null, null, null]
+  - id: 0x7a
+    symbol: SONG_PENGUIN_WAKES_UP
+    file: 6D_183.bgm
+    bk_files: [null, null, null]
+  - id: 0x7b
+    symbol: SONG_MAGIC_BEANSTALK
+    file: 69_175.bgm
+    bk_files: [null, null, null]
+  - id: 0x7c
+    symbol: SONG_MERLEE_SPELL
+    file: 6E_001.bgm
+    bk_files: [null, null, null]
+  - id: 0x7d
+    symbol: SONG_LAKILESTER_THEME
+    file: 6A_176.bgm
+    bk_files: [null, null, null]
+  - id: 0x7e
+    symbol: SONG_GOOMBA_BROS_RETREAT
+    file: 5D_185.bgm
+    bk_files: [null, null, null]
+  - id: 0x7f
+    symbol: SONG_SUNSHINE_RETURNS
+    file: 6B_174.bgm
+    bk_files: [null, null, null]
+  - id: 0x80
+    symbol: SONG_RIDING_THE_RAILS
+    file: 70_171.bgm
+    bk_files: [null, null, null]
+  - id: 0x81
+    symbol: SONG_RIDING_THE_WHALE
+    file: 71_172.bgm
+    bk_files: [null, null, null]
+  - id: 0x82
+    symbol: SONG_NEW_PARTNER
+    file: 8E_226.bgm
+    bk_files: [null, null, null]
+  - id: 0x83
+    symbol: SONG_DRY_DRY_RUINS_APPEAR
+    file: 74_136.bgm
+    bk_files: [null, null, null]
+  - id: 0x84
+    symbol: SONG_CANDY_CANES
+    file: 12_224.bgm
+    bk_files: [null, null, null]
+  - id: 0x85
+    symbol: SONG_PLAYROOM
+    file: 24_108.bgm
+    bk_files: [A8_CHO1.bk, null, null]
+  - id: 0x86
+    symbol: SONG_MOUSTAFA_THEME
+    file: 23_112.bgm
+    bk_files: [null, null, null]
+  - id: 0x87
+    symbol: SONG_GAME_OVER
+    file: 10_135.bgm
+    bk_files: [null, null, null]
+  - id: 0x88
+    symbol: SONG_TAKING_REST
+    file: 11_134.bgm
+    bk_files: [null, null, null]
+  - id: 0x89
+    symbol: SONG_FLOWER_NPC_THEME
+    file: 67_152.bgm
+    bk_files: [null, null, null]
+  - id: 0x8a
+    symbol: SONG_FLOWER_GATE_APPEARS
+    file: 68_165.bgm
+    bk_files: [null, null, null]
+  - id: 0x8b
+    symbol: SONG_BATTLE_END
+    file: 0B_122.bgm
+    bk_files: [null, null, null]
+  - id: 0x8c
+    symbol: SONG_POP_DIVA_SONG
+    file: 72_182.bgm
+    bk_files: [null, null, null]
+  - id: 0x8d
+    symbol: SONG_BOO_MINIGAME
+    file: 73_199.bgm
+    bk_files: [null, null, null]
+  - id: 0x8e
+    symbol: SONG_LEVEL_UP
+    file: 0C_328.bgm
+    bk_files: [null, null, null]
+  - id: 0x8f
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x90
+    symbol: SONG_PARADE_DAY
+    file: 88_324.bgm
+    bk_files: [null, null, null]
+  - id: 0x91
+    symbol: SONG_PARADE_NIGHT
+    file: 89_325.bgm
+    bk_files: [null, null, null]
+  - id: 0x92
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x93
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x94
+    symbol: SONG_MARIO_BROS_HOUSE
+    file: 86_102.bgm
+    bk_files: [null, null, null]
+  - id: 0x95
+    symbol: SONG_INTRO_STORY
+    file: 87_101.bgm
+    bk_files: [null, null, null]
+  - id: 0x96
+    symbol: SONG_NEW_PARTNER_JP
+    file: 79_132.bgm
+    bk_files: [null, null, null]
+  - id: 0x97
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x98
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x99
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x9a
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x9b
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x9c
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x9d
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x9e
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: 0x9f
+    symbol: null
+    file: 2F_104.bgm
+    bk_files: [null, null, null]
+  - id: auto
+    symbol: SONG_SHROOB_FINAL2
+    file: shroobfinal2.bgm
+    bk_files: [null, null, null]
+
+# AuGlobals::mseqFileList. Not sure why there's non-MSEQ files here!
+mseqs:
+  - id: 0x00
+    file: 8F_DAT1.sef
+  - id: 0x01
+    file: D9_SET1.per
+  - id: 0x02
+    file: DA_SET1.prg
+  - id: 0x03
+    file: DB_501.mseq
+  - id: 0x04
+    file: DC_502.mseq
+  - id: 0x05
+    file: E5_511.mseq
+  - id: 0x06
+    file: E6_512.mseq
+  - id: 0x07
+    file: DD_503.mseq
+  - id: 0x08
+    file: DE_504.mseq
+  - id: 0x09
+    file: DF_505.mseq
+  - id: 0x0a
+    file: E0_506.mseq
+  - id: 0x0b
+    file: E1_507.mseq
+  - id: 0x0c
+    file: E2_508.mseq
+  - id: 0x0d
+    file: E3_509.mseq
+  - id: 0x0e
+    file: E4_510.mseq
+  - id: 0x0f
+    file: E7_513.mseq
+  - id: 0x10
+    file: E5_511.mseq
+  - id: 0x11
+    file: E5_511.mseq
+  - id: 0x12
+    file: E5_511.mseq
+  - id: 0x13
+    file: E8_521.mseq
+  - id: 0x14
+    file: E9_522.mseq
+  - id: 0x15
+    file: EA_523.mseq
+  - id: 0x16
+    file: EB_521.mseq
+  - id: 0x17
+    file: A4_SPC3.bk
+# BK file list.
+banks:
+  - id: 0x00
+    file: AC_MAR0.bk
+    bank_index: 0x00
+    bank_group: 0x02
+  - id: 0x01
+    file: AD_MAR1.bk
+    bank_index: 0x01
+    bank_group: 0x02
+  - id: 0x02
+    file: C2_MAR2.bk
+    bank_index: 0x02
+    bank_group: 0x02
+  - id: 0x03
+    file: C3_MAR3.bk
+    bank_index: 0x03
+    bank_group: 0x02
+  - id: 0x04
+    file: C4_MAR4.bk
+    bank_index: 0x04
+    bank_group: 0x02
+  - id: 0x05
+    file: AF_PAR0.bk
+    bank_index: 0x05
+    bank_group: 0x02
+  - id: 0x06
+    file: B0_PAR1.bk
+    bank_index: 0x06
+    bank_group: 0x02
+  - id: 0x07
+    file: B1_PAR2.bk
+    bank_index: 0x07
+    bank_group: 0x02
+  - id: 0x08
+    file: C5_BTL0.bk
+    bank_index: 0x08
+    bank_group: 0x02
+  - id: 0x09
+    file: C6_BTL1.bk
+    bank_index: 0x09
+    bank_group: 0x02
+  - id: 0x0a
+    file: C7_BTL2.bk
+    bank_index: 0x0A
+    bank_group: 0x02
+  - id: 0x0b
+    file: C8_BTL3.bk
+    bank_index: 0x0B
+    bank_group: 0x02
+  - id: 0x0c
+    file: AE_ENV0.bk
+    bank_index: 0x0C
+    bank_group: 0x02
+  - id: 0x0d
+    file: D8_ENV1.bk
+    bank_index: 0x0D
+    bank_group: 0x02
+  - id: 0x0e
+    file: C9_BT20.bk
+    bank_index: 0x00
+    bank_group: 0x04
+  - id: 0x0f
+    file: CA_BT21.bk
+    bank_index: 0x01
+    bank_group: 0x04
+  - id: 0x10
+    file: CB_BT22.bk
+    bank_index: 0x02
+    bank_group: 0x04
+  - id: 0x11
+    file: CC_BT23.bk
+    bank_index: 0x03
+    bank_group: 0x04
+  - id: 0x12
+    file: CD_BT24.bk
+    bank_index: 0x04
+    bank_group: 0x04
+  - id: 0x13
+    file: CE_BT25.bk
+    bank_index: 0x05
+    bank_group: 0x04
+  - id: 0x14
+    file: CF_BT26.bk
+    bank_index: 0x06
+    bank_group: 0x04
+  - id: 0x15
+    file: D0_BT27.bk
+    bank_index: 0x07
+    bank_group: 0x04
+  - id: 0x16
+    file: D1_BT28.bk
+    bank_index: 0x08
+    bank_group: 0x04
+  - id: 0x17
+    file: B7_EVT0.bk
+    bank_index: 0x09
+    bank_group: 0x04
+  - id: 0x18
+    file: B8_EVT1.bk
+    bank_index: 0x0A
+    bank_group: 0x04
+  - id: 0x19
+    file: B9_EVT2.bk
+    bank_index: 0x0B
+    bank_group: 0x04
+  - id: 0x1a
+    file: BA_EVT3.bk
+    bank_index: 0x0C
+    bank_group: 0x04
+  - id: 0x1b
+    file: BB_EVT4.bk
+    bank_index: 0x0D
+    bank_group: 0x04
+  - id: 0x1c
+    file: BC_EVT5.bk
+    bank_index: 0x0E
+    bank_group: 0x04
+  - id: 0x1d
+    file: BD_EVT6.bk
+    bank_index: 0x0F
+    bank_group: 0x04
+  - id: 0x1e
+    file: B5_ENE0.bk
+    bank_index: 0x00
+    bank_group: 0x05
+  - id: 0x1f
+    file: B6_ENE1.bk
+    bank_index: 0x01
+    bank_group: 0x05
+  - id: 0x20
+    file: A9_SYS0.bk
+    bank_index: 0x02
+    bank_group: 0x05
+  - id: 0x21
+    file: AA_SYS1.bk
+    bank_index: 0x03
+    bank_group: 0x05
+  - id: 0x22
+    file: AB_SYS2.bk
+    bank_index: 0x04
+    bank_group: 0x05
+  - id: 0x23
+    file: C1_PEA0.bk
+    bank_index: 0x05
+    bank_group: 0x05
+  - id: 0x24
+    file: B2_ETC0.bk
+    bank_index: 0x06
+    bank_group: 0x05
+  - id: 0x25
+    file: B3_ETC1.bk
+    bank_index: 0x07
+    bank_group: 0x05
+  - id: 0x26
+    file: B4_ETC2.bk
+    bank_index: 0x08
+    bank_group: 0x05
+  - id: 0x27
+    file: C0_MOB0.bk
+    bank_index: 0x09
+    bank_group: 0x05
+  - id: 0x28
+    file: D2_BT29.bk
+    bank_index: 0x0A
+    bank_group: 0x05
+  - id: 0x29
+    file: D3_BT2A.bk
+    bank_index: 0x0B
+    bank_group: 0x05
+  - id: 0x2a
+    file: D4_BT2B.bk
+    bank_index: 0x0C
+    bank_group: 0x05
+  - id: 0x2b
+    file: D7_PHR1.bk
+    bank_index: 0x0D
+    bank_group: 0x05
+  - id: 0x2c
+    file: BE_EVT7.bk
+    bank_index: 0x0E
+    bank_group: 0x05
+  - id: 0x2d
+    file: BF_EVT8.bk
+    bank_index: 0x0F
+    bank_group: 0x05
+  - id: 0x2e
+    file: D5_BT2C.bk
+    bank_index: 0x00
+    bank_group: 0x06
+  - id: 0x2f
+    file: D6_BT2D.bk
+    bank_index: 0x01
+    bank_group: 0x06
+  - id: 0x30
+    file: 96_GM01.bk
+    bank_index: 0x00
+    bank_group: 0x03
+  - id: 0x31
+    file: 97_GM02.bk
+    bank_index: 0x01
+    bank_group: 0x03
+  - id: 0x32
+    file: 98_GM03.bk
+    bank_index: 0x02
+    bank_group: 0x03
+  - id: 0x33
+    file: 99_GM04.bk
+    bank_index: 0x03
+    bank_group: 0x03
+  - id: 0x34
+    file: 9A_GM05.bk
+    bank_index: 0x04
+    bank_group: 0x03
+  - id: 0x35
+    file: 9B_GM06.bk
+    bank_index: 0x05
+    bank_group: 0x03
+  - id: 0x36
+    file: 9C_GM07.bk
+    bank_index: 0x06
+    bank_group: 0x03
+  - id: 0x37
+    file: 9D_GM08.bk
+    bank_index: 0x07
+    bank_group: 0x03
+  - id: 0x38
+    file: 9E_GM09.bk
+    bank_index: 0x08
+    bank_group: 0x03
+  - id: 0x39
+    file: 9F_GM10.bk
+    bank_index: 0x09
+    bank_group: 0x03
+  - id: 0x3a
+    file: A0_GM11.bk
+    bank_index: 0x0A
+    bank_group: 0x03
+  - id: 0x3b
+    file: 90_PS01.bk
+    bank_index: 0x0B
+    bank_group: 0x03
+  - id: 0x3c
+    file: 91_PS02.bk
+    bank_index: 0x0C
+    bank_group: 0x03
+  - id: 0x3d
+    file: 92_PS03.bk
+    bank_index: 0x0D
+    bank_group: 0x03
+  - id: 0x3e
+    file: 93_PS04.bk
+    bank_index: 0x0E
+    bank_group: 0x03
+  - id: 0x3f
+    file: 94_PS05.bk
+    bank_index: 0x0F
+    bank_group: 0x03
+

@@ -47,10 +47,12 @@ EvtScript N(NpcIdle_HammerBroShip) = {
         EVT_ADD(LVar0, LVar3)
         EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         EVT_IF_EQ(MV_HammerTimer, 20)
+            EVT_CALL(PlaySound, SOUND_2004)
             EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_HAMMER)
             EVT_SET(MV_HammerTimer, 0)
         EVT_END_IF
         EVT_IF_EQ(MV_ShotTimer, 15)
+            EVT_CALL(PlaySound, SOUND_20EB)
             EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_LEFT)
             EVT_SET(MV_ShotTimer, 0)
         EVT_END_IF

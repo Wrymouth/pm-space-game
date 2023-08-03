@@ -58,9 +58,57 @@ API_CALLABLE(N(LightningDamagePlayer)) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(N(CheckPhase)) {
+    Enemy* enemy = script->owner1.enemy;
+    s32 newPhase;
+
+    if (enemy->curHP <= 8) {
+        newPhase = 3; 
+    } else if (enemy->curHP <= 16) {
+        newPhase = 2; 
+    }
+
+    if (newPhase != evt_get_variable(script,MV_BattlePhase)) {
+        evt_set_variable(script, MF_PhaseTransition, TRUE);
+    } else {
+        evt_set_variable(script, MF_PhaseTransition, FALSE);
+    }
+    return ApiStatus_DONE2;
+}
+
+EvtScript N(PhaseTransitions) = {
+    EVT_ADD(MV_BattlePhase, 1)
+    EVT_SWITCH(MV_BattlePhase)
+        EVT_CASE_EQ(1)
+        EVT_CASE_EQ(2)
+            EVT_SET(LVar4, -13)
+            EVT_SET(MV_SwitchTimer, SwitchDuration)
+            EVT_ADD(MV_SwitchTimer, 1)
+        EVT_CASE_EQ(3)
+            EVT_IF_GT(LVar3, 0)
+                EVT_SET(LVar3, 80)
+            EVT_ELSE
+                EVT_SET(LVar3, -80)
+            EVT_END_IF
+        EVT_CASE_EQ(4)
+            EVT_EXEC_WAIT(N(BowserFakeDefeat))
+            EVT_CALL(SetNpcScale, NPC_SELF, EVT_FLOAT(3.7), EVT_FLOAT(3.7), EVT_FLOAT(3.7))
+            EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_Idle)
+            EVT_CALL(SetNpcCollisionSize, NPC_SELF, 280, 300)
+            EVT_CALL(SetNpcPos, NPC_SELF, 0, BowserDefeatYBottom, 16)
+    EVT_END_SWITCH
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(NpcIdle_HuffNPuff) = {
     EVT_SET(LVar3, 6) // moveSpeed
     EVT_LOOP(0)
+        EVT_CALL(N(Fast_NpcFacePlayer), NPC_SELF)
+        EVT_IF_TRUE(MF_PhaseTransition)
+            EVT_EXEC_WAIT(N(PhaseTransitions))
+            EVT_GOTO(1)
+        EVT_END_IF
         //movement
         EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         EVT_CALL(N(EnemyMoveToDestination))
@@ -132,6 +180,8 @@ EvtScript N(NpcIdle_HuffNPuff) = {
             EVT_CALL(DoNpcDefeat)
             EVT_BREAK_LOOP
         EVT_END_IF
+        EVT_LABEL(1)
+        EVT_CALL(N(CheckPhase))
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN

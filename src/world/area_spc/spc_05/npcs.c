@@ -30,12 +30,14 @@ EvtScript N(NpcIdle_JrTroopa) = {
             EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             // attack
             EVT_IF_EQ(MV_EggsTimer, 40)
+                EVT_CALL(PlaySound, 0x0F)
                 EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_EGGS)
                 EVT_SET(MV_EggsTimer, 0)
             EVT_END_IF
             EVT_ADD(MV_EggsTimer, 1)
             EVT_IF_EQ(MV_BattlePhase, 2)
                 EVT_IF_EQ(MV_SummonTimer, 60)
+                    EVT_CALL(PlaySound, SOUND_SPELL_CAST1)
                     EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SUMMON)
                     EVT_SET(MV_SummonTimer, 0)
                 EVT_END_IF
