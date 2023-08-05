@@ -2,7 +2,7 @@
 	New Game[End]
 }
 
-#message:2F:(Space_Credits) {
+#message:2F:(Space_CreditsA) {
 	[Style Inspect]This mod was created by [Color 0x1]Wrymouth[Color 0x0],[BR]
 	for the second Paper Mario[BR]
 	Modding Jam.[BR]
@@ -14,9 +14,11 @@
 	[Wait][Next]
 	Projectile code by [Color 0x20]Pronyo[Color 0x0].[BR]
 	His work saved me a lot of time in[BR]
-	the early stages of the project.[BR]
-	[Wait][Next]
-	[Color 0x3]Music[Color 0x0][BR]
+	the early stages of the project.[Wait][End]
+}
+
+#message:2F:(Space_CreditsB) {
+	[Style Inspect][Color 0x3]Music[Color 0x0][BR]
 	All custom music imported by[BR]
 	[Color 0x1]Wrymouth[Color 0x0].[BR]
 	Songs used:[BR]
@@ -47,11 +49,38 @@
 	[Wait][Next]
 	Opening - U.N. Squadron[BR]
 	Midi created by [Color 0x1]Wrymouth[Color 0x0].[BR]
+
 	[Wait][Next]
-	Title image font: Audiowide[BR]
+	SMB1: Bowser Battle - Super Mario[BR]
+	All-Stars[BR]
+	Midi created by Dave Phaneuf on[BR]
+	vgmusic.com[BR]
 	[Wait][Next]
-	Enjoy!
-	[Wait][End]
+	SMB1: Final Bowser - Super Mario[BR]
+	All-Stars[BR]
+	Midi created by Gigasoft on[BR]
+	vgmusic.com[BR]
+	[Wait][Next]
+	Midi for the final boss theme[BR]
+	created by Blue Boo on[BR]
+	vgmusic.com[Wait][End]
+}
+
+#message:2F:(Space_CreditsC) {
+	[Style Inspect]Title image font: Audiowide[BR]
+	[Wait][Next]
+	[Color 0x13]Special thanks:[Color 0x0][BR]
+	-Alex, Ethan and Clover[BR]
+	Contributors to the Paper Mario[BR]
+	decomp.[BR]
+	[Wait][Next]
+	They helped me with things[BR]
+	like importing custom maps,[BR]
+	icons, and audio.[BR]
+	[Wait][Next]
+	-Den[BR]
+	[Wait][Next]
+	Enjoy![Wait][End]
 }
 
 #message:2F:(Space_Retry) {
@@ -221,28 +250,263 @@
 
 #message:2F:(Space_CharacterSelectHammer) {
 	This is the Hammer Bros'[BR]
-	Chuckster Mobile.[BR]
-	HP = 32.[End]
+	Chuckster Mobile.[End]
 }
 
 #message:2F:(Space_CharacterSelectLakitu) {
-	This is Lakithunder.[BR]
-	HP = 24.[End]
+	This is Lakithunder.[End]
 }
 
 #message:2F:(Space_CharacterSelectWhale) {
-	This is a Space Whale.[BR]
-	HP = 24.[End]
+	This is a Space Whale.[End]
 }
 
 #message:2F:(Space_CharacterSelectKoopa) {
-	This is the Koopa Bros. Cruiser.[BR]
-	HP = 32.[End]
+	This is the Koopa Bros. Cruiser.[End]
 }
 
 #message:2F:(Space_EnemyDefeated) {
 	[InputOff]This enemy has already been[BR]
 	defeated![Pause 60][End]
+}
+
+#message:2F:(Space_Template_Dialogue) {
+	[Style Tattle][InputOff][Color 0x0]
+	Oh! Mario is here!     [Pause 60][End]
+}
+
+#message:2F:(Space_JrTroopa_Phase2) {
+	[Style Tattle][InputOff][Color 0x0]
+	Alright then,     [BR]
+	how about this?     [Pause 60][End]
+}
+
+#message:2F:(Space_JrTroopa_Defeat) {
+	[Style Tattle][InputOff][Color 0x0]
+	Haha!     [BR]
+	It's just that     [BR]
+	easy!     [Pause 60][End]
+}
+
+#message:2F:(Space_JrTroopa_Win) {
+	[Style Tattle][InputOff][Color 0x0]
+	Not again!!!!!     [Pause 60][End]
+}
+
+#message:2F:(Space_Hammer_Phase1) {
+	[Style Tattle][InputOff][Color 0x0]
+	Alright men! Show    [BR]
+	Mario what we've    [BR]
+	been practicing![Pause 60][End]
+}
+
+#message:2F:(Space_Hammer_Phase2) {
+	[Style Tattle][InputOff][Color 0x0]
+	It's not working!     [BR]
+	Engage the front     [BR]
+	cannons![Pause 60][End]
+}
+
+#message:2F:(Space_Hammer_Phase3) {
+	[Style Tattle][InputOff][Color 0x0]
+	C'mon everybody!     [BR]
+	More hammers,     [BR]
+	now!     [Pause 60][End]
+}
+
+#message:2F:(Space_Hammer_Defeat) {
+	[Style Tattle][InputOff][Color 0x0]
+	Haha! That'll     [BR]
+	teach you not to     [BR]
+	mess with us!     [Pause 60][End]
+}
+
+#message:2F:(Space_Hammer_Win) {
+	[Style Tattle][InputOff][Color 0x0]
+	Home base, we've     [BR]
+	been eliminated!     [BR]
+	Going down!     [Pause 60][End]
+}
+
+#message:2F:(Space_Whale_Phase1) {
+	[Style Tattle][InputOff][Color 0x0]
+	Who dare wake me    [BR]
+	from my slumber?    [BR]
+	     [Pause 60][BR][Next]
+	I do not take    [BR]
+	kindly to being    [BR]
+	disturbed...    [Pause 60][End]
+}
+
+#message:2F:(Space_Whale_Phase2) {
+	[Style Tattle][InputOff][Color 0x0]
+	Hey, big guy!     [BR]
+	     [BR]
+		 [Pause 60][BR][Next]
+	Now that you're     [BR]
+	awake, how about     [BR]
+	lettin' us out?     [Pause 60][End]
+}
+
+#message:2F:(Space_Whale_Phase3) {
+	[Style Tattle][InputOff][Color 0x0]
+	Surely you can     [BR]
+	do better than     [BR]
+	that, big man?     [Pause 60][End]
+}
+
+#message:2F:(Space_Whale_Phase3_2) {
+	[Style Tattle][InputOff][Color 0x0]
+	You are     [BR]
+	correct. I must     [BR]
+	try harder.     [Pause 60][End]
+}
+
+#message:2F:(Space_Whale_Defeat1) {
+	[Style Tattle][InputOff][Color 0x0]
+	Ahh, I can rest     [BR]
+	once again.     [Pause 20][End]
+}
+
+#message:2F:(Space_Whale_Defeat2) {
+	[Style Tattle][InputOff][Color 0x0]
+	Good job, big guy!     [BR]
+	You sure showed     [BR]
+	him!     [Pause 20][End]
+}
+
+#message:2F:(Space_Whale_Win1) {
+	[Style Tattle][InputOff][Color 0x0]
+	I have been     [BR]
+	bested...     [Pause 20][End]
+}
+
+#message:2F:(Space_Whale_Win2) {
+	[Style Tattle][InputOff][Color 0x0]
+	Nooooooooooo!!!     [Pause 20][End]
+}
+
+#message:2F:(Space_Lakithunder_Phase1) {
+	[Style Tattle][InputOff][Color 0x0]
+	Ah, so you're the     [BR]
+	great Mario, eh?     [BR][Pause 60][Next]
+	Let's see what     [BR]
+	you've got.     [Pause 60][End]
+}
+
+#message:2F:(Space_Lakithunder_Phase2) {
+	[Style Tattle][InputOff][Color 0x0]
+	Ouch!     [BR]
+	That really hurt,     [BR]
+	dude!     [BR][Pause 60][Next]
+	I think it's time     [BR]
+	to bust out the     [BR]
+	big guns!     [Pause 60][End]
+}
+
+#message:2F:(Space_Lakithunder_Phase3) {
+	[Style Tattle][InputOff][Color 0x0]
+	Now you've really     [BR]
+	made me angry!     [BR][Pause 60][Next]
+	Take this!     [Pause 60][End]
+}
+
+#message:2F:(Space_Lakithunder_Defeat) {
+	[Style Tattle][InputOff][Color 0x0]
+	Heh, nice try, but    [BR]
+	you'll never beat    [BR]
+	my weapons!    [Pause 60][End]
+}
+
+#message:2F:(Space_Lakithunder_Win) {
+	[Style Tattle][InputOff][Color 0x0]
+	Grrrr...     [BR]
+	You got lucky,     [BR]
+	punk!     [Pause 60][End]
+}
+
+#message:2F:(Space_Koopa_Phase1) {
+	[Style Tattle][InputOff][Color 0x0]
+	Mario's here!     [BR]
+	Everyone, get in     [BR]
+	position!     [BR][Pause 60][Next]
+	Red and Green,     [BR]
+	get out there!     [Pause 60][End]
+}
+
+#message:2F:(Space_Koopa_Phase2) {
+	[Style Tattle][InputOff][Color 0x0]
+	Engaging split     [BR]
+	cannons!     [Pause 60][End]
+}
+
+#message:2F:(Space_Koopa_Phase3) {
+	[Style Tattle][InputOff][Color 0x0]
+	Alright, we're     [BR]
+	coming out!     [Pause 60][End]
+}
+
+#message:2F:(Space_Koopa_Defeat) {
+	[Style Tattle][InputOff][Color 0x0]
+	Ha! Take that,     [BR]
+	loser! No one     [BR]
+	messes with us!     [Pause 60][End]
+}
+
+#message:2F:(Space_Koopa_Win) {
+	[Style Tattle][InputOff][Color 0x0]
+	We're going down!    [BR]
+	Lord Bowser will    [BR]
+	not be happy...    [Pause 60][End]
+}
+
+#message:2F:(Space_Bowser_Phase1) {
+	[Style Tattle][InputOff][Color 0x0]
+	Hmmm, it seems my     [BR]
+	minions have     [BR]
+	failed yet again.     [BR][Pause 60][Next]
+	Guess it's my     [BR]
+	turn, then!     [BR][Pause 60][Next]
+	Let's see you     [BR]
+	handle this,     [BR]
+	Mario!     [Pause 60][End]
+}
+
+#message:2F:(Space_Bowser_Phase2) {
+	[Style Tattle][InputOff][Color 0x0]
+	Very good, but I'm     [BR]
+	just getting     [BR]
+	started!     [Pause 60][End]
+}
+
+#message:2F:(Space_Bowser_Phase3) {
+	[Style Tattle][InputOff][Color 0x0]
+	I can do this all     [BR]
+	day!     [Pause 60][End]
+}
+
+#message:2F:(Space_Bowser_Phase4) {
+	[Style Tattle][InputOff][Color 0x0]
+	My ship might've     [BR]
+	been destroyed,     [BR]
+	but I have one     [BR][Pause 60][Next]
+	more trick up     [BR]
+	my sleeve!     [Pause 60][End]
+}
+
+#message:2F:(Space_Bowser_Defeat) {
+	[Style Tattle][InputOff][Color 0x0]
+	Guess that star     [BR]
+	ship didn't help     [BR]
+	much after all...     [Pause 60][End]
+}
+
+#message:2F:(Space_Bowser_Win) {
+	[Style Tattle][InputOff][Color 0x0]
+	How could I lose?     [BR][Pause 20][Next]
+	Well, Mario,     [BR]
+	I'll see you     [BR]
+	very soon...     [Pause 20][End]
 }
 
 #message:2F:(Space_EldstarTalk1) {
@@ -293,6 +557,25 @@
 	Bowser and save the princess?[BR]
 	[Wait][Next]
 	idk[Wait][End]
+}
+
+#message:2f:(Space_ThanksForPlaying) {
+	[Style Inspect]I hope you enjoyed this mod![BR]
+	[Wait][Next]
+	Please check out my other Paper[BR]
+	Mario mods on my itch.io page.[BR]
+	[Wait][Next]
+	If you'd like to make your own[BR]
+	custom bosses for this mod,[BR]
+	you can download the source code[BR]
+	there too.[BR]
+	[Wait][Next]
+	If you liked the custom music in[BR]
+	this mod, you can also grab the[BR]
+	public bgm files and use them in[BR]
+	your own mods![BR]
+	[Wait][Next]
+	Thank you for playing![Wait][End]
 }
 
 #message:2F:(Space_CharacterSelect) {

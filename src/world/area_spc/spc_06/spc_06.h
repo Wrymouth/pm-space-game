@@ -14,6 +14,7 @@ enum {
 
 enum {
     MF_EnemyDefeated = MapFlag(0),
+    MF_PhaseTransition = MapFlag(1),
 };
 
 enum {

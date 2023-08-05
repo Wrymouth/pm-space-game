@@ -494,18 +494,22 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
             break;
         case ENEMY_BULLET_TYPE_KOOPA_UL:
             // used for axis speed
+            bulletNpc->pos.x -= 15;
             bulletNpc->moveToPos.x = -10.0f;
             bulletNpc->moveToPos.y = 10.0f;
             break;
         case ENEMY_BULLET_TYPE_KOOPA_UR:
+            bulletNpc->pos.y += 15;
             bulletNpc->moveToPos.x = 10.0f;
             bulletNpc->moveToPos.y = 10.0f;
             break;
         case ENEMY_BULLET_TYPE_KOOPA_DL:
+            bulletNpc->pos.y -= 15;
             bulletNpc->moveToPos.x = -10.0f;
             bulletNpc->moveToPos.y = -10.0f;
             break;
         case ENEMY_BULLET_TYPE_KOOPA_DR:
+            bulletNpc->pos.x += 15;
             bulletNpc->moveToPos.x = 10.0f;
             bulletNpc->moveToPos.y = -10.0f;
             break;
@@ -829,11 +833,13 @@ void do_attack(Enemy* enemy, EnemyAttackType type) {
         case ENEMY_ATTACK_TYPE_LEFT:
             use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_LEFT);
             break;
-        case ENEMY_ATTACK_TYPE_KOOPA_SHELLS:
+        case ENEMY_ATTACK_TYPE_KOOPA_SHELLS_A:
             use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_KOOPA_UL);
+            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_KOOPA_DR);
+            break;
+        case ENEMY_ATTACK_TYPE_KOOPA_SHELLS_B:
             use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_KOOPA_UR);
             use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_KOOPA_DL);
-            use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_KOOPA_DR);
             break;
         case ENEMY_ATTACK_TYPE_SPLIT:
             use_enemy_bullet(enemyNpc, ENEMY_BULLET_TYPE_LEFT);

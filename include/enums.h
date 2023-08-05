@@ -429,7 +429,8 @@ enum SongIDs {
     //SONG_GOOMBA_VILLAGE_COPY      = 0x00000093,
     SONG_MARIO_BROS_HOUSE           = 0x00000094,
     SONG_INTRO_STORY                = 0x00000095,
-    SONG_NEW_PARTNER_JP             = 0x00000096,
+    SONG_SMB1_BOWSER                = 0x00000096,
+    SONG_SHROOB_FINAL2              = 0x00000097,
 };
 
 enum Abilities {

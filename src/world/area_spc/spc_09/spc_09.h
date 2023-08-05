@@ -14,6 +14,7 @@ enum {
 
 enum {
     MF_EnemyDefeated = MapFlag(0),
+    MF_PhaseTransition = MapFlag(1),
 };
 
 enum {
@@ -21,7 +22,8 @@ enum {
     MV_ShipPosY = MapVar(1),
     MV_BattlePhase = MapVar(2),
     MV_SplitTimer = MapVar(3),
-    MV_ShellTimer = MapVar(4),
+    MV_ShellTimerA = MapVar(4),
+    MV_ShellTimerB = MapVar(5),
 };
 
 #define NAMESPACE spc_09

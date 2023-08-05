@@ -17,6 +17,7 @@ enum {
     MF_EnemyHasDestination = MapFlag(1),
     MF_LightningCanDamagePlayer = MapFlag(2),
     MF_ThrowingSpinies = MapFlag(3),
+    MF_PhaseTransition = MapFlag(4),
 };
 
 enum {
@@ -30,6 +31,7 @@ enum {
     MV_LightningX = MapVar(7),
     MV_SpinyTimer = MapVar(8),
     MV_SpinyCount = MapVar(9),
+    MV_SpinyMax = MapVar(10),
 };
 
 #define NAMESPACE spc_07

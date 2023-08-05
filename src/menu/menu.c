@@ -2,16 +2,17 @@
 #include "common.h"
 #include "gcc/string.h"
 #include "message_ids.h"
-// #include "hud_element.h"
-// #include "icon_offsets.h"
-// #include "item_hud_scripts.inc.c"
-// #include "item_hud_script_table.inc.c"
+#include "hud_element.h"
 #include "menu.h"
 
 void title_menu_cb_newgame(void* arg);
 void title_menu_cb_settings(void* arg);
 void title_menu_cb_credits(void* arg);
 
+void draw_hammer_icon(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+void draw_huff_icon(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+void draw_whale_icon(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+void draw_koopa_icon(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
 
 struct title_menu_item {
     char* name;
@@ -42,11 +43,17 @@ struct title_menu {
     .previous = NULL,
 };
 
+extern HudScript HES_Item_Apple;
+extern HudScript HES_Item_ApplePie;
+extern HudScript HES_Item_AllorNothing;
+extern HudScript HES_Item_Artifact;
+
 Evt *script_credits = NULL;
 Evt *script_credits_notif = NULL;
 Evt *script_settings_explain_speed;
 
 MenuType menuType = MENU_TYPE_NONE;
+
 
 // story
 s32 storyX = 20;
@@ -59,8 +66,14 @@ s32 csSelectedRow = 0;
 s32 csSelectedCol = 0;
 s32 selectionDelay = 8;
 s32 displayMessageID = MSG_Space_CharacterSelectIntro;
-CharacterSelectPanel csPanels[2][2] = {{{"spc_06", FALSE}, {"spc_07", FALSE}}, {{"spc_08", FALSE}, {"spc_09", FALSE}}}; // rows, columns
 
+MenuIconState iconState = ICON_INIT;
+s32 koopaIcon;
+s32 huffIcon;
+s32 hammerIcon;
+s32 whaleIcon;
+
+CharacterSelectPanel csPanels[2][2] = {{{"spc_06", FALSE, draw_hammer_icon}, {"spc_07", FALSE, draw_huff_icon}}, {{"spc_08", FALSE, draw_whale_icon}, {"spc_09", FALSE, draw_koopa_icon}}}; // rows, columns
 
 
 // game over
@@ -68,6 +81,13 @@ s32 gvOpacity = 0;
 
 
 void menu_close(void) {
+    if (menuType == MENU_TYPE_CHARACTER_SELECT) {
+        hud_element_free(koopaIcon);
+        hud_element_free(huffIcon);
+        hud_element_free(hammerIcon);
+        hud_element_free(whaleIcon);
+    }
+    iconState = ICON_INIT;
     menuType = MENU_TYPE_NONE;
 }
 
@@ -178,7 +198,9 @@ void title_menu_draw_contents(void* arg0, s32 baseX, s32 baseY, s32 width, s32 h
 
 EvtScript ShowCreditsMessage = {
     EVT_SET(GF_TitleStringDisplayed, TRUE)
-    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_Credits, 160, 40)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_CreditsA, 160, 40)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_CreditsB, 160, 40)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_CreditsC, 160, 40)
     EVT_SET(GF_TitleStringDisplayed, FALSE)
     EVT_SET(GF_CreditsSeen, TRUE)
     EVT_RETURN
@@ -283,25 +305,35 @@ void title_menu_cb_credits(void* arg) {
     script_credits = start_script(&ShowCreditsMessage, 0xF, 0);
 }
 
-void init_character_icons(void) {
-    s32 koopaIcon;
-    s32 huffIcon;
-    s32 hammerIcon;
-    s32 whaleIcon;
-    ItemData* itemTable = &gItemTable;
+void draw_koopa_icon(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+    hud_element_set_flags(koopaIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
+    hud_element_set_render_pos(koopaIcon, baseX + 25, baseY + 25);
+    hud_element_draw_clipped(koopaIcon);
+}
 
-    // koopaIcon = hud_element_create(&gItemHudScripts[itemTable[ITEM_APPLE].hudElemID]);
-    // hud_element_set_flags(koopaIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
-    // hud_element_set_render_pos(koopaIcon, 0, 0);
-    // huffIcon = hud_element_create(&gItemHudScripts[itemTable[ITEM_ALLOR_NOTHING].hudElemID]);
-    // hud_element_set_flags(huffIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
-    // hud_element_set_render_pos(huffIcon, -100, -100);
-    // hammerIcon = hud_element_create(&gItemHudScripts[itemTable[ITEM_APPLE_PIE].hudElemID]);
-    // hud_element_set_flags(hammerIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
-    // hud_element_set_render_pos(hammerIcon, 100, 100);
-    // whaleIcon = hud_element_create(&gItemHudScripts[itemTable[ITEM_ARTIFACT].hudElemID]);
-    // hud_element_set_flags(whaleIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
-    // hud_element_set_render_pos(whaleIcon, 200, -100);
+void draw_huff_icon(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+    hud_element_set_flags(huffIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
+    hud_element_set_render_pos(huffIcon, baseX + 25, baseY + 25);
+    hud_element_draw_clipped(huffIcon);
+}
+
+void draw_hammer_icon(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+    hud_element_set_flags(hammerIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
+    hud_element_set_render_pos(hammerIcon, baseX + 25, baseY + 25);
+    hud_element_draw_clipped(hammerIcon);
+}
+
+void draw_whale_icon(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+    hud_element_set_flags(whaleIcon, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_FRONTUI);
+    hud_element_set_render_pos(whaleIcon, baseX + 25, baseY + 25);
+    hud_element_draw_clipped(whaleIcon);
+}
+
+void init_character_icons(void) {
+    koopaIcon = hud_element_create(&HES_Item_Apple);
+    huffIcon = hud_element_create(&HES_Item_ApplePie);
+    hammerIcon = hud_element_create(&HES_Item_AllorNothing);
+    whaleIcon = hud_element_create(&HES_Item_Artifact);
 }
 
 void render_character_select(void) {
@@ -318,9 +350,11 @@ void render_character_select(void) {
 
     if (evt_get_variable(NULL, GB_BossesDefeated) == 5) {
         menu_gotomap("spc_10", 0);
+        return;
     }
     if (evt_get_variable(NULL, GB_BossesDefeated) == 6) {
         menu_gotomap("kpa_63", 1);
+        return;
     }
     
     draw_msg(displayMessageID, 20, 20, 255, 0, 0);
@@ -343,7 +377,7 @@ void render_character_select(void) {
             } else {
                 ws = (WindowStyle) ((csPanels[row][col].cleared) ? WINDOW_STYLE_20 : WINDOW_STYLE_9);
             }
-            draw_box(0, ws, xStart + (col * width), yStart + (row * height), 0, width, height, 255, 0, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL); 
+            draw_box(0, ws, xStart + (col * width), yStart + (row * height), 0, width, height, 255, 0, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, csPanels[row][col].drawCallback, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL); 
         }
     }
 
@@ -506,7 +540,10 @@ void render_game_menus(void) {
             render_title_menu();
             break;
         case MENU_TYPE_CHARACTER_SELECT:
-            // init_character_icons();
+            if (iconState == ICON_INIT) {
+                init_character_icons();
+                iconState = ICON_UPDATE;
+            }
             render_character_select();
             break;
         case MENU_TYPE_GAME_OVER:

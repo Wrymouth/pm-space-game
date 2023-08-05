@@ -197,6 +197,7 @@ EvtScript N(EVS_Starship_Return) = {
     EVT_END_LOOP
     EVT_WAIT(20)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Space_GoodEnding, 160, 40)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_ThanksForPlaying, 160, 40)
     EVT_WAIT(30)
     EVT_CALL(PlaySound, SOUND_17C | SOUND_ID_TRIGGER_CHANGE_SOUND)
     EVT_CALL(PlaySound, SOUND_20A1)

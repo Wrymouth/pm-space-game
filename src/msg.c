@@ -2520,6 +2520,10 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         msg_drawState->textColor = MSG_PAL_STANDARD;
                         msg_drawState->printModeFlags |= MSG_PRINT_FLAG_10;
 
+                        if (printer->style == MSG_STYLE_TATTLE) {
+                            printer->maxLinesPerPage = 3;
+                        }
+
                         if (printer->style == MSG_STYLE_RIGHT || printer->style == MSG_STYLE_LEFT || printer->style == MSG_STYLE_CENTER) {
                             straightWidth = 218;
                             printer->windowBasePos.x = 22;
@@ -2548,7 +2552,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                     break;
                                 case 3:
                                     msg_drawState->textStartPos[0] = 26;
-                                    msg_drawState->textStartPos[1] = 8;
+                                    msg_drawState->textStartPos[1] = 2;
                                     curveWidth = 32;
                                     break;
                                 default:
@@ -2612,7 +2616,9 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             temp_f0_2 = printer->windowSize.y * windowScaleY;
                             bubbleX = (temp_f24 - temp_f2_2 * 0.5) + 0.5;
                             bubbleY = (temp_f20 - temp_f0_2 * 0.5) + 0.5;
-                            msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, windowScaleX, windowScaleY, temp_f28, 1);
+                            if (printer->style != MSG_STYLE_TATTLE) {
+                                msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, windowScaleX, windowScaleY, temp_f28, 1);
+                            }
                             printer->fadeInCounter++;
                             if (printer->fadeInCounter == 7) {
                                 printer->windowState = MSG_WINDOW_STATE_PRINTING;
@@ -2636,15 +2642,19 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             msg_drawState->clipY[0] = bubbleY + msg_drawState->textStartPos[1];
                             msg_drawState->clipX[1] = temp_f22_2 - msg_drawState->textStartPos[0];
                             msg_drawState->clipY[1] = temp_f20_3 - msg_drawState->textStartPos[1];
-                            msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, windowScaleX, windowScaleY, temp_f28, 1);
+                            if (printer->style != MSG_STYLE_TATTLE) {
+                                msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, windowScaleX, windowScaleY, temp_f28, 1);
+                            }
+                            
                             if (printer->fadeOutCounter >= 5) {
                                 printer->stateFlags |= MSG_STATE_FLAG_1;
                             }
                         } else {
                             bubbleX = posX + printer->windowBasePos.x;
                             bubbleY = posY + printer->windowBasePos.y;
-
-                            msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, 1.0f, 1.0f, 255, 1);
+                            if (printer->style != MSG_STYLE_TATTLE) {
+                                msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, 1.0f, 1.0f, 255, 1);
+                            }
                             if (((u32)(printer->openStartPos.x - 20) <= 280) && (printer->openStartPos.y <= 220)) {
                                 msg_draw_speech_arrow(printer);
                             }

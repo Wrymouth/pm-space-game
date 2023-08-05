@@ -9,9 +9,15 @@ typedef enum MenuType {
     MENU_TYPE_STORY            = 4,
 } MenuType;
 
+typedef enum MenuIconState {
+    ICON_INIT,
+    ICON_UPDATE,
+} MenuIconState;
+
 typedef struct CharacterSelectPanel {
     u8* destMap;
     s8 cleared;
+    void (*drawCallback)(void* arg);
 } CharacterSelectPanel;
 
 extern s32 csSelectedRow;

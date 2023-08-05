@@ -1,5 +1,6 @@
 #include "spc_07.h"
 #include "world/common/enemy/HuffNPuff.h"
+#include "world/common/npc/ShiverToad.h"
 #include "world/action/enemy_bullet.h"
 #include "effects.h"
 #include "world/action/damage_system.h"
@@ -62,10 +63,12 @@ API_CALLABLE(N(CheckPhase)) {
     Enemy* enemy = script->owner1.enemy;
     s32 newPhase;
 
-    if (enemy->curHP <= 8) {
+    if (enemy->curHP <= 16) {
         newPhase = 3; 
-    } else if (enemy->curHP <= 16) {
+    } else if (enemy->curHP <= 24) {
         newPhase = 2; 
+    } else {
+        newPhase = 1;
     }
 
     if (newPhase != evt_get_variable(script,MV_BattlePhase)) {
@@ -76,26 +79,57 @@ API_CALLABLE(N(CheckPhase)) {
     return ApiStatus_DONE2;
 }
 
+EvtScript N(NpcWin_HuffNPuff) = {
+    EVT_SET(LVar0, 3)
+    EVT_SET(LVar1, ANIM_ShiverToad_Red_Talk)
+    EVT_SET(LVar2, ANIM_ShiverToad_Red_Idle)
+    EVT_SET(LVar3, MSG_Space_Lakithunder_Defeat)
+    EVT_SET(LVar4, 130)
+    EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(NpcDefeat_HuffNPuff) = {
+    EVT_SET(LVar0, 3)
+    EVT_SET(LVar1, ANIM_ShiverToad_Red_Talk)
+    EVT_SET(LVar2, ANIM_ShiverToad_Red_Idle)
+    EVT_SET(LVar3, MSG_Space_Lakithunder_Win)
+    EVT_SET(LVar4, 130)
+    EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
+            EVT_SET(LVar0, 3)
+            EVT_SET(LVar1, ANIM_ShiverToad_Red_Talk)
+            EVT_SET(LVar2, ANIM_ShiverToad_Red_Idle)
+            EVT_SET(LVar3, MSG_Space_Lakithunder_Phase1)
+            EVT_SET(LVar4, 220)
+            EVT_EXEC_WAIT(N(ShowCharacterString))
+            EVT_SET(LVar3, 6) // moveSpeed
+            EVT_SET(MV_SpinyMax, 1)
         EVT_CASE_EQ(2)
-            EVT_SET(LVar4, -13)
-            EVT_SET(MV_SwitchTimer, SwitchDuration)
-            EVT_ADD(MV_SwitchTimer, 1)
+            EVT_SET(LVar0, 3)
+            EVT_SET(LVar1, ANIM_ShiverToad_Red_Talk)
+            EVT_SET(LVar2, ANIM_ShiverToad_Red_Idle)
+            EVT_SET(LVar3, MSG_Space_Lakithunder_Phase2)
+            EVT_SET(LVar4, 220)
+            EVT_EXEC_WAIT(N(ShowCharacterString))
+            EVT_SET(LVar3, 6) // moveSpeed
         EVT_CASE_EQ(3)
-            EVT_IF_GT(LVar3, 0)
-                EVT_SET(LVar3, 80)
-            EVT_ELSE
-                EVT_SET(LVar3, -80)
-            EVT_END_IF
-        EVT_CASE_EQ(4)
-            EVT_EXEC_WAIT(N(BowserFakeDefeat))
-            EVT_CALL(SetNpcScale, NPC_SELF, EVT_FLOAT(3.7), EVT_FLOAT(3.7), EVT_FLOAT(3.7))
-            EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_Idle)
-            EVT_CALL(SetNpcCollisionSize, NPC_SELF, 280, 300)
-            EVT_CALL(SetNpcPos, NPC_SELF, 0, BowserDefeatYBottom, 16)
+            EVT_SET(LVar0, 3)
+            EVT_SET(LVar1, ANIM_ShiverToad_Red_Talk)
+            EVT_SET(LVar2, ANIM_ShiverToad_Red_Idle)
+            EVT_SET(LVar3, MSG_Space_Lakithunder_Phase3)
+            EVT_SET(LVar4, 220)
+            EVT_EXEC_WAIT(N(ShowCharacterString))
+            EVT_SET(LVar3, 6) // moveSpeed
+            EVT_SET(MV_SpinyMax, 3)
     EVT_END_SWITCH
     EVT_RETURN
     EVT_END
@@ -104,7 +138,14 @@ EvtScript N(PhaseTransitions) = {
 EvtScript N(NpcIdle_HuffNPuff) = {
     EVT_SET(LVar3, 6) // moveSpeed
     EVT_LOOP(0)
+        // player defeat
+        EVT_IF_TRUE(AF_PlayerDead)
+            EVT_EXEC_WAIT(N(NpcWin_HuffNPuff))
+            EVT_BREAK_LOOP
+        EVT_END_IF
+        // phase check
         EVT_CALL(N(Fast_NpcFacePlayer), NPC_SELF)
+        EVT_CALL(N(CheckPhase))
         EVT_IF_TRUE(MF_PhaseTransition)
             EVT_EXEC_WAIT(N(PhaseTransitions))
             EVT_GOTO(1)
@@ -144,8 +185,12 @@ EvtScript N(NpcIdle_HuffNPuff) = {
         EVT_END_IF
 
         EVT_IF_GT(MV_AttackTimer, 60)
-            EVT_IF_EQ(MF_ThrowingSpinies, 0)
-                EVT_CALL(RandInt, 10, LVarC)
+            EVT_IF_GT(MV_BattlePhase, 1)
+                EVT_IF_EQ(MF_ThrowingSpinies, 0)
+                    EVT_CALL(RandInt, 10, LVarC)
+                EVT_END_IF
+            EVT_ELSE
+                EVT_SET(LVarC, 2)
             EVT_END_IF
             EVT_IF_GT(LVarC, 5)
                 EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_2078, 0)
@@ -158,7 +203,7 @@ EvtScript N(NpcIdle_HuffNPuff) = {
                     EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPINIES)
                     EVT_SET(MV_SpinyTimer, 0)
                     EVT_ADD(MV_SpinyCount, 1)
-                    EVT_IF_EQ(MV_SpinyCount, 3)
+                    EVT_IF_EQ(MV_SpinyCount, MV_SpinyMax)
                         EVT_SET(MF_ThrowingSpinies, FALSE)
                         EVT_SET(MV_AttackTimer, 0)
                         EVT_SET(MV_SpinyCount, 0)
@@ -177,11 +222,11 @@ EvtScript N(NpcIdle_HuffNPuff) = {
         // defeat
         EVT_IF_TRUE(GF_HuffNPuffDefeated)
             EVT_SET(MF_EnemyDefeated, TRUE)
+            EVT_EXEC_WAIT(N(NpcDefeat_HuffNPuff))
             EVT_CALL(DoNpcDefeat)
             EVT_BREAK_LOOP
         EVT_END_IF
         EVT_LABEL(1)
-        EVT_CALL(N(CheckPhase))
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN
@@ -211,13 +256,38 @@ NpcData N(NpcData_HuffNPuff) = {
     .drops = NO_DROPS,
     .animations = HUFF_N_PUFF_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
-    .maxHP = 24,
+    .maxHP = 32,
     .invFrames = 30,
     .defeatFlag = GF_HuffNPuffDefeated,
 };
 
+EvtScript N(NpcInit_Lakitu) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
+    EVT_RETURN
+    EVT_END
+};
+
+NpcSettings N(NpcSettings_Lakitu) = {
+    .height = 64,
+    .radius = 28,
+    .level = 99,
+};
+
+NpcData N(NpcData_Lakitu) = {
+    .id = 3,
+    .pos = { 0.0f, -1000.0f, 20.0f },
+    .init = &N(NpcInit_Lakitu),
+    .yaw = 270,
+    .settings = &N(NpcSettings_Lakitu),
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .drops = NO_DROPS,
+    .animations = SHIVER_TOAD_RED_ANIMS,
+    .aiDetectFlags = AI_DETECT_SIGHT,
+};
+
 NpcGroupList N(DefaultNpcs) = {
     NPC_GROUP(N(NpcData_HuffNPuff)),
+    NPC_GROUP(N(NpcData_Lakitu)),
     {}
 };
 

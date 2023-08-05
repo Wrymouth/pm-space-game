@@ -29,30 +29,13 @@
         </Animation>
         <Animation name="Idle">
             <Component name="Comp_0" xyz="0,0,0">
-                <SetRaster raster="0" />
-                <Wait duration="6" />
                 <SetRaster raster="1" />
                 <Wait duration="6" />
                 <SetRaster raster="2" />
                 <Wait duration="6" />
                 <SetRaster raster="3" />
                 <Wait duration="6" />
-                <SetRaster raster="4" />
-                <Wait duration="6" />
-                <Loop count="0" pos="4" />
-                <SetRaster raster="0" />
-                <Wait duration="6" />
-                <SetRaster raster="1" />
-                <Wait duration="6" />
-                <SetRaster raster="5" />
-                <Wait duration="2" />
-                <SetRaster raster="6" />
-                <Wait duration="2" />
-                <SetRaster raster="7" />
-                <Wait duration="2" />
-                <SetRaster raster="3" />
-                <Wait duration="6" />
-                <SetRaster raster="4" />
+                <SetRaster raster="2" />
                 <Wait duration="6" />
                 <Goto pos="0" />
             </Component>
@@ -87,7 +70,7 @@
             <Component name="Comp_0" xyz="0,0,0">
                 <SetRaster raster="8" />
                 <Wait duration="6" />
-                <SetRaster raster="0" />
+                <SetRaster raster="1" />
                 <Wait duration="6" />
                 <Goto pos="0" />
             </Component>

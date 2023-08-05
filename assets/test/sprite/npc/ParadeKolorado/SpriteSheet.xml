@@ -1,0 +1,131 @@
+<SpriteSheet maxComponents="1" paletteGroups="2">
+    <PaletteList>
+        <Palette id="0" src="Default.png"/>
+        <Palette id="1" src="Wife.png"/>
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="Idle1.png"/>
+        <Raster id="1" palette="0" src="Idle2.png"/>
+        <Raster id="2" palette="0" src="Idle3.png"/>
+        <Raster id="3" palette="0" src="IdleFwd1.png"/>
+        <Raster id="4" palette="0" src="IdleFwd2.png"/>
+        <Raster id="5" palette="0" src="IdleFwd3.png"/>
+        <Raster id="6" palette="1" src="WifeIdle1.png"/>
+        <Raster id="7" palette="1" src="WifeIdle2.png"/>
+        <Raster id="8" palette="1" src="WifeIdle3.png"/>
+        <Raster id="9" palette="1" src="WifeIdleFwd1.png"/>
+        <Raster id="A" palette="1" src="WifeIdleFwd2.png"/>
+        <Raster id="B" palette="1" src="WifeIdleFwd3.png"/>
+        <Raster id="C" palette="0" src="Wave1.png"/>
+        <Raster id="D" palette="0" src="Wave2.png"/>
+        <Raster id="E" palette="1" src="WifeWave1.png"/>
+        <Raster id="F" palette="1" src="WifeWave2.png"/>
+    </RasterList>
+    <AnimationList>
+        <Animation name="Idle">
+            <Component name="Comp_0" xyz="-5,-4,-4">
+                <Label name="Start"/>
+                <SetPos flag="0" xyz="-1,0,0"/>
+                <SetRaster raster="1"/>
+                <Wait duration="2"/>
+                <SetPos flag="0" xyz="1,0,0"/>
+                <SetRot xyz="0,180,0"/>
+                <SetRaster raster="1"/>
+                <Wait duration="2"/>
+                <SetPos flag="0" xyz="2,0,0"/>
+                <SetRot xyz="0,180,0"/>
+                <SetRaster raster="0"/>
+                <Wait duration="2"/>
+                <SetPos flag="0" xyz="1,0,0"/>
+                <SetRot xyz="0,180,0"/>
+                <SetRaster raster="2"/>
+                <Wait duration="2"/>
+                <SetPos flag="0" xyz="-1,0,0"/>
+                <SetRot xyz="0,0,0"/>
+                <SetRaster raster="2"/>
+                <Wait duration="2"/>
+                <SetPos flag="0" xyz="-2,0,0"/>
+                <SetRaster raster="0"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="IdleFwd">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="3"/>
+                <Wait duration="16"/>
+                <SetRaster raster="4"/>
+                <Wait duration="16"/>
+                <Loop count="0" pos="6"/>
+                <SetRaster raster="5"/>
+                <Wait duration="4"/>
+                <SetRaster raster="3"/>
+                <Wait duration="8"/>
+                <SetRaster raster="5"/>
+                <Wait duration="4"/>
+                <SetRaster raster="4"/>
+                <Wait duration="16"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Wave">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="C"/>
+                <Wait duration="8"/>
+                <SetRaster raster="D"/>
+                <Wait duration="8"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="WifeIdle">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="6"/>
+                <Wait duration="16"/>
+                <SetRaster raster="7"/>
+                <Wait duration="16"/>
+                <Loop count="0" pos="6"/>
+                <SetRaster raster="8"/>
+                <Wait duration="4"/>
+                <SetRaster raster="6"/>
+                <Wait duration="8"/>
+                <SetRaster raster="8"/>
+                <Wait duration="4"/>
+                <SetRaster raster="7"/>
+                <Wait duration="16"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="WifeIdleFwd">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="9"/>
+                <Wait duration="16"/>
+                <SetRaster raster="A"/>
+                <Wait duration="16"/>
+                <Loop count="0" pos="6"/>
+                <SetRaster raster="B"/>
+                <Wait duration="4"/>
+                <SetRaster raster="9"/>
+                <Wait duration="8"/>
+                <SetRaster raster="B"/>
+                <Wait duration="4"/>
+                <SetRaster raster="A"/>
+                <Wait duration="16"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="WifeWave">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="E"/>
+                <Wait duration="8"/>
+                <SetRaster raster="F"/>
+                <Wait duration="8"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

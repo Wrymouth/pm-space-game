@@ -550,8 +550,6 @@ files:
     file: EA_523.mseq
   - id: 0xEB
     file: EB_521.mseq
-  - id: auto
-    file: shroobfinal2.bgm
 
 # Songs. Use 'id: auto' to automatically assign a unique ID.
 # Symbols are used to generate the SongIDs C enum.
@@ -1161,7 +1159,7 @@ songs:
     file: 79_132.bgm
     bk_files: [null, null, null]
   - id: 0x97
-    symbol: null
+    symbol: SHROOB_FINAL2
     file: 2F_104.bgm
     bk_files: [null, null, null]
   - id: 0x98
@@ -1195,10 +1193,6 @@ songs:
   - id: 0x9f
     symbol: null
     file: 2F_104.bgm
-    bk_files: [null, null, null]
-  - id: auto
-    symbol: SONG_SHROOB_FINAL2
-    file: shroobfinal2.bgm
     bk_files: [null, null, null]
 
 # AuGlobals::mseqFileList. Not sure why there's non-MSEQ files here!

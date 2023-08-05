@@ -13,6 +13,8 @@ API_CALLABLE(N(CheckPhase)) {
         newPhase = 3; 
     } else if (enemy->curHP <= 36) {
         newPhase = 2; 
+    } else {
+        newPhase = 1; 
     }
 
     if (newPhase != evt_get_variable(script,MV_BattlePhase)) {
@@ -44,7 +46,9 @@ EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
+            EVT_CALL(SetMusicTrack, 0, SONG_SMB1_BOWSER, 0, 8)
         EVT_CASE_EQ(2)
+            EVT_CALL(SetMusicTrack, 0, SONG_MONSTAR_THEME, 0, 8)
             EVT_SET(LVar4, -13)
             EVT_SET(MV_SwitchTimer, SwitchDuration)
             EVT_ADD(MV_SwitchTimer, 1)
@@ -60,6 +64,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_Idle)
             EVT_CALL(SetNpcCollisionSize, NPC_SELF, 280, 300)
             EVT_CALL(SetNpcPos, NPC_SELF, 0, BowserDefeatYBottom, 16)
+            EVT_CALL(SetMusicTrack, 0, SONG_SHROOB_FINAL2, 0, 8)
     EVT_END_SWITCH
     EVT_RETURN
     EVT_END
@@ -103,11 +108,23 @@ EvtScript N(DoGiantJump) = {
     EVT_END
 };
 
+EvtScript N(NpcWin_Bowser) = {
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(NpcIdle_Bowser) = {
     EVT_SET(LVar3, 10) // directionX
     EVT_SET(LVar4, 13) // directionY
     EVT_LOOP(0)
         EVT_CALL(N(Fast_NpcFacePlayer), NPC_SELF)
+        // player defeat
+        EVT_IF_TRUE(AF_PlayerDead)
+            EVT_EXEC_WAIT(N(NpcWin_Bowser))
+            EVT_BREAK_LOOP
+        EVT_END_IF
+        // phase check
+        EVT_CALL(N(CheckPhase))
         EVT_IF_TRUE(MF_PhaseTransition)
             EVT_EXEC_WAIT(N(PhaseTransitions))
             EVT_GOTO(1)
@@ -225,7 +242,6 @@ EvtScript N(NpcIdle_Bowser) = {
             EVT_BREAK_LOOP
         EVT_END_IF
         EVT_LABEL(1)
-        EVT_CALL(N(CheckPhase))
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN
@@ -261,8 +277,33 @@ NpcData N(NpcData_Bowser) = {
     .defeatFlag = GF_BowserDefeated,
 };
 
+EvtScript N(NpcInit_BowserTalk) = {
+    EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
+    EVT_RETURN
+    EVT_END
+};
+
+NpcSettings N(NpcSettings_BowserTalk) = {
+    .height = 64,
+    .radius = 28,
+    .level = 99,
+};
+
+NpcData N(NpcData_BowserTalk) = {
+    .id = 3,
+    .pos = { 0.0f, -1000.0f, 20.0f },
+    .init = &N(NpcInit_BowserTalk),
+    .yaw = 270,
+    .settings = &N(NpcSettings_BowserTalk),
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .drops = NO_DROPS,
+    .animations = BOWSER_ANIMS,
+    .aiDetectFlags = AI_DETECT_SIGHT,
+};
+
 NpcGroupList N(DefaultNpcs) = {
     NPC_GROUP(N(NpcData_Bowser)),
+    NPC_GROUP(N(NpcData_BowserTalk)),
     {}
 };
 

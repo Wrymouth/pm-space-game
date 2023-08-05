@@ -1,4 +1,5 @@
 #include "world/action/enemy_bullet.h"
+#include "effects.h"
 
 API_CALLABLE(N(DoAttack)) {
     Bytecode* args = script->ptrReadPos;
@@ -46,3 +47,22 @@ API_CALLABLE(N(Fast_NpcFacePlayer)) {
 
     return ApiStatus_DONE2;
 }
+
+/**
+ * @arg LVar0 NpcID
+ * @arg LVar1 TalkAnim
+ * @arg LVar2 IdleAnim
+ * @arg LVar3 String to display
+ * @arg LVar4 Duration
+*/ 
+EvtScript N(ShowCharacterString) = {
+    EVT_CALL(PlayEffect, EFFECT_TATTLE_WINDOW, 0, 300, 45, 0, EVT_FLOAT(0.4), LVar4)
+    EVT_WAIT(10)
+    EVT_CALL(SetNpcScale, LVar0, EVT_FLOAT(2.0), EVT_FLOAT(2.0), EVT_FLOAT(2.0))
+    EVT_CALL(SetNpcPos, LVar0, 225, 100, 16)
+    EVT_CALL(SpeakToPlayer, LVar0, LVar1, LVar2, 0, LVar3)
+    EVT_CALL(SetNpcPos, LVar0, 0, -1000, 0)
+    EVT_CALL(SetNpcScale, LVar0, EVT_FLOAT(1.0), EVT_FLOAT(1.0), EVT_FLOAT(1.0))
+    EVT_RETURN
+    EVT_END
+};
