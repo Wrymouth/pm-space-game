@@ -1,5 +1,5 @@
 #include "spc_07.h"
-#include "world/common/enemy/HuffNPuff.h"
+#include "sprite/npc/Chanterelle.h"
 #include "world/common/npc/ShiverToad.h"
 #include "world/action/enemy_bullet.h"
 #include "effects.h"
@@ -102,6 +102,9 @@ EvtScript N(NpcDefeat_HuffNPuff) = {
 };
 
 EvtScript N(PhaseTransitions) = {
+    EVT_IF_TRUE(MV_BattlePhase)
+        EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Chanterelle_Idle)
+    EVT_END_IF
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
@@ -131,6 +134,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar3, 6) // moveSpeed
             EVT_SET(MV_SpinyMax, 3)
     EVT_END_SWITCH
+    EVT_SET(MV_LightningTimer, 0)
     EVT_RETURN
     EVT_END
 };
@@ -164,8 +168,8 @@ EvtScript N(NpcIdle_HuffNPuff) = {
         EVT_SWITCH(MV_LightningTimer)
             EVT_CASE_EQ(110)
                 // announce lightning attack
+                EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Chanterelle_Walk)
                 EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_209, 0)
-                EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim02)
             EVT_CASE_EQ(125)
                 // set lightning X to player X
                 EVT_SET(MV_LightningX, LVar0)
@@ -178,7 +182,7 @@ EvtScript N(NpcIdle_HuffNPuff) = {
                 // end lightning strike
                 EVT_SET(MF_LightningCanDamagePlayer, FALSE)
                 EVT_SET(MV_LightningTimer, 0)
-                EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim00)
+                EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Chanterelle_Still)
         EVT_END_SWITCH
         EVT_IF_TRUE(MF_LightningCanDamagePlayer)
             EVT_CALL(N(LightningDamagePlayer))
@@ -199,6 +203,8 @@ EvtScript N(NpcIdle_HuffNPuff) = {
             EVT_ELSE
                 EVT_SET(MF_ThrowingSpinies, TRUE)
                 EVT_IF_EQ(MV_SpinyTimer, 8)
+                    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Chanterelle_Still)
+                    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Chanterelle_Run)
                     EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_THROW, 0)
                     EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPINIES)
                     EVT_SET(MV_SpinyTimer, 0)
@@ -207,6 +213,7 @@ EvtScript N(NpcIdle_HuffNPuff) = {
                         EVT_SET(MF_ThrowingSpinies, FALSE)
                         EVT_SET(MV_AttackTimer, 0)
                         EVT_SET(MV_SpinyCount, 0)
+                        EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Chanterelle_Still)
                     EVT_END_IF
                 EVT_END_IF
                 EVT_ADD(MV_SpinyTimer, 1)
@@ -215,8 +222,8 @@ EvtScript N(NpcIdle_HuffNPuff) = {
         EVT_ADD(MV_LightningTimer, 1)
         EVT_ADD(MV_AttackTimer, 1)
         // damage
-        EVT_SET(LVar0, ANIM_HuffNPuff_Anim00)
-        EVT_SET(LVar1, ANIM_HuffNPuff_Anim01)
+        EVT_SET(LVar0, ANIM_Chanterelle_Still)
+        EVT_SET(LVar1, ANIM_Chanterelle_Idle)
         EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         // defeat
@@ -254,7 +261,24 @@ NpcData N(NpcData_HuffNPuff) = {
     .settings = &N(NpcSettings_HuffNPuff),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
     .drops = NO_DROPS,
-    .animations = HUFF_N_PUFF_ANIMS,
+    .animations = {
+        .idle   = ANIM_Chanterelle_Still,
+        .walk   = ANIM_Chanterelle_Still,
+        .run    = ANIM_Chanterelle_Still,
+        .chase  = ANIM_Chanterelle_Still,
+        .anim_4 = ANIM_Chanterelle_Still,
+        .anim_5 = ANIM_Chanterelle_Still,
+        .death  = ANIM_Chanterelle_Still,
+        .hit    = ANIM_Chanterelle_Still,
+        .anim_8 = ANIM_Chanterelle_Still,
+        .anim_9 = ANIM_Chanterelle_Still,
+        .anim_A = ANIM_Chanterelle_Still,
+        .anim_B = ANIM_Chanterelle_Still,
+        .anim_C = ANIM_Chanterelle_Still,
+        .anim_D = ANIM_Chanterelle_Still,
+        .anim_E = ANIM_Chanterelle_Still,
+        .anim_F = ANIM_Chanterelle_Still,
+    },
     .aiDetectFlags = AI_DETECT_SIGHT,
     .maxHP = 32,
     .invFrames = 30,
@@ -279,7 +303,7 @@ NpcData N(NpcData_Lakitu) = {
     .init = &N(NpcInit_Lakitu),
     .yaw = 270,
     .settings = &N(NpcSettings_Lakitu),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = SHIVER_TOAD_RED_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,

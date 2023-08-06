@@ -145,7 +145,7 @@ void* _heap_malloc(HeapNode* head, u32 size) {
         }
         return (u8*)pPrevHeapNode + sizeof(HeapNode);
     }
-    return NULL;
+    return size;
 }
 
 void* _heap_malloc_tail(HeapNode* head, u32 size) {

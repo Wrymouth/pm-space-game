@@ -1064,6 +1064,7 @@ s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList) {
         }
     }
     compList = spr_allocate_components(header->maxComponents);
+    ASSERT(compList != NULL);
     SpriteInstances[listIndex].componentList = compList;
     while (*compList != PTR_LIST_END) {
         SpriteComponent* comp = *compList;

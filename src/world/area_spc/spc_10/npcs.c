@@ -25,6 +25,28 @@ API_CALLABLE(N(CheckPhase)) {
     return ApiStatus_DONE2;
 }
 
+EvtScript N(NpcWin_Bowser) = {
+    EVT_SET(LVar0, 3)
+    EVT_SET(LVar1, ANIM_WorldBowser_Talk)
+    EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
+    EVT_SET(LVar3, MSG_Space_Bowser_Defeat)
+    EVT_SET(LVar4, 130)
+    EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(NpcDefeat_Bowser) = {
+    EVT_SET(LVar0, 3)
+    EVT_SET(LVar1, ANIM_WorldBowser_Talk)
+    EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
+    EVT_SET(LVar3, MSG_Space_Bowser_Win)
+    EVT_SET(LVar4, 130)
+    EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(BowserFakeDefeat) = {
     EVT_SET(LVarA, 10)
     EVT_LOOP(0)
@@ -46,14 +68,37 @@ EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
+            EVT_SET(LVarA, LVar3)
+            EVT_SET(LVar0, 3)
+            EVT_SET(LVar1, ANIM_WorldBowser_Talk)
+            EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
+            EVT_SET(LVar3, MSG_Space_Bowser_Phase1)
+            EVT_SET(LVar4, 300)
+            EVT_EXEC_WAIT(N(ShowCharacterString))
+            EVT_SET(LVar3, LVarA) // directionX
             EVT_CALL(SetMusicTrack, 0, SONG_SMB1_BOWSER, 0, 8)
         EVT_CASE_EQ(2)
+            EVT_SET(LVarA, LVar3)
+            EVT_SET(LVar0, 3)
+            EVT_SET(LVar1, ANIM_WorldBowser_Talk)
+            EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
+            EVT_SET(LVar3, MSG_Space_Bowser_Phase2)
+            EVT_SET(LVar4, 130)
+            EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_CALL(SetMusicTrack, 0, SONG_MONSTAR_THEME, 0, 8)
+            EVT_SET(LVar3, LVarA)
             EVT_SET(LVar4, -13)
             EVT_SET(MV_SwitchTimer, SwitchDuration)
             EVT_ADD(MV_SwitchTimer, 1)
         EVT_CASE_EQ(3)
-            EVT_IF_GT(LVar3, 0)
+            EVT_SET(LVarA, LVar3)
+            EVT_SET(LVar0, 3)
+            EVT_SET(LVar1, ANIM_WorldBowser_Talk)
+            EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
+            EVT_SET(LVar3, MSG_Space_Bowser_Phase3)
+            EVT_SET(LVar4, 130)
+            EVT_EXEC_WAIT(N(ShowCharacterString))
+            EVT_IF_GT(LVarA, 0)
                 EVT_SET(LVar3, 80)
             EVT_ELSE
                 EVT_SET(LVar3, -80)
@@ -64,6 +109,14 @@ EvtScript N(PhaseTransitions) = {
             EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_Idle)
             EVT_CALL(SetNpcCollisionSize, NPC_SELF, 280, 300)
             EVT_CALL(SetNpcPos, NPC_SELF, 0, BowserDefeatYBottom, 16)
+
+            EVT_SET(LVar0, 3)
+            EVT_SET(LVar1, ANIM_WorldBowser_Talk)
+            EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
+            EVT_SET(LVar3, MSG_Space_Bowser_Phase4)
+            EVT_SET(LVar4, 220)
+            EVT_EXEC_WAIT(N(ShowCharacterString))
+
             EVT_CALL(SetMusicTrack, 0, SONG_SHROOB_FINAL2, 0, 8)
     EVT_END_SWITCH
     EVT_RETURN
@@ -108,11 +161,6 @@ EvtScript N(DoGiantJump) = {
     EVT_END
 };
 
-EvtScript N(NpcWin_Bowser) = {
-    EVT_RETURN
-    EVT_END
-};
-
 EvtScript N(NpcIdle_Bowser) = {
     EVT_SET(LVar3, 10) // directionX
     EVT_SET(LVar4, 13) // directionY
@@ -127,6 +175,7 @@ EvtScript N(NpcIdle_Bowser) = {
         EVT_CALL(N(CheckPhase))
         EVT_IF_TRUE(MF_PhaseTransition)
             EVT_EXEC_WAIT(N(PhaseTransitions))
+            EVT_DEBUG_PRINT_VAR(LVarE)
             EVT_GOTO(1)
         EVT_END_IF
         //movement
@@ -226,7 +275,7 @@ EvtScript N(NpcIdle_Bowser) = {
                 EVT_ADD(MV_RainTimer, 1)
         EVT_END_SWITCH
         // damage
-        EVT_IF_EQ(MV_BattlePhase, 4)
+        EVT_IF_GT(MV_BattlePhase, 3)
             EVT_SET(LVar0, ANIM_WorldBowser_Idle)
             EVT_SET(LVar1, ANIM_WorldBowser_RearUpLaugh)
         EVT_ELSE

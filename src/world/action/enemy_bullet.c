@@ -35,6 +35,7 @@ typedef struct EnemyBulletStatus {
 
 const s32 MAX_ENEMY_BULLETS  = 10;
 const s32 ENEMY_BULLET_DECAY = 50;
+const s32 HAMMER_DECAY = 80;
 s32       enemyBulletCount   = 0;
 
 EnemyBulletStatus enemy_bullets[] = { { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY },
@@ -210,6 +211,20 @@ void hammer_jump(Npc* bulletNpc) {
 }
 
 void bullet_render_hammer(Npc* bulletNpc) {
+    s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
+    if (enemy_bullets[bulletIndex].activeBulletTime >= HAMMER_DECAY) {
+        destroy_enemy_bullet(bulletIndex);
+    }
+    enemy_bullets[bulletIndex].activeBulletTime++;
+    hammer_jump(bulletNpc);
+    if (enemy_bullets[bulletIndex].flags & ENEMY_BULLET_FLAG_FACING_LEFT) {
+        bulletNpc->rot.z += 20.0f;
+    } else {
+        bulletNpc->rot.z -= 20.0f;
+    }
+}
+
+void bullet_render_bowser_hammer(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
     if (enemy_bullets[bulletIndex].activeBulletTime >= ENEMY_BULLET_DECAY) {
         destroy_enemy_bullet(bulletIndex);
@@ -414,6 +429,7 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
 
     s32 initialDistanceX = (bulletStatus->flags & ENEMY_BULLET_FLAG_FACING_LEFT) ? -25.0f : 25.0f;
     s32 hammerOffset;
+    s32 hammerDistY;
     s32 billDistY;
     s32 facingLeft = FALSE;
 
@@ -431,12 +447,13 @@ void enemy_bullet_init(Npc* bulletNpc, Npc* enemy, EnemyBulletType type) {
                 facingLeft = TRUE;
             }
             hammerOffset = facingLeft ? -20.0f : 20.0f;
+            hammerDistY = gPlayerStatus.pos.y - bulletNpc->pos.y;
             bulletNpc->moveToPos.x = gPlayerStatus.pos.x + hammerOffset;
             bulletNpc->moveToPos.y = -240;
             bulletNpc->moveToPos.z = gPlayerStatus.pos.z;
             bulletNpc->yaw = facingLeft ? 0 : 180;
-            bulletNpc->jumpScale = 1.1f;
-            bulletNpc->duration   = ENEMY_BULLET_DECAY;
+            bulletNpc->jumpScale = 0.45f;
+            bulletNpc->duration   = HAMMER_DECAY;
             bulletNpc->scale.x           = 2.5f;
             bulletNpc->scale.y           = 2.5f;
             bulletNpc->scale.z           = 2.5f;
@@ -761,7 +778,7 @@ void use_enemy_bullet(Npc* enemyNpc, EnemyBulletType type) {
             npcSettings.defaultAnim = ANIM_Chan_Still;
             npcSettings.height      = 16;
             npcSettings.radius      = 16;
-            bp->onRender    = bullet_render_hammer;
+            bp->onRender    = bullet_render_bowser_hammer;
             break;
         case ENEMY_BULLET_TYPE_FIRE_1:
         case ENEMY_BULLET_TYPE_FIRE_2:

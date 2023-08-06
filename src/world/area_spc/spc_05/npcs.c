@@ -61,6 +61,9 @@ EvtScript N(NpcWin_JrTroopa) = {
 };
 
 EvtScript N(PhaseTransitions) = {
+    EVT_IF_TRUE(MV_BattlePhase)
+        EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Hurt)
+    EVT_END_IF
     EVT_ADD(MV_BattlePhase, 1)
     EVT_IF_EQ(MV_BattlePhase, 2)
         EVT_SET(LVar0, 4)

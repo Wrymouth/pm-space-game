@@ -27,6 +27,8 @@ EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_MARIOS_HOUSE) // pause_map.c
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()
+    EVT_SET(MV_ShipPosX, -242)
+    EVT_SET(MV_ShipPosY, -175)
     EVT_CALL(SetMusicTrack, 0, SONG_BOWSER_THEME, 0, 8)
     EVT_CALL(MakeNpcs, FALSE, EVT_PTR(N(DefaultNpcs)))
     EVT_EXEC(N(SetupTexturePan))

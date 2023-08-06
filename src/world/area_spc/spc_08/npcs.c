@@ -80,12 +80,14 @@ EvtScript N(NpcWin_Whale) = {
     EVT_SET(LVar4, 80)
     EVT_EXEC_WAIT(N(ShowCharacterString))
     
-    EVT_SET(LVar0, 4)
-    EVT_SET(LVar1, ANIM_Fuzzy_Jungle_Jump)
-    EVT_SET(LVar2, ANIM_Fuzzy_Jungle_Walk)
-    EVT_SET(LVar3, MSG_Space_Whale_Defeat2)
-    EVT_SET(LVar4, 80)
-    EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_IF_GT(MV_BattlePhase, 1)
+        EVT_SET(LVar0, 4)
+        EVT_SET(LVar1, ANIM_Fuzzy_Jungle_Jump)
+        EVT_SET(LVar2, ANIM_Fuzzy_Jungle_Walk)
+        EVT_SET(LVar3, MSG_Space_Whale_Defeat2)
+        EVT_SET(LVar4, 80)
+        EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_END_IF
     EVT_RETURN
     EVT_END
 };
@@ -98,7 +100,7 @@ EvtScript N(NpcDefeat_Whale) = {
         EVT_SET(LVar3, MSG_Space_Whale_Win1)
         EVT_SET(LVar4, 80)
         EVT_EXEC_WAIT(N(ShowCharacterString))
-
+        
         EVT_SET(LVar0, 4)
         EVT_SET(LVar1, ANIM_Fuzzy_Jungle_Jump)
         EVT_SET(LVar2, ANIM_Fuzzy_Jungle_Walk)
@@ -126,6 +128,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 4) // moveSpeed
             EVT_SET(MV_WaterMax, 3)
+            EVT_CALL(SetMusicTrack, 0, SONG_SPECIAL_BATTLE, 0, 8)
         EVT_CASE_EQ(2)
             EVT_SET(LVar0, 4)
             EVT_SET(LVar1, ANIM_Fuzzy_Jungle_Jump)
@@ -292,7 +295,7 @@ NpcData N(NpcData_Fuzzy) = {
     .init = &N(NpcInit_Fuzzy),
     .yaw = 270,
     .settings = &N(NpcSettings_Fuzzy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,

@@ -24,6 +24,18 @@ API_CALLABLE(N(CheckPhase)) {
     return ApiStatus_DONE2;
 }
 
+Vec3f N(KoopaBrosShipPath)[] = {
+    {  83.0,  -65.0, 16.0 },
+    {  68.0, -100.0, 16.0 },
+    {  33.0, -115.0, 16.0 },
+    {  -2.0, -100.0, 16.0 },
+    { -17.0,  -65.0, 16.0 },
+    {  -2.0,  -30.0, 16.0 },
+    {  33.0,  -15.0, 16.0 },
+    {  68.0,  -30.0, 16.0 },
+    {  83.0,  -65.0, 16.0 },
+};
+
 EvtScript N(NpcWin_KoopaBrosShip) = {
     EVT_SET(LVar0, 3)
     EVT_SET(LVar1, ANIM_KoopaBros_Black_Talk)
@@ -47,6 +59,9 @@ EvtScript N(NpcDefeat_KoopaBrosShip) = {
 };
 
 EvtScript N(PhaseTransitions) = {
+    EVT_IF_TRUE(MV_BattlePhase)
+        EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_ParadeKolorado_WifeIdle)
+    EVT_END_IF
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
@@ -78,8 +93,25 @@ EvtScript N(PhaseTransitions) = {
     EVT_END
 };
 
+EvtScript N(MoveAlongPath) = {
+    EVT_LOOP(0)
+        EVT_CALL(LoadPath, 90, N(KoopaBrosShipPath), 9, EASING_LINEAR)
+        EVT_LOOP(0)
+            EVT_CALL(GetNextPathPos)
+            EVT_CALL(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
+            EVT_IF_EQ(LVar0, 0)
+                EVT_BREAK_LOOP
+            EVT_END_IF
+            EVT_WAIT(1)
+        EVT_END_LOOP
+    EVT_END_LOOP
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(NpcIdle_KoopaBrosShip) = {
     EVT_SET(LVar3, 20) // direction
+    EVT_EXEC_GET_TID(N(MoveAlongPath), LVarA)
     EVT_LOOP(0)
         // player defeat
         EVT_IF_TRUE(AF_PlayerDead)
@@ -95,7 +127,7 @@ EvtScript N(NpcIdle_KoopaBrosShip) = {
         //movement
         EVT_IF_GT(MV_BattlePhase, 1)
             EVT_IF_EQ(MV_SplitTimer, 50)
-                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_20EB)
+                EVT_CALL(PlaySound, SOUND_20EB)
                 EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPLIT)
                 EVT_SET(MV_SplitTimer, 0)
             EVT_END_IF
@@ -120,6 +152,7 @@ EvtScript N(NpcIdle_KoopaBrosShip) = {
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         // defeat
         EVT_IF_TRUE(GF_KoopaBrosDefeated)
+            EVT_KILL_THREAD(LVarA)
             EVT_SET(MF_EnemyDefeated, TRUE)
             EVT_EXEC_WAIT(N(NpcDefeat_KoopaBrosShip))
             EVT_CALL(DoNpcDefeat)
@@ -134,14 +167,15 @@ EvtScript N(NpcIdle_KoopaBrosShip) = {
 
 EvtScript N(NpcInit_KoopaBrosShip) = {
     EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
+    EVT_CALL(SetNpcScale, NPC_SELF, EVT_FLOAT(2.0), EVT_FLOAT(2.0), EVT_FLOAT(2.0))
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(NpcIdle_KoopaBrosShip)))
     EVT_RETURN
     EVT_END
 };
 
 NpcSettings N(NpcSettings_KoopaBrosShip) = {
-    .height = 64,
-    .radius = 28,
+    .height = 80,
+    .radius = 64,
     .level = 99,
 };
 

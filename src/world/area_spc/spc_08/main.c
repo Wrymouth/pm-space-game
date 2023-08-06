@@ -27,7 +27,7 @@ EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_MARIOS_HOUSE) // pause_map.c
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()
-    EVT_CALL(SetMusicTrack, 0, SONG_YOSHIS_PANIC, 0, 8)
+    EVT_CALL(SetMusicTrack, 0, SONG_TUTANKOOPA_THEME, 0, 8)
     EVT_CALL(MakeNpcs, FALSE, EVT_PTR(N(DefaultNpcs)))
     EVT_EXEC(N(SetupTexturePan))
     EVT_EXEC(N(GameLoop))

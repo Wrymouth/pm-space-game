@@ -534,7 +534,7 @@ void check_input_spin(void) {
             if (actionState < ACTION_STATE_STEP_UP) {
                 if (actionState < ACTION_STATE_JUMP) {
                     if (actionState >= 0 && !(playerStatus->animFlags & PA_FLAG_SPINNING)) {
-                        if (btnPressed || spinState->hasBufferedSpin) {
+                        if (FALSE && btnPressed || spinState->hasBufferedSpin) {
                             set_action_state(ACTION_STATE_SPIN);
                             if (spinState->hasBufferedSpin != FALSE) {
                                 if (spinState->bufferedStickAxis.x != 0 || spinState->bufferedStickAxis.y != 0) {

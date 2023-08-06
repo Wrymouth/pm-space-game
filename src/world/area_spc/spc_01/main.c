@@ -24,6 +24,7 @@ EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_MARIOS_HOUSE) // pause_map.c
     EVT_CALL(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD()
+    EVT_SET(GB_StoryProgress, STORY_CH0_DEFEATED_JR_TROOPA)
     EVT_EXEC(N(ShowTitle))
     EVT_CALL(SetMusicTrack, 0, SONG_PARADE_NIGHT, 0, 8)
     EVT_CALL(ClearAmbientSounds, 0)

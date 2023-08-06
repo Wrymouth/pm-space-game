@@ -23,6 +23,7 @@ enum {
     MV_BattlePhase = MapVar(2),
     MV_HammerTimer = MapVar(3),
     MV_ShotTimer = MapVar(4),
+    MV_HammerInterval = MapVar(5),
 };
 
 #define NAMESPACE spc_06

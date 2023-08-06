@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Map name="spc_00" author="unnamed" background="hos_bg" textures="hos_tex">
+<Map name="spc_09" author="unnamed" background="hos_bg" textures="hos_tex">
 	<Editor>
-		<Camera pos="-45.849537,134.171951,270.522980" pitch="24.400034" yaw="336.640625"/>
+		<Camera pos="0.000000,134.036804,893.567749" pitch="10.000000" yaw="0.000000"/>
 		<Camera pos="-260.426849,65536.000000,68.693077"/>
 		<Camera pos="65536.000000,11.014858,-13.156513"/>
 		<Camera pos="-54.547127,83.825081,65536.000000"/>
@@ -31,11 +31,12 @@
 		</Node>
 	</ZoneTree>
 	<MarkerTree>
-		<Node name="Root" id="2">
+		<Node name="Root" id="3">
 			<Node name="Entrances" id="0">
 				<Node name="Entry0" id="FFFFFFFF"/>
 			</Node>
 			<Node name="PlayerController" id="1"/>
+			<Node name="y" id="2"/>
 		</Node>
 	</MarkerTree>
 	<LightSets>
@@ -1415,7 +1416,21 @@
 	</Zones>
 	<Markers>
 		<Marker ver="4" type="Root">
-			<MapObject name="Root" id="2"/>
+			<MapObject name="Root" id="3"/>
+		</Marker>
+		<Marker ver="4" type="Path" pos="23,-41,0" yaw="0.000000">
+			<MapObject name="y" id="2"/>
+			<Path>
+				<Waypoint pos="73,-41,0"/>
+				<Waypoint pos="58,-76,0"/>
+				<Waypoint pos="23,-91,0"/>
+				<Waypoint pos="-12,-76,0"/>
+				<Waypoint pos="-27,-41,0"/>
+				<Waypoint pos="-12,-6,0"/>
+				<Waypoint pos="23,9,0"/>
+				<Waypoint pos="58,-6,0"/>
+				<Waypoint pos="73,-41,0"/>
+			</Path>
 		</Marker>
 		<Marker ver="4" type="NPC" pos="0,0,0" yaw="0.000000">
 			<MapObject name="PlayerController" id="1"/>

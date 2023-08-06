@@ -101,6 +101,10 @@ API_CALLABLE(N(HealPlayer)) {
 }
 
 EvtScript N(Die) = {
+    EVT_CALL(RandInt, 50, LVarA)
+    EVT_IF_EQ(LVarA, 1)
+        EVT_CALL(PlaySound, SOUND_SHY_GUY_SCREAMS1)
+    EVT_END_IF
     EVT_SET(LVar0, 7)
     EVT_SET(LVar1, -7)
     EVT_SET(LVarC, 0)

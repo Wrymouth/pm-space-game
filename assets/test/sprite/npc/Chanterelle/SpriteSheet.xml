@@ -1,0 +1,97 @@
+<SpriteSheet maxComponents="8" paletteGroups="2" variations="Variant00,Variant01">
+    <PaletteList>
+        <Palette id="0" src="Default.png" />
+    </PaletteList>
+    <RasterList>
+        <Raster id="0" palette="0" src="Raster00.png" />
+        <Raster id="1" palette="0" src="Raster01.png" />
+        <Raster id="2" palette="0" src="Raster05.png" />
+        <Raster id="3" palette="0" src="Raster06.png" />
+        <Raster id="4" palette="0" src="Raster07.png" />
+        <Raster id="5" palette="0" src="Raster08.png" />
+        <Raster id="6" palette="0" src="Raster0C.png" />
+        <Raster id="7" palette="0" src="Raster0D.png" />
+        <Raster id="8" palette="0" src="Raster0F.png" />
+        <Raster id="9" palette="0" src="Raster10.png" />
+    </RasterList>
+    <AnimationList>
+        <Animation name="Still">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="0"/>
+                <Wait duration="2"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Idle">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="6"/>
+                <Wait duration="8"/>
+                <SetPos flag="0" xyz="8,0,0"/>
+                <SetRaster raster="7"/>
+                <Wait duration="8"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Walk">
+            <Component name="Comp_0" xyz="0,0,0">
+                <Label name="Start"/>
+                <SetPos flag="0" xyz="0,-3,0"/>
+                <SetRaster raster="8"/>
+                <Wait duration="4"/>
+                <SetPos flag="0" xyz="8,0,0"/>
+                <SetRaster raster="9"/>
+                <Wait duration="2"/>
+                <Label name="Pos_13"/>
+                <SetPos flag="0" xyz="8,0,0"/>
+                <SetRaster raster="2"/>
+                <Wait duration="2"/>
+                <Goto dest="Pos_13"/>
+            </Component>
+        </Animation>
+        <Animation name="Run">
+            <Component name="Comp_0" xyz="-3,0,0">
+                <Label name="Start"/>
+                <SetPos flag="0" xyz="8,0,0"/>
+                <SetRaster raster="3"/>
+                <Wait duration="4"/>
+                <SetPos flag="0" xyz="0,-11,0"/>
+                <SetRaster raster="4"/>
+                <Wait duration="2"/>
+                <SetPos flag="0" xyz="0,-11,0"/>
+                <SetRaster raster="5"/>
+                <Wait duration="2"/>
+                <Label name="Pos_19"/>
+                <SetPos flag="0" xyz="0,-11,0"/>
+                <SetRaster raster="4"/>
+                <Wait duration="2"/>
+                <Goto dest="Pos_19"/>
+            </Component>
+        </Animation>
+        <Animation name="Talk">
+            <Component name="Comp_0" xyz="-3,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="9"/>
+                <Wait duration="6"/>
+                <SetRaster raster="0"/>
+                <Wait duration="6"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+        <Animation name="Sing">
+            <Component name="Comp_0" xyz="-3,0,0">
+                <Label name="Start"/>
+                <SetRaster raster="8"/>
+                <Wait duration="20"/>
+                <SetRaster raster="6"/>
+                <Wait duration="12"/>
+                <SetRaster raster="7"/>
+                <Wait duration="20"/>
+                <SetRaster raster="6"/>
+                <Wait duration="12"/>
+                <Goto dest="Start"/>
+            </Component>
+        </Animation>
+    </AnimationList>
+</SpriteSheet>

@@ -297,7 +297,7 @@
 	[Style Tattle][InputOff][Color 0x0]
 	Alright men! Show    [BR]
 	Mario what we've    [BR]
-	been practicing![Pause 60][End]
+	been working on!    [Pause 60][End]
 }
 
 #message:2F:(Space_Hammer_Phase2) {
@@ -316,16 +316,14 @@
 
 #message:2F:(Space_Hammer_Defeat) {
 	[Style Tattle][InputOff][Color 0x0]
-	Haha! That'll     [BR]
-	teach you not to     [BR]
-	mess with us!     [Pause 60][End]
+	Haha! That's     [BR]
+	how we do it!    [Pause 60][End]
 }
 
 #message:2F:(Space_Hammer_Win) {
 	[Style Tattle][InputOff][Color 0x0]
 	Home base, we've     [BR]
-	been eliminated!     [BR]
-	Going down!     [Pause 60][End]
+	been eliminated!     [Pause 60][End]
 }
 
 #message:2F:(Space_Whale_Phase1) {
@@ -357,9 +355,9 @@
 
 #message:2F:(Space_Whale_Phase3_2) {
 	[Style Tattle][InputOff][Color 0x0]
-	You are     [BR]
-	correct. I must     [BR]
-	try harder.     [Pause 60][End]
+	You are correct.     [BR]
+	I must try           [BR]
+	harder.              [Pause 60][End]
 }
 
 #message:2F:(Space_Whale_Defeat1) {
@@ -370,9 +368,9 @@
 
 #message:2F:(Space_Whale_Defeat2) {
 	[Style Tattle][InputOff][Color 0x0]
-	Good job, big guy!     [BR]
-	You sure showed     [BR]
-	him!     [Pause 20][End]
+	Good job, big guy!    [BR]
+	You sure showed    [BR]
+	him!    [Pause 20][End]
 }
 
 #message:2F:(Space_Whale_Win1) {
@@ -436,8 +434,8 @@
 
 #message:2F:(Space_Koopa_Phase2) {
 	[Style Tattle][InputOff][Color 0x0]
-	Engaging split     [BR]
-	cannons!     [Pause 60][End]
+	Activating split     [BR]
+	blasters!     [Pause 60][End]
 }
 
 #message:2F:(Space_Koopa_Phase3) {
@@ -462,9 +460,9 @@
 
 #message:2F:(Space_Bowser_Phase1) {
 	[Style Tattle][InputOff][Color 0x0]
-	Hmmm, it seems my     [BR]
-	minions have     [BR]
-	failed yet again.     [BR][Pause 60][Next]
+	Hmmm, it seems my    [BR]
+	minions have    [BR]
+	failed yet again.    [BR][Pause 60][Next]
 	Guess it's my     [BR]
 	turn, then!     [BR][Pause 60][Next]
 	Let's see you     [BR]

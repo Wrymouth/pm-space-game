@@ -67,6 +67,9 @@ EvtScript N(NpcDefeat_HammerBroShip) = {
 };
 
 EvtScript N(PhaseTransitions) = {
+    EVT_IF_TRUE(MV_BattlePhase)
+        EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_ParadeYoshi_StillBlue)
+    EVT_END_IF
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
@@ -76,6 +79,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar3, MSG_Space_Hammer_Phase1)
             EVT_SET(LVar4, 140)
             EVT_EXEC_WAIT(N(ShowCharacterString))
+            EVT_SET(MV_HammerInterval, 40)
             EVT_SET(LVar3, 20) // direction
         EVT_CASE_EQ(2)
             EVT_SET(LVar0, 3)
@@ -92,6 +96,8 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar3, MSG_Space_Hammer_Phase3)
             EVT_SET(LVar4, 130)
             EVT_EXEC_WAIT(N(ShowCharacterString))
+            EVT_SET(MV_HammerInterval, 25)
+            EVT_SET(MV_HammerTimer, 0)
             EVT_SET(LVar3, 20) // direction
     EVT_END_SWITCH
     EVT_RETURN
@@ -122,18 +128,20 @@ EvtScript N(NpcIdle_HammerBroShip) = {
         EVT_END_IF
         EVT_ADD(LVar0, LVar3)
         EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-        EVT_IF_EQ(MV_HammerTimer, 20)
+        EVT_IF_EQ(MV_HammerTimer, MV_HammerInterval)
             EVT_CALL(PlaySound, SOUND_2004)
             EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_HAMMER)
             EVT_SET(MV_HammerTimer, 0)
         EVT_END_IF
-        EVT_IF_EQ(MV_ShotTimer, 15)
-            EVT_CALL(PlaySound, SOUND_20EB)
-            EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_LEFT)
-            EVT_SET(MV_ShotTimer, 0)
-        EVT_END_IF
         EVT_ADD(MV_HammerTimer, 1)
-        EVT_ADD(MV_ShotTimer, 1)
+        EVT_IF_GT(MV_BattlePhase, 1)
+            EVT_IF_EQ(MV_ShotTimer, 50)
+                EVT_CALL(PlaySound, SOUND_20EB)
+                EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_LEFT)
+                EVT_SET(MV_ShotTimer, 0)
+            EVT_END_IF
+            EVT_ADD(MV_ShotTimer, 1)
+        EVT_END_IF
         // damage
         EVT_SET(LVar0, ANIM_ParadeYoshi_StillGreen)
         EVT_SET(LVar1, ANIM_ParadeYoshi_StillBlue)
@@ -202,7 +210,7 @@ NpcData N(NpcData_Hammer) = {
     .init = &N(NpcInit_Hammer),
     .yaw = 270,
     .settings = &N(NpcSettings_Hammer),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = HAMMER_BROS_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
