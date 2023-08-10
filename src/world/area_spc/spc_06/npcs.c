@@ -50,18 +50,40 @@ EvtScript N(NpcWin_HammerBroShip) = {
     EVT_SET(LVar2, ANIM_HammerBros_Anim02)
     EVT_SET(LVar3, MSG_Space_Hammer_Defeat)
     EVT_SET(LVar4, 130)
+    EVT_SETF(LVar5, EVT_FLOAT(0.4))
     EVT_EXEC_WAIT(N(ShowCharacterString))
     EVT_RETURN
     EVT_END
 };
 
 EvtScript N(NpcDefeat_HammerBroShip) = {
-    EVT_SET(LVar0, 3)
-    EVT_SET(LVar1, ANIM_HammerBros_Anim0B)
-    EVT_SET(LVar2, ANIM_HammerBros_Anim02)
-    EVT_SET(LVar3, MSG_Space_Hammer_Win)
-    EVT_SET(LVar4, 130)
-    EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_THREAD
+        EVT_SET(LVar0, 3)
+        EVT_SET(LVar1, ANIM_HammerBros_Anim0B)
+        EVT_SET(LVar2, ANIM_HammerBros_Anim02)
+        EVT_SET(LVar3, MSG_Space_Hammer_Win)
+        EVT_SET(LVar4, 130)
+        EVT_SETF(LVar5, EVT_FLOAT(0.4))
+        EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_END_THREAD
+    EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+    EVT_THREAD
+        EVT_WAIT(20)
+        EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(0.2))
+        EVT_CALL(NpcJump0, NPC_SELF, LVar0, -500, LVar2, 30)
+    EVT_END_THREAD
+    EVT_LOOP(6)
+        EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_SUB(LVar0, 20)
+        EVT_SUB(LVar1, 20)
+        EVT_CALL(RandInt, 50, LVar3)
+        EVT_CALL(RandInt, 50, LVar4)
+        EVT_ADD(LVar0, LVar3)
+        EVT_ADD(LVar1, LVar4)
+        EVT_CALL(PlaySound, 0x2076)
+        EVT_CALL(PlayEffect, EFFECT_EXPLOSION, 1, LVar0, LVar1, LVar2)
+        EVT_WAIT(7)
+    EVT_END_LOOP
     EVT_RETURN
     EVT_END
 };
@@ -73,20 +95,24 @@ EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
+            EVT_CALL(N(SetEnemyInvincible), TRUE)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_HammerBros_Anim0B)
             EVT_SET(LVar2, ANIM_HammerBros_Anim02)
             EVT_SET(LVar3, MSG_Space_Hammer_Phase1)
             EVT_SET(LVar4, 140)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(MV_HammerInterval, 40)
             EVT_SET(LVar3, 20) // direction
+            EVT_CALL(N(SetEnemyInvincible), FALSE)
         EVT_CASE_EQ(2)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_HammerBros_Anim0B)
             EVT_SET(LVar2, ANIM_HammerBros_Anim02)
             EVT_SET(LVar3, MSG_Space_Hammer_Phase2)
             EVT_SET(LVar4, 130)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 20) // direction
         EVT_CASE_EQ(3)
@@ -95,6 +121,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar2, ANIM_HammerBros_Anim02)
             EVT_SET(LVar3, MSG_Space_Hammer_Phase3)
             EVT_SET(LVar4, 130)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(MV_HammerInterval, 25)
             EVT_SET(MV_HammerTimer, 0)

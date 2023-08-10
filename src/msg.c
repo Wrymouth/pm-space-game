@@ -2589,12 +2589,12 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             if (temp_a2 + printer->windowSize.x > SCREEN_WIDTH - 18) {
                                 temp_a2 = SCREEN_WIDTH - 18 - printer->windowSize.x;
                             }
-                            phi_a0 = printer->openStartPos.y - 38 - printer->windowSize.y;
+                            phi_a0 = printer->openStartPos.y;
                             if (phi_a0 < 20) {
                                 phi_a0 = 20;
                             }
                             if (phi_a0 + printer->windowSize.y > 170) {
-                                phi_a0 = 170 - printer->windowSize.y;
+                                phi_a0 -= 10;
                             }
                             printer->windowBasePos.x = temp_a2;
                             printer->windowBasePos.y = phi_a0;
@@ -2655,7 +2655,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             if (printer->style != MSG_STYLE_TATTLE) {
                                 msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, 1.0f, 1.0f, 255, 1);
                             }
-                            if (((u32)(printer->openStartPos.x - 20) <= 280) && (printer->openStartPos.y <= 220)) {
+                            if (((u32)(printer->openStartPos.x - 20) <= 280) && (printer->openStartPos.y <= 220) && (printer->style != MSG_STYLE_TATTLE)) {
                                 msg_draw_speech_arrow(printer);
                             }
                         }

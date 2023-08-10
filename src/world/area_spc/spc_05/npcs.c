@@ -30,6 +30,7 @@ EvtScript N(NpcDefeat_JrTroopa) = {
         EVT_SET(LVar2, ANIM_JrTroopa_Idle)
         EVT_SET(LVar3, MSG_Space_JrTroopa_Win)
         EVT_SET(LVar4, 110)
+        EVT_SETF(LVar5, EVT_FLOAT(0.4))
         EVT_EXEC_WAIT(N(ShowCharacterString))
     EVT_END_THREAD
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Hurt)
@@ -55,6 +56,7 @@ EvtScript N(NpcWin_JrTroopa) = {
     EVT_SET(LVar2, ANIM_JrTroopa_Idle)
     EVT_SET(LVar3, MSG_Space_JrTroopa_Defeat)
     EVT_SET(LVar4, 130)
+    EVT_SETF(LVar5, EVT_FLOAT(0.4))
     EVT_EXEC_WAIT(N(ShowCharacterString))
     EVT_RETURN
     EVT_END
@@ -71,6 +73,7 @@ EvtScript N(PhaseTransitions) = {
         EVT_SET(LVar2, ANIM_JrTroopa_Idle)
         EVT_SET(LVar3, MSG_Space_JrTroopa_Phase2)
         EVT_SET(LVar4, 130)
+        EVT_SETF(LVar5, EVT_FLOAT(0.4))
         EVT_EXEC_WAIT(N(ShowCharacterString))
         EVT_SET(LVar3, 12) // direction
     EVT_END_IF
@@ -119,7 +122,7 @@ EvtScript N(NpcIdle_JrTroopa) = {
                 EVT_ADD(MV_SummonTimer, 1)
             EVT_END_IF
             // damage
-            EVT_SET(LVar0, ANIM_JrTroopa_Idle)
+            EVT_SET(LVar0, ANIM_JrTroopa_ChargeArmsUp)
             EVT_SET(LVar1, ANIM_JrTroopa_Hurt)
             EVT_CALL(N(SetDamageAnimation), LVar0, LVar1, LVar2)
             EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
@@ -181,7 +184,7 @@ NpcSettings N(NpcSettings_EldStar) = {
 
 NpcData N(NpcData_EldStar) = {
     .id = 2,
-    .pos = { 0.0f, -213.0f, 16.0f },
+    .pos = { 0.0f, -213.0f, 20.0f },
     .init = &N(NpcInit_EldStar),
     .yaw = 270,
     .settings = &N(NpcSettings_EldStar),

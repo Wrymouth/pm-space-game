@@ -34,27 +34,35 @@ API_CALLABLE(N(SkipScene)) {
     return ApiStatus_DONE2;
 }
 
+Vec3f N(FishPath)[] = {
+    { 383.0, -60.0, 167.0 },
+    { 433.0, -53.0, 169.0 },
+    { 452.0, -64.0, 205.0 },
+    { 448.0, -53.0, 255.0 },
+    { 388.0, -33.0, 292.0 },
+    { 340.0, -53.0, 290.0 },
+    { 297.0, -41.0, 272.0 },
+    { 272.0, -53.0, 226.0 },
+    { 285.0, -41.0, 195.0 },
+    { 296.0, -53.0, 163.0 },
+    { 320.0, -41.0, 140.0 },
+    { 361.0, -53.0, 145.0 },
+    { 383.0, -60.0, 167.0 },
+};
+
 EvtScript N(D_80244648_8567B8) = {
+    EVT_SET(LVar8, 190)
     EVT_LOOP(0)
-        EVT_CALL(MakeLerp, 0, -120, 60, EASING_LINEAR)
+        EVT_CALL(LoadPath, 360, N(FishPath), 13, EASING_LINEAR)
         EVT_LOOP(0)
-            EVT_CALL(UpdateLerp)
-            EVT_CALL(TranslateModel, MODEL_o177, LVar0, 0,0)
-            EVT_CALL(RotateModel, MODEL_o177, 0, 0, 1, 0)
-            EVT_WAIT(1)
-            EVT_IF_EQ(LVar1, 0)
+            EVT_CALL(GetNextPathPos)
+            EVT_CALL(TranslateModel, MODEL_o177, LVar1, LVar2, LVar3)
+            EVT_IF_EQ(LVar0, 0)
                 EVT_BREAK_LOOP
             EVT_END_IF
-        EVT_END_LOOP
-        EVT_CALL(MakeLerp, -120, 0, 60, EASING_LINEAR)
-        EVT_LOOP(0)
-            EVT_CALL(UpdateLerp)
-            EVT_CALL(TranslateModel, MODEL_o177, LVar0, 0,0)
-            EVT_CALL(RotateModel, MODEL_o177, 180, 0, 1, 0)
+            EVT_SUB(LVar8, 1)
+            EVT_CALL(RotateGroup, MODEL_sakana, LVar8, 0, 1, 0)
             EVT_WAIT(1)
-            EVT_IF_EQ(LVar1, 0)
-                EVT_BREAK_LOOP
-            EVT_END_IF
         EVT_END_LOOP
     EVT_END_LOOP
     EVT_RETURN

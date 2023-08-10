@@ -78,6 +78,7 @@ EvtScript N(NpcWin_Whale) = {
     EVT_SET(LVar2, ANIM_Mouser_Blue_Idle)
     EVT_SET(LVar3, MSG_Space_Whale_Defeat1)
     EVT_SET(LVar4, 80)
+    EVT_SETF(LVar5, EVT_FLOAT(0.4))
     EVT_EXEC_WAIT(N(ShowCharacterString))
     
     EVT_IF_GT(MV_BattlePhase, 1)
@@ -86,6 +87,7 @@ EvtScript N(NpcWin_Whale) = {
         EVT_SET(LVar2, ANIM_Fuzzy_Jungle_Walk)
         EVT_SET(LVar3, MSG_Space_Whale_Defeat2)
         EVT_SET(LVar4, 80)
+        EVT_SETF(LVar5, EVT_FLOAT(0.4))
         EVT_EXEC_WAIT(N(ShowCharacterString))
     EVT_END_IF
     EVT_RETURN
@@ -99,6 +101,7 @@ EvtScript N(NpcDefeat_Whale) = {
         EVT_SET(LVar2, ANIM_Mouser_Blue_Idle)
         EVT_SET(LVar3, MSG_Space_Whale_Win1)
         EVT_SET(LVar4, 80)
+        EVT_SETF(LVar5, EVT_FLOAT(0.4))
         EVT_EXEC_WAIT(N(ShowCharacterString))
         
         EVT_SET(LVar0, 4)
@@ -106,8 +109,47 @@ EvtScript N(NpcDefeat_Whale) = {
         EVT_SET(LVar2, ANIM_Fuzzy_Jungle_Walk)
         EVT_SET(LVar3, MSG_Space_Whale_Win2)
         EVT_SET(LVar4, 80)
+        EVT_SETF(LVar5, EVT_FLOAT(0.4))
         EVT_EXEC_WAIT(N(ShowCharacterString))
     EVT_END_THREAD
+    EVT_LOOP(5)
+        EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_SUB(LVar0, 20)
+        EVT_SUB(LVar1, 5)
+        EVT_CALL(RandInt, 50, LVar3)
+        EVT_CALL(RandInt, 50, LVar4)
+        EVT_ADD(LVar0, LVar3)
+        EVT_ADD(LVar1, LVar4)
+        EVT_CALL(PlaySound, 0x2076)
+        EVT_CALL(PlayEffect, EFFECT_EXPLOSION, 1, LVar0, LVar1, LVar2)
+        EVT_WAIT(7)
+    EVT_END_LOOP
+    EVT_THREAD
+        EVT_LOOP(12)
+            EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+            EVT_SUB(LVar0, 20)
+            EVT_SUB(LVar1, 5)
+            EVT_CALL(RandInt, 50, LVar3)
+            EVT_CALL(RandInt, 50, LVar4)
+            EVT_ADD(LVar0, LVar3)
+            EVT_ADD(LVar1, LVar4)
+            EVT_CALL(PlaySound, 0x2076)
+            EVT_CALL(PlayEffect, EFFECT_EXPLOSION, 1, LVar0, LVar1, LVar2)
+            EVT_WAIT(15)
+        EVT_END_LOOP
+    EVT_END_THREAD
+    EVT_SET(LVar3, -5)
+    EVT_SET(LVar4, -5)
+    EVT_LOOP(100)
+        EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_ADD(LVar0, LVar3)
+        EVT_ADD(LVar1, LVar4)
+        EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_ADD(LVar0, 25)
+        EVT_ADD(LVar1, 46)
+        EVT_CALL(TranslateGroup, Model_Whale, LVar0, LVar1, LVar2)
+        EVT_WAIT(1)
+    EVT_END_LOOP
     EVT_RETURN
     EVT_END
 };
@@ -116,6 +158,7 @@ EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
+            EVT_CALL(N(SetEnemyInvincible), TRUE)
             EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             EVT_ADD(LVar0, 25)
             EVT_ADD(LVar1, 46)
@@ -125,16 +168,19 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar2, ANIM_Mouser_Blue_Idle)
             EVT_SET(LVar3, MSG_Space_Whale_Phase1)
             EVT_SET(LVar4, 230)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 4) // moveSpeed
             EVT_SET(MV_WaterMax, 3)
-            EVT_CALL(SetMusicTrack, 0, SONG_SPECIAL_BATTLE, 0, 8)
+            EVT_CALL(SetMusicTrack, 0, SONG_LAVA_PIRANHA_BATTLE, 0, 8)
+            EVT_CALL(N(SetEnemyInvincible), FALSE)
         EVT_CASE_EQ(2)
             EVT_SET(LVar0, 4)
             EVT_SET(LVar1, ANIM_Fuzzy_Jungle_Jump)
             EVT_SET(LVar2, ANIM_Fuzzy_Jungle_Walk)
             EVT_SET(LVar3, MSG_Space_Whale_Phase2)
             EVT_SET(LVar4, 230)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 4) // moveSpeed
         EVT_CASE_EQ(3)
@@ -143,15 +189,18 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar2, ANIM_Fuzzy_Jungle_Walk)
             EVT_SET(LVar3, MSG_Space_Whale_Phase3)
             EVT_SET(LVar4, 130)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_Mouser_Blue_Talk)
             EVT_SET(LVar2, ANIM_Mouser_Blue_Idle)
             EVT_SET(LVar3, MSG_Space_Whale_Phase3_2)
             EVT_SET(LVar4, 130)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 4) // moveSpeed
             EVT_SET(MV_WaterMax, 4)
+            EVT_CALL(SetMusicTrack, 0, SONG_LAVA_PIRANHA_BATTLE, 1, 8)
     EVT_END_SWITCH
     EVT_RETURN
     EVT_END
@@ -215,7 +264,6 @@ EvtScript N(NpcIdle_Whale) = {
         EVT_IF_TRUE(GF_WhaleDefeated)
             EVT_SET(MF_EnemyDefeated, TRUE)
             EVT_EXEC_WAIT(N(NpcDefeat_Whale))
-            EVT_CALL(TranslateGroup, Model_Whale, 0, -1000, 0)
             EVT_CALL(DoNpcDefeat)
             EVT_BREAK_LOOP
         EVT_END_IF

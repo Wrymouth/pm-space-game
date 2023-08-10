@@ -42,18 +42,56 @@ EvtScript N(NpcWin_KoopaBrosShip) = {
     EVT_SET(LVar2, ANIM_KoopaBros_Black_Idle)
     EVT_SET(LVar3, MSG_Space_Koopa_Defeat)
     EVT_SET(LVar4, 130)
+    EVT_SETF(LVar5, EVT_FLOAT(0.4))
     EVT_EXEC_WAIT(N(ShowCharacterString))
     EVT_RETURN
     EVT_END
 };
 
 EvtScript N(NpcDefeat_KoopaBrosShip) = {
-    EVT_SET(LVar0, 3)
-    EVT_SET(LVar1, ANIM_KoopaBros_Black_Talk)
-    EVT_SET(LVar2, ANIM_KoopaBros_Black_Idle)
-    EVT_SET(LVar3, MSG_Space_Koopa_Win)
-    EVT_SET(LVar4, 130)
-    EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_THREAD
+        EVT_SET(LVar0, 3)
+        EVT_SET(LVar1, ANIM_KoopaBros_Black_Talk)
+        EVT_SET(LVar2, ANIM_KoopaBros_Black_Idle)
+        EVT_SET(LVar3, MSG_Space_Koopa_Win)
+        EVT_SET(LVar4, 130)
+        EVT_SETF(LVar5, EVT_FLOAT(0.4))
+        EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_END_THREAD
+    // bounce around the screen like the tinier shells
+    EVT_LOOP(6)
+        EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_SUB(LVar0, 20)
+        EVT_SUB(LVar1, 5)
+        EVT_CALL(RandInt, 50, LVar3)
+        EVT_CALL(RandInt, 50, LVar4)
+        EVT_ADD(LVar0, LVar3)
+        EVT_ADD(LVar1, LVar4)
+        EVT_CALL(PlaySound, 0x2076)
+        EVT_CALL(PlayEffect, EFFECT_EXPLOSION, 1, LVar0, LVar1, LVar2)
+        EVT_WAIT(7)
+    EVT_END_LOOP
+    EVT_SET(LVar3, 20)
+    EVT_SET(LVar4, 20)
+    EVT_LOOP(100)
+        EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_ADD(LVar0, LVar3)
+        EVT_ADD(LVar1, LVar4)
+        EVT_IF_GT(LVar0, MapXRight)
+            EVT_MUL(LVar3, -1)
+        EVT_END_IF
+        EVT_IF_LT(LVar0, MapXLeft)
+            EVT_MUL(LVar3, -1)
+        EVT_END_IF
+        EVT_IF_GT(LVar1, MapYTop)
+            EVT_MUL(LVar4, -1)
+        EVT_END_IF
+        EVT_IF_LT(LVar1, MapYBottom)
+            EVT_MUL(LVar4, -1)
+        EVT_END_IF
+        EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_WAIT(1)
+    EVT_END_LOOP
     EVT_RETURN
     EVT_END
 };
@@ -65,19 +103,23 @@ EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
+            EVT_CALL(N(SetEnemyInvincible), TRUE)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_KoopaBros_Black_Talk)
             EVT_SET(LVar2, ANIM_KoopaBros_Black_Idle)
             EVT_SET(LVar3, MSG_Space_Koopa_Phase1)
             EVT_SET(LVar4, 220)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 20) // direction
+            EVT_CALL(N(SetEnemyInvincible), FALSE)
         EVT_CASE_EQ(2)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_KoopaBros_Black_Talk)
             EVT_SET(LVar2, ANIM_KoopaBros_Black_Idle)
             EVT_SET(LVar3, MSG_Space_Koopa_Phase2)
             EVT_SET(LVar4, 130)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 20) // direction
         EVT_CASE_EQ(3)
@@ -86,6 +128,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar2, ANIM_KoopaBros_Black_Idle)
             EVT_SET(LVar3, MSG_Space_Koopa_Phase3)
             EVT_SET(LVar4, 130)
+            EVT_SETF(LVar5, EVT_FLOAT(0.4))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 20) // direction
     EVT_END_SWITCH

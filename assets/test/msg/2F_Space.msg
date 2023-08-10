@@ -12,6 +12,10 @@
 	which makes use of the Paper Mario[BR]
 	decomp.[BR]
 	[Wait][Next]
+	Alex also created the menu[BR]
+	system used for this title[BR]
+	screen.[BR]
+	[Wait][Next]
 	Projectile code by [Color 0x20]Pronyo[Color 0x0].[BR]
 	His work saved me a lot of time in[BR]
 	the early stages of the project.[Wait][End]
@@ -49,7 +53,10 @@
 	[Wait][Next]
 	Opening - U.N. Squadron[BR]
 	Midi created by [Color 0x1]Wrymouth[Color 0x0].[BR]
-
+	[Wait][Next]
+	Boss Battle - Mega Man V[BR]
+	Midi created by King Meteor on[BR]
+	vgmusic.com[BR]
 	[Wait][Next]
 	SMB1: Bowser Battle - Super Mario[BR]
 	All-Stars[BR]
@@ -70,15 +77,21 @@
 	[Style Inspect]Title image font: Audiowide[BR]
 	[Wait][Next]
 	[Color 0x13]Special thanks:[Color 0x0][BR]
-	-Alex, Ethan and Clover[BR]
+	-Den[BR]
+	General support and feedback.[BR]
+	[Wait][Next]
+	-Rain
+	General help, inspiration for[BR]
+	the retry menu[BR]
+	[Wait][Next]
+	-Alex, Ethan, Clover and[BR]
+	Stuckpixel[BR]
 	Contributors to the Paper Mario[BR]
 	decomp.[BR]
 	[Wait][Next]
 	They helped me with things[BR]
 	like importing custom maps,[BR]
 	icons, and audio.[BR]
-	[Wait][Next]
-	-Den[BR]
 	[Wait][Next]
 	Enjoy![Wait][End]
 }
@@ -250,19 +263,27 @@
 
 #message:2F:(Space_CharacterSelectHammer) {
 	This is the Hammer Bros'[BR]
-	Chuckster Mobile.[End]
+	Chuckster Mobile. It throws[BR]
+	hammers.[End]
 }
 
 #message:2F:(Space_CharacterSelectLakitu) {
-	This is Lakithunder.[End]
+	This is Lakithunder.[BR]
+	A variety of attacks hide in[BR]
+	that enormous cloud.[End]
 }
 
 #message:2F:(Space_CharacterSelectWhale) {
-	This is a Space Whale.[End]
+	This is a Space Whale.[BR]
+	These mysterious creatures get[BR]
+	very angry when awakened...[BR]
+	[End]
 }
 
 #message:2F:(Space_CharacterSelectKoopa) {
-	This is the Koopa Bros. Cruiser.[End]
+	This is the Koopa Bros. Cruiser.[BR]
+	These guys will stop at nothing[BR]
+	to send us back to Star Haven.[End]
 }
 
 #message:2F:(Space_EnemyDefeated) {
@@ -323,7 +344,8 @@
 #message:2F:(Space_Hammer_Win) {
 	[Style Tattle][InputOff][Color 0x0]
 	Home base, we've     [BR]
-	been eliminated!     [Pause 60][End]
+	been eliminated!     [BR]
+	Going down!     [Pause 60][End]
 }
 
 #message:2F:(Space_Whale_Phase1) {
@@ -453,14 +475,14 @@
 
 #message:2F:(Space_Koopa_Win) {
 	[Style Tattle][InputOff][Color 0x0]
-	We're going down!    [BR]
+	We're done for!    [BR]
 	Lord Bowser will    [BR]
 	not be happy...    [Pause 60][End]
 }
 
 #message:2F:(Space_Bowser_Phase1) {
 	[Style Tattle][InputOff][Color 0x0]
-	Hmmm, it seems my    [BR]
+	Hmmm, it seems my     [BR]
 	minions have    [BR]
 	failed yet again.    [BR][Pause 60][Next]
 	Guess it's my     [BR]
@@ -487,7 +509,7 @@
 	[Style Tattle][InputOff][Color 0x0]
 	My ship might've     [BR]
 	been destroyed,     [BR]
-	but I have one     [BR][Pause 60][Next]
+	but I have one     [BR][Pause 20][Next]
 	more trick up     [BR]
 	my sleeve!     [Pause 60][End]
 }

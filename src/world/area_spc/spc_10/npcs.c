@@ -31,18 +31,33 @@ EvtScript N(NpcWin_Bowser) = {
     EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
     EVT_SET(LVar3, MSG_Space_Bowser_Defeat)
     EVT_SET(LVar4, 130)
+    EVT_SETF(LVar5, EVT_FLOAT(0.5))
     EVT_EXEC_WAIT(N(ShowCharacterString))
     EVT_RETURN
     EVT_END
 };
 
 EvtScript N(NpcDefeat_Bowser) = {
-    EVT_SET(LVar0, 3)
-    EVT_SET(LVar1, ANIM_WorldBowser_Talk)
-    EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
-    EVT_SET(LVar3, MSG_Space_Bowser_Win)
-    EVT_SET(LVar4, 130)
-    EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_THREAD
+        EVT_SET(LVar0, 3)
+        EVT_SET(LVar1, ANIM_WorldBowser_Talk)
+        EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
+        EVT_SET(LVar3, MSG_Space_Bowser_Win)
+        EVT_SET(LVar4, 130)
+        EVT_SETF(LVar5, EVT_FLOAT(0.5))
+        EVT_EXEC_WAIT(N(ShowCharacterString))
+    EVT_END_THREAD
+    EVT_LOOP(0)
+        EVT_SET(LVar0, MapXLeft)
+        EVT_SET(LVar1, MapYBottom)
+        EVT_CALL(RandInt, 600, LVar3)
+        EVT_CALL(RandInt, 350, LVar4)
+        EVT_ADD(LVar0, LVar3)
+        EVT_ADD(LVar1, LVar4)
+        EVT_CALL(PlaySound, 0x2076)
+        EVT_CALL(PlayEffect, EFFECT_EXPLOSION, 1, LVar0, LVar1, 16)
+        EVT_WAIT(6)
+    EVT_END_LOOP
     EVT_RETURN
     EVT_END
 };
@@ -68,15 +83,18 @@ EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
+            EVT_CALL(N(SetEnemyInvincible), TRUE)
             EVT_SET(LVarA, LVar3)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_WorldBowser_Talk)
             EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
             EVT_SET(LVar3, MSG_Space_Bowser_Phase1)
             EVT_SET(LVar4, 300)
+            EVT_SETF(LVar5, EVT_FLOAT(0.5))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, LVarA) // directionX
             EVT_CALL(SetMusicTrack, 0, SONG_SMB1_BOWSER, 0, 8)
+            EVT_CALL(N(SetEnemyInvincible), FALSE)
         EVT_CASE_EQ(2)
             EVT_SET(LVarA, LVar3)
             EVT_SET(LVar0, 3)
@@ -84,6 +102,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
             EVT_SET(LVar3, MSG_Space_Bowser_Phase2)
             EVT_SET(LVar4, 130)
+            EVT_SETF(LVar5, EVT_FLOAT(0.5))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_CALL(SetMusicTrack, 0, SONG_MONSTAR_THEME, 0, 8)
             EVT_SET(LVar3, LVarA)
@@ -97,6 +116,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
             EVT_SET(LVar3, MSG_Space_Bowser_Phase3)
             EVT_SET(LVar4, 130)
+            EVT_SETF(LVar5, EVT_FLOAT(0.5))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_IF_GT(LVarA, 0)
                 EVT_SET(LVar3, 80)
@@ -107,14 +127,15 @@ EvtScript N(PhaseTransitions) = {
             EVT_EXEC_WAIT(N(BowserFakeDefeat))
             EVT_CALL(SetNpcScale, NPC_SELF, EVT_FLOAT(3.7), EVT_FLOAT(3.7), EVT_FLOAT(3.7))
             EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_Idle)
-            EVT_CALL(SetNpcCollisionSize, NPC_SELF, 280, 300)
+            EVT_CALL(SetNpcCollisionSize, NPC_SELF, 300, 300)
             EVT_CALL(SetNpcPos, NPC_SELF, 0, BowserDefeatYBottom, 16)
 
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_WorldBowser_Talk)
             EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
             EVT_SET(LVar3, MSG_Space_Bowser_Phase4)
-            EVT_SET(LVar4, 220)
+            EVT_SET(LVar4, 200)
+            EVT_SETF(LVar5, EVT_FLOAT(0.5))
             EVT_EXEC_WAIT(N(ShowCharacterString))
 
             EVT_CALL(SetMusicTrack, 0, SONG_SHROOB_FINAL2, 0, 8)
@@ -262,7 +283,7 @@ EvtScript N(NpcIdle_Bowser) = {
                 // movement
                 EVT_IF_EQ(MF_IsGiantJumping, FALSE)
                     EVT_IF_EQ(MV_JumpTimer, 70)
-                        EVT_EXEC(N(DoGiantJump))
+                        EVT_EXEC_GET_TID(N(DoGiantJump), LVarB)
                         EVT_SET(MV_JumpTimer, 0)
                     EVT_END_IF
                     EVT_ADD(MV_JumpTimer, 1)
@@ -277,7 +298,7 @@ EvtScript N(NpcIdle_Bowser) = {
         // damage
         EVT_IF_GT(MV_BattlePhase, 3)
             EVT_SET(LVar0, ANIM_WorldBowser_Idle)
-            EVT_SET(LVar1, ANIM_WorldBowser_RearUpLaugh)
+            EVT_SET(LVar1, ANIM_WorldBowser_Shock)
         EVT_ELSE
             EVT_SET(LVar0, ANIM_WorldBowser_ClownCarIdle)
             EVT_SET(LVar1, ANIM_WorldBowser_ClownCarLaugh)
@@ -286,8 +307,9 @@ EvtScript N(NpcIdle_Bowser) = {
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         // defeat
         EVT_IF_TRUE(GF_BowserDefeated)
+            EVT_KILL_THREAD(LVarB)
             EVT_SET(MF_EnemyDefeated, TRUE)
-            EVT_CALL(DoNpcDefeat)
+            EVT_EXEC_WAIT(N(NpcDefeat_Bowser))
             EVT_BREAK_LOOP
         EVT_END_IF
         EVT_LABEL(1)
@@ -346,7 +368,24 @@ NpcData N(NpcData_BowserTalk) = {
     .settings = &N(NpcSettings_BowserTalk),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
-    .animations = BOWSER_ANIMS,
+    .animations = { 
+        .idle   = ANIM_WorldBowser_ArmsCrossed, 
+        .walk   = ANIM_WorldBowser_ArmsCrossed, 
+        .run    = ANIM_WorldBowser_ArmsCrossed, 
+        .chase  = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_4 = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_5 = ANIM_WorldBowser_ArmsCrossed, 
+        .death  = ANIM_WorldBowser_ArmsCrossed, 
+        .hit    = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_8 = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_9 = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_A = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_B = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_C = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_D = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_E = ANIM_WorldBowser_ArmsCrossed, 
+        .anim_F = ANIM_WorldBowser_ArmsCrossed, 
+    },
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 

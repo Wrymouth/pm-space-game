@@ -104,14 +104,16 @@ EvtScript N(EVS_Main) = {
     EVT_CALL(N(DoCleanup))
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(DisablePlayerPhysics, TRUE)
-    EVT_CALL(SetMusicTrack, 0, SONG_TUBBA_BLUBBA_THEME, 0, 8)
-    EVT_CALL(MakeNpcs, FALSE, EVT_PTR(N(DefaultNpcs)))
     EVT_THREAD
         EVT_WAIT(20)
         EVT_CALL(SetMenuType, MENU_TYPE_CHARACTER_SELECT)
     EVT_END_THREAD
+    EVT_IF_LT(GB_BossesDefeated, 5)
+        EVT_CALL(SetMusicTrack, 0, SONG_TUBBA_BLUBBA_THEME, 0, 8)
+        EVT_CALL(MakeNpcs, FALSE, EVT_PTR(N(DefaultNpcs)))
+        EVT_EXEC(N(ShowCharacterString))
+    EVT_END_IF
     EVT_EXEC(N(SetupTexturePan))
-    EVT_EXEC(N(ShowCharacterString))
     EVT_RETURN
     EVT_END
 };

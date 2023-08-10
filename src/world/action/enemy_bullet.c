@@ -33,7 +33,7 @@ typedef struct EnemyBulletStatus {
     EnemyBulletType bulletType;
 } EnemyBulletStatus;
 
-const s32 MAX_ENEMY_BULLETS  = 10;
+const s32 MAX_ENEMY_BULLETS  = 15;
 const s32 ENEMY_BULLET_DECAY = 50;
 const s32 HAMMER_DECAY = 80;
 s32       enemyBulletCount   = 0;
@@ -41,7 +41,8 @@ s32       enemyBulletCount   = 0;
 EnemyBulletStatus enemy_bullets[] = { { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY },
                                       { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY },
                                       { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY },
-                                      { 0, ENEMY_BULLET_EMPTY } };
+                                      { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY },
+                                      { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY }, { 0, ENEMY_BULLET_EMPTY }, };
 
 
 void npc_move_angle_speed(Npc* npc, s32 moveSpeed, f32 angle) {

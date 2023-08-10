@@ -101,7 +101,7 @@ API_CALLABLE(N(HealPlayer)) {
 }
 
 EvtScript N(Die) = {
-    EVT_CALL(RandInt, 50, LVarA)
+    EVT_CALL(RandInt, 25, LVarA)
     EVT_IF_EQ(LVarA, 1)
         EVT_CALL(PlaySound, SOUND_SHY_GUY_SCREAMS1)
     EVT_END_IF
@@ -122,7 +122,9 @@ EvtScript N(Die) = {
         EVT_IF_EQ(LVarC, 12)
             EVT_SET(LVarC, 0)
             EVT_CALL(GetPlayerPos, LVarD, LVarE, LVarF)
-            EVT_CALL(PlaySound, 0x2076)
+            EVT_IF_NE(LVarA, 1)
+                EVT_CALL(PlaySound, 0x2076)
+            EVT_END_IF
             EVT_ADD(LVarD, 12)
             EVT_CALL(PlayEffect, EFFECT_EXPLOSION, 1, LVarD, LVarE, LVarF)
         EVT_END_IF
@@ -135,7 +137,12 @@ EvtScript N(Die) = {
 };
 
 EvtScript N(Win) = {
-    EVT_CALL(SetMusicTrack, 0, SONG_BATTLE_END, 0, 8)
+    EVT_IF_TRUE(GF_BowserDefeated)
+        EVT_WAIT(20)
+        EVT_CALL(SetMusicTrack, 0, SONG_PEACH_QUIZ_INTRO, 0, 8)
+    EVT_ELSE
+        EVT_CALL(SetMusicTrack, 0, SONG_BATTLE_END, 0, 8)
+    EVT_END_IF
     EVT_CALL(SetPlayerAnimation, ANIM_MarioB1_Hammer3_FingerWag)
     EVT_WAIT(20)
     EVT_CALL(MakeLerp, 0, 500, 90, EASING_CUBIC_IN)
