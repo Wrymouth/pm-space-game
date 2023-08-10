@@ -582,7 +582,7 @@ void update_status_bar(void) {
     }
     uiStatus->displayCoins += i;
 
-    if (uiStatus->displayHP != playerData->curHP && !uiStatus->ignoreChanges) {
+    if (uiStatus->displayHP != playerData->curHP && !uiStatus->ignoreChanges && gGameStatusPtr->mapID != 1) {
         if (uiStatus->hidden) {
             uiStatus->showTimer = 70;
             uiStatus->hidden = FALSE;
