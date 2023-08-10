@@ -39,6 +39,12 @@ EvtScript N(NpcWin_Bowser) = {
 
 EvtScript N(NpcDefeat_Bowser) = {
     EVT_THREAD
+        EVT_LOOP(0)
+            EVT_CALL(ShakeCam, CAM_DEFAULT, CAM_SHAKE_CONSTANT_VERTICAL, 30, EVT_FLOAT(1.0))
+            EVT_WAIT(1)
+        EVT_END_LOOP
+    EVT_END_THREAD
+    EVT_THREAD
         EVT_SET(LVar0, 3)
         EVT_SET(LVar1, ANIM_WorldBowser_Talk)
         EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
@@ -64,8 +70,16 @@ EvtScript N(NpcDefeat_Bowser) = {
 
 EvtScript N(BowserFakeDefeat) = {
     EVT_SET(LVarA, 10)
+    EVT_SET(LVar8, 0)
+    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_ClownCarLaugh)
     EVT_LOOP(0)
         EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+        EVT_ADD(LVar8, 1)
+        EVT_IF_EQ(LVar8, 12)
+            EVT_CALL(PlaySound, 0x2076)
+            EVT_CALL(PlayEffect, EFFECT_EXPLOSION, 1, LVar0, LVar1, LVar2)
+            EVT_SET(LVar8, 0)
+        EVT_END_IF
         EVT_IF_LT(LVar1, BowserDefeatYBottom)
             EVT_CALL(SetNpcPos, NPC_SELF, LVar0, BowserDefeatYBottom, LVar2)  
             EVT_BREAK_LOOP
@@ -81,6 +95,9 @@ EvtScript N(BowserFakeDefeat) = {
 
 EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
+    EVT_IF_GT(MV_BattlePhase, 1)
+        EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_ClownCarLaugh)
+    EVT_END_IF
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
             EVT_CALL(N(SetEnemyInvincible), TRUE)
@@ -130,7 +147,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_Idle)
             EVT_CALL(SetNpcCollisionSize, NPC_SELF, 300, 300)
             EVT_CALL(SetNpcPos, NPC_SELF, 0, BowserDefeatYBottom, 16)
-
+            EVT_WAIT(30)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_WorldBowser_Talk)
             EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
