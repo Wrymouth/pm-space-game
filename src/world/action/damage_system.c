@@ -5,7 +5,6 @@
 #include "bullet.h"
 #include "enemy_bullet.h"
 
-const s32 PLAYER_INV_FRAMES = 30;
 
 void goto_gameover(void) {
     char* map = "gv_01";
@@ -33,8 +32,14 @@ void goto_gameover(void) {
 
 void player_take_damage(s32 amount) {
     if (!(gPlayerStatus.flags & PS_FLAG_HAZARD_INVINCIBILITY) && !(evt_get_variable(NULL, MapFlag(0)))) {
+        if (evt_get_variable(NULL, GB_Settings_Difficulty) == 1 && gPlayerStatus.repairTimer == 0 && gPlayerData.curHP - amount != 0) {
+            gPlayerData.curHP = 1;
+            gPlayerData.repairHP -= amount;
+            gPlayerStatus.repairTimer = 160;
+        } else {
+            gPlayerData.curHP -= amount;
+        }
         sfx_play_sound_at_player(0x158, SOUND_SPACE_MODE_0);
-        gPlayerData.curHP -= amount;
         gPlayerStatus.flags |= PS_FLAG_HAZARD_INVINCIBILITY;
         gPlayerStatus.invFrames = 0;
         if (gPlayerData.curHP <= 0) {

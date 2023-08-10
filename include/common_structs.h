@@ -366,8 +366,8 @@ typedef struct PlayerData {
     /* 0x2C2 */ u16 quizzesCorrect;
     /* 0x2C4 */ s32 partnerUnlockedTime[12];
     /* 0x2F4 */ s32 partnerUsedTime[12];
-    /* 0x324 */ s32 tradeEventStartTime;
-    /* 0x328 */ s32 droTreeHintTime;
+    /* 0x324 */ s32 maxInvFrames;
+    /* 0x328 */ s32 repairHP;
     /* 0x32C */ u16 starPiecesCollected;
     /* 0x32E */ u16 jumpGamePlays;
     /* 0x330 */ u32 jumpGameTotal; /* all-time winnings, max = 99999 */
@@ -2033,6 +2033,8 @@ typedef struct PlayerStatus {
     /* 0x280 */ s8 poundImpactDelay; // governs period of immobility after landing a ground pound
     /* 0x281 */ char unk_281[7];
                 s32 invFrames;
+                s32 repairTimer;
+                s8 repairHP;
 } PlayerStatus; // size = 0x288
 
 typedef struct SaveDataHeader {

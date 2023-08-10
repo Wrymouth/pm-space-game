@@ -51,7 +51,7 @@ API_CALLABLE(N(SetRadioStation)) {
 }
 
 API_CALLABLE(N(SetTradeEventStartTime)) {
-    gPlayerData.tradeEventStartTime = gPlayerData.frameCounter;
+    gPlayerData.maxInvFrames = gPlayerData.frameCounter;
     return ApiStatus_DONE2;
 }
 

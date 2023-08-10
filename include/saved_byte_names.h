@@ -6,7 +6,7 @@ enum GameBytes {
     GB_BossesDefeated                       = GameByte(0x002),
     GB_GameOverEntry                        = GameByte(0x003),
     GB_Settings_ShipSpeed                   = GameByte(0x004),
-    GB_Unused_EVT_05                        = GameByte(0x005),
+    GB_Settings_Difficulty                  = GameByte(0x005),
     GB_Unused_EVT_06                        = GameByte(0x006),
     GB_Unused_EVT_07                        = GameByte(0x007),
     GB_Unused_EVT_08                        = GameByte(0x008),

@@ -78,7 +78,14 @@ API_CALLABLE(N(SetInvFrames)) {
     Bytecode* args = script->ptrReadPos;
     s32 blink;
 
-    if (gPlayerStatus.invFrames >= PLAYER_INV_FRAMES) {
+    if (evt_get_variable(NULL, GB_Settings_Difficulty) == 1) {
+        if (gPlayerStatus.repairTimer > 0) {
+            gPlayerStatus.repairTimer--;
+        } else {
+            gPlayerData.curHP = gPlayerData.repairHP;
+        }
+    }
+    if (gPlayerStatus.invFrames >= gPlayerData.maxInvFrames) {
         gPlayerStatus.flags &= ~PS_FLAG_HAZARD_INVINCIBILITY;
         gPlayerStatus.invFrames = 0;
         gPlayerStatus.anim = ANIM_Mario1_Still;
@@ -97,6 +104,8 @@ API_CALLABLE(N(DoGameOver)) {
 
 API_CALLABLE(N(HealPlayer)) {
     gPlayerData.curHP = gPlayerData.curMaxHP;
+    gPlayerData.repairHP = gPlayerData.curHP;
+    gPlayerStatus.repairTimer = 0;
     return ApiStatus_DONE2;
 }
 

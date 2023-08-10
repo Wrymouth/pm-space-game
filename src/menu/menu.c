@@ -51,6 +51,7 @@ extern HudScript HES_Item_Artifact;
 Evt *script_credits = NULL;
 Evt *script_credits_notif = NULL;
 Evt *script_settings_explain_speed;
+Evt *script_settings_explain_difficulty;
 
 MenuType menuType = MENU_TYPE_NONE;
 
@@ -224,6 +225,14 @@ EvtScript EVS_SettingsExplainSpeed = {
     EVT_END
 };
 
+EvtScript EVS_SettingsExplainDifficulty = {
+    EVT_SET(GF_TitleStringDisplayed, TRUE)
+    EVT_CALL(ShowMessageAtScreenPos, MSG_Space_SettingsExplain_Difficulty, 160, 40)
+    EVT_SET(GF_TitleStringDisplayed, FALSE)
+    EVT_RETURN
+    EVT_END
+};
+
 // Callback for the "New Game" option
 void title_menu_cb_newgame(void* arg) {
     if (!evt_get_variable(NULL, GF_CreditsSeen)) {
@@ -244,6 +253,70 @@ void settings_set_speed(void* arg) {
 
 void settings_explain_speed(void* arg) {
     script_settings_explain_speed = start_script(&EVS_SettingsExplainSpeed, 0xA, 0);
+}
+
+void settings_set_difficulty(void* arg) {
+    s32 difficulty = (s32) arg;
+    sfx_play_sound(0x05);
+    evt_set_variable(NULL, GB_Settings_Difficulty, difficulty);
+
+    switch (difficulty) {
+        case DIFFICULTY_STANDARD:
+            gPlayerData.curHP = 5;
+            gPlayerData.curMaxHP = 5;
+            gPlayerData.repairHP = 5;
+            gPlayerData.maxInvFrames = 30;
+            break;
+        case DIFFICULTY_EASY:
+            gPlayerData.curHP = 10;
+            gPlayerData.curMaxHP = 10;
+            gPlayerData.repairHP = 10;
+            gPlayerData.maxInvFrames = 70;
+            break;
+        case DIFFICULTY_HARDCORE:
+            gPlayerData.curHP = 1;
+            gPlayerData.curMaxHP = 1;
+            gPlayerData.repairHP = 1;
+            gPlayerData.maxInvFrames = 30;
+            break;
+    }
+}
+
+void settings_explain_difficulty(void* arg) {
+    script_settings_explain_difficulty = start_script(&EVS_SettingsExplainDifficulty, 0xA, 0);
+}
+
+void title_menu_settings_difficulty(void* arg) {
+    struct title_menu_item* items;
+
+    items = general_heap_malloc((4 + 1) * sizeof(struct title_menu_item));
+
+
+    items[0].name = "Easy";
+    items[0].callback = settings_set_difficulty;
+    items[0].callbackArg = 1;
+
+    items[1].name = "Standard";
+    items[1].callback = settings_set_difficulty;
+    items[1].callbackArg = 0;
+
+    items[2].name = "Hardcore";
+    items[2].callback = settings_set_difficulty;
+    items[2].callbackArg = 2;
+
+    items[3].name = "(Explain)";
+    items[3].callback = settings_explain_difficulty;
+    items[3].callbackArg = NULL;
+
+    items[4].name = NULL;
+    items[4].callback = NULL;
+    items[4].callbackArg = NULL;
+
+    // Push new menu
+    title_menu_push();
+    titleMenu.title = "";
+    titleMenu.items = items;
+
 }
 
 void title_menu_settings_speed(void* arg) {
@@ -291,9 +364,14 @@ void title_menu_cb_settings(void* arg) {
     items[0].callback = title_menu_settings_speed;
     items[0].callbackArg = NULL;
 
-    items[1].name = NULL;
-    items[1].callback = NULL;
+    items[1].name = "Difficulty";
+    items[1].callback = title_menu_settings_difficulty;
     items[1].callbackArg = NULL;
+
+    items[2].name = NULL;
+    items[2].callback = NULL;
+    items[2].callbackArg = NULL;
+
 
     // Push new menu
     title_menu_push();
@@ -460,18 +538,41 @@ void menu_retry(s32 prevMapID) {
     char* baseMap;
 
     if (prevMapID < 10) {
-        sprintf(baseMap, "spc_0%d", prevMapID);
+        sprintf(baseMap, "spc_0%i", prevMapID);
     } else {
-        sprintf(baseMap, "spc_%d", prevMapID);
+        sprintf(baseMap, "spc_%i", prevMapID);
     }
     menu_gotomap(baseMap, 0);
+}
+
+void restore_health(void) {
+    s32 difficulty = evt_get_variable(NULL, GB_Settings_Difficulty);
+
+    switch (difficulty) {
+        case DIFFICULTY_STANDARD:
+            gPlayerData.curHP = 5;
+            gPlayerData.curMaxHP = 5;
+            gPlayerData.repairHP = 5;
+            gPlayerStatus.repairTimer = 0;
+            break;
+        case DIFFICULTY_EASY:
+            gPlayerData.curHP = 10;
+            gPlayerData.curMaxHP = 10;
+            gPlayerData.repairHP = 10;
+            gPlayerStatus.repairTimer = 0;
+            break;
+        case DIFFICULTY_HARDCORE:
+            gPlayerData.curHP = 1;
+            gPlayerData.curMaxHP = 1;
+            gPlayerData.repairHP = 1;
+            gPlayerStatus.repairTimer = 0;
+            break;
+    }
 }
 
 void render_game_over() {
     s32 x = 100;
     s32 y = 100;
-    s16 destAreaID;
-    s16 destMapID;
     s32 prevMapID = evt_get_variable(NULL, GB_GameOverEntry);
     s32 enemyDefeated = evt_get_variable(NULL, GameFlag(prevMapID+6));
 
@@ -485,17 +586,17 @@ void render_game_over() {
         gvOpacity = 255;
 
         if (gGameStatus.pressedButtons[0] & BUTTON_A) {
-            gPlayerData.curHP = 5;
+            restore_health();
             menu_retry(prevMapID);
             gvOpacity = 0;
         }
         if (gGameStatus.pressedButtons[0] & BUTTON_B && evt_get_variable(NULL, GF_JrTroopaDefeated)) {
-            gPlayerData.curHP = 5;
+            restore_health();
             menu_gotomap("spc_03", 0);
             gvOpacity = 0;
         }
         if (gGameStatus.pressedButtons[0] & BUTTON_Z) {
-            gPlayerData.curHP = 5;
+            restore_health();
             menu_gotomap("spc_01", 0);
             gvOpacity = 0;
         }

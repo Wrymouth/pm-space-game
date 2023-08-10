@@ -5,7 +5,7 @@
 API_CALLABLE(N(SaveSpinningRoofHintTime)) {
     PlayerData* playerData = &gPlayerData;
 
-    playerData->droTreeHintTime = playerData->frameCounter;
+    playerData->repairHP = playerData->frameCounter;
     return ApiStatus_DONE2;
 }
 
@@ -94,7 +94,7 @@ void N(red_tree_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
 
 API_CALLABLE(N(HasBeenHalfHourSinceTreeOrbit)) {
     PlayerData* playerData = &gPlayerData;
-    s32 minutes = (playerData->frameCounter - playerData->droTreeHintTime) / 3600;
+    s32 minutes = (playerData->frameCounter - playerData->repairHP) / 3600;
 
     if (minutes < 30) {
         script->varTable[0] = TRUE;

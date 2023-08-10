@@ -189,7 +189,7 @@ EvtScript N(EVS_NpcInit_Mamar) = {
 };
 
 API_CALLABLE(N(CheckTradeEventTime)) {
-    s32 timeElapsed = (gPlayerData.frameCounter - gPlayerData.tradeEventStartTime) / 3600;
+    s32 timeElapsed = (gPlayerData.frameCounter - gPlayerData.maxInvFrames) / 3600;
     script->varTable[0] = timeElapsed < script->varTable[0];
     return ApiStatus_DONE2;
 }

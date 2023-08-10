@@ -124,6 +124,7 @@ EvtScript N(PhaseTransitions) = {
                 EVT_SET(LVar3, -80)
             EVT_END_IF
         EVT_CASE_EQ(4)
+            EVT_KILL_THREAD(LVar7)
             EVT_EXEC_WAIT(N(BowserFakeDefeat))
             EVT_CALL(SetNpcScale, NPC_SELF, EVT_FLOAT(3.7), EVT_FLOAT(3.7), EVT_FLOAT(3.7))
             EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_Idle)
@@ -268,7 +269,7 @@ EvtScript N(NpcIdle_Bowser) = {
             EVT_CASE_EQ(3) // bounce around screen
                 // movement
                 EVT_IF_EQ(MF_StartedJumping, FALSE)
-                    EVT_EXEC(N(JumpAround))
+                    EVT_EXEC_GET_TID(N(JumpAround), LVar7)
                     EVT_SET(MF_StartedJumping, TRUE)
                 EVT_END_IF
                 // attacks

@@ -1,6 +1,12 @@
 #ifndef SPACE_MENU
 #define SPACE_MENU
 
+enum Difficulty {
+    DIFFICULTY_STANDARD = 0,
+    DIFFICULTY_EASY = 1,
+    DIFFICULTY_HARDCORE = 2,
+};
+
 typedef enum MenuType {
     MENU_TYPE_NONE             = 0,
     MENU_TYPE_TITLE            = 1,

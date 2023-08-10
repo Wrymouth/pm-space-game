@@ -50,6 +50,8 @@ void clear_player_data(void) {
     playerData->curHP = 5;
     playerData->curMaxHP = 5;
     playerData->hardMaxHP = 5;
+    playerData->repairHP = 10;
+    playerData->maxInvFrames = 30;
     playerData->curFP = 5;
     playerData->curMaxFP = 5;
     playerData->hardMaxFP = 5;
@@ -124,7 +126,6 @@ void clear_player_data(void) {
         playerData->partnerUsedTime[i] = 0;
     }
 
-    playerData->droTreeHintTime = 0;
     playerData->starPiecesCollected = 0;
     playerData->jumpGamePlays = 0;
     playerData->jumpGameTotal = 0;

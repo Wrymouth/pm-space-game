@@ -1996,7 +1996,7 @@ EvtScript N(EVS_NpcInit_Chanterelle) = {
 };
 
 API_CALLABLE(N(CheckTradeEventTime)) {
-    script->varTable[0] = (s32) ((gPlayerData.frameCounter - gPlayerData.tradeEventStartTime) / 3600) < script->varTable[0];
+    script->varTable[0] = (s32) ((gPlayerData.frameCounter - gPlayerData.maxInvFrames) / 3600) < script->varTable[0];
     return ApiStatus_DONE2;
 }
 
@@ -2007,7 +2007,8 @@ API_CALLABLE(N(GetTradeEventItemCount)) {
 
 EvtScript N(EVS_NpcInteract_Toad_03) = {
     EVT_SET(LVar0, 7)
-    EVT_CALL(N(CheckTradeEventTime))
+    // EVT_CALL(N(CheckTradeEventTime))
+    EVT_SET(LVar0, 0)
     EVT_IF_EQ(LVar0, 0)
         EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00BF)
         EVT_RETURN
