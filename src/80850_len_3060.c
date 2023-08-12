@@ -582,7 +582,7 @@ void update_status_bar(void) {
     }
     uiStatus->displayCoins += i;
 
-    if (uiStatus->displayHP != playerData->curHP && !uiStatus->ignoreChanges && gGameStatusPtr->mapID != 1) {
+    if (uiStatus->displayHP != playerData->curHP && !uiStatus->ignoreChanges && gGameStatusPtr->mapID != 1 && gGameStatusPtr->mapID != 11) {
         if (uiStatus->hidden) {
             uiStatus->showTimer = 70;
             uiStatus->hidden = FALSE;
@@ -602,7 +602,7 @@ void update_status_bar(void) {
         }
     }
 
-    if (uiStatus->displaySP != playerData->specialBarsFilled && !uiStatus->ignoreChanges) {
+    if (uiStatus->displaySP != playerData->specialBarsFilled && !uiStatus->ignoreChanges && gGameStatusPtr->mapID != 1 && gGameStatusPtr->mapID != 11) {
         if (uiStatus->hidden) {
             uiStatus->showTimer = 70;
             uiStatus->hidden = FALSE;

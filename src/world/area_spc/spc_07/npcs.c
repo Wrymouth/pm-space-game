@@ -140,6 +140,7 @@ EvtScript N(PhaseTransitions) = {
     EVT_ADD(MV_BattlePhase, 1)
     EVT_SWITCH(MV_BattlePhase)
         EVT_CASE_EQ(1)
+            EVT_SET(MF_LightningCanDamagePlayer, FALSE)
             EVT_CALL(N(SetEnemyInvincible), TRUE)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_ShiverToad_Red_Talk)
@@ -152,6 +153,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(MV_SpinyMax, 1)
             EVT_CALL(N(SetEnemyInvincible), FALSE)
         EVT_CASE_EQ(2)
+            EVT_SET(MF_LightningCanDamagePlayer, FALSE)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_ShiverToad_Red_Talk)
             EVT_SET(LVar2, ANIM_ShiverToad_Red_Idle)
@@ -161,6 +163,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, 6) // moveSpeed
         EVT_CASE_EQ(3)
+            EVT_SET(MF_LightningCanDamagePlayer, FALSE)
             EVT_SET(LVar0, 3)
             EVT_SET(LVar1, ANIM_ShiverToad_Red_Talk)
             EVT_SET(LVar2, ANIM_ShiverToad_Red_Idle)

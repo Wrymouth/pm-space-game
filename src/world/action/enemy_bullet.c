@@ -133,7 +133,6 @@ s32 test_enemy_bullet_first_strike() {
         }
 
         bullet = get_npc_by_index(enemy_bullets[i].activeBulletIndex);
-
         bulletX = bullet->pos.x;
         bulletY = bullet->pos.y;
         bulletZ = bullet->pos.z;
@@ -342,7 +341,7 @@ void bullet_render_summon(Npc* bulletNpc) {
     s32 bulletIndex = get_enemy_bullet_index_by_npc_id(bulletNpc->npcID);
     npc_move_to_target(bulletNpc, bulletNpc->moveSpeed, bulletNpc->moveToPos.x, bulletNpc->moveToPos.y);
     bulletNpc->rot.z += 20;
-    if (bulletNpc->pos.y == bulletNpc->moveToPos.y) {
+    if (bulletNpc->pos.y == bulletNpc->moveToPos.y && bulletNpc->pos.x == bulletNpc->moveToPos.x) {
         sfx_play_sound(SOUND_201D);
         use_enemy_bullet(bulletNpc, ENEMY_BULLET_TYPE_GOOMBA);
         destroy_enemy_bullet(bulletIndex);

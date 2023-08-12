@@ -152,7 +152,7 @@ EvtScript N(Win) = {
     EVT_ELSE
         EVT_CALL(SetMusicTrack, 0, SONG_BATTLE_END, 0, 8)
     EVT_END_IF
-    EVT_CALL(SetPlayerAnimation, ANIM_MarioB1_Hammer3_FingerWag)
+    EVT_CALL(SetPlayerAnimation, ANIM_Mario1_ThumbsUp)
     EVT_WAIT(20)
     EVT_CALL(MakeLerp, 0, 500, 90, EASING_CUBIC_IN)
     EVT_THREAD

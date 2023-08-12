@@ -106,7 +106,7 @@ EvtScript N(PhaseTransitions) = {
             EVT_SET(LVar1, ANIM_WorldBowser_Talk)
             EVT_SET(LVar2, ANIM_WorldBowser_ArmsCrossed)
             EVT_SET(LVar3, MSG_Space_Bowser_Phase1)
-            EVT_SET(LVar4, 300)
+            EVT_SET(LVar4, 330)
             EVT_SETF(LVar5, EVT_FLOAT(0.5))
             EVT_EXEC_WAIT(N(ShowCharacterString))
             EVT_SET(LVar3, LVarA) // directionX
@@ -190,8 +190,8 @@ EvtScript N(DoGiantJump) = {
     EVT_CALL(RandInt, 500, LVarC)
     EVT_SUB(LVarC, 250)
     EVT_CALL(SetNpcPos, NPC_SELF, LVarC, BowserDefeatYBottom, LVar2)
-    EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(0.3))
-    EVT_CALL(NpcJump0, NPC_SELF, LVarC, BowserDefeatYBottom, LVar2, 40)
+    EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(0.4))
+    EVT_CALL(NpcJump0, NPC_SELF, LVarC, BowserDefeatYBottom, LVar2, 30)
     EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(2.6))
     EVT_CALL(PlaySound, SOUND_3E7)
     EVT_CALL(NpcJump0, NPC_SELF, LVarC, BowserDefeatYBottom, LVar2, 40)
@@ -286,13 +286,18 @@ EvtScript N(NpcIdle_Bowser) = {
             EVT_CASE_EQ(3) // bounce around screen
                 // movement
                 EVT_IF_EQ(MF_StartedJumping, FALSE)
+                    EVT_IF_GT(LVar3, 0)
+                        EVT_SET(LVar3, 120)
+                    EVT_ELSE
+                        EVT_SET(LVar3, -120)
+                    EVT_END_IF
                     EVT_EXEC_GET_TID(N(JumpAround), LVar7)
                     EVT_SET(MF_StartedJumping, TRUE)
                 EVT_END_IF
                 // attacks
                 EVT_IF_EQ(MV_FlamesTimer, 30)
                     EVT_CALL(PlaySound, SOUND_3C4)
-                    EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPREAD_FIRE_WIDE)
+                    EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SPREAD_FIRE)
                     EVT_SET(MV_FlamesTimer, 0)
                 EVT_END_IF
                 EVT_ADD(MV_FlamesTimer, 1)

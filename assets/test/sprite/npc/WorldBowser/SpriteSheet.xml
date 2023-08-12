@@ -581,7 +581,7 @@
             </Component>
         </Animation>
         <Animation name="Talk">
-            <Component name="Comp_5" xyz="8,-10,0">
+            <Component name="Comp_5" xyz="8,-14,0">
                 <Label name="Start"/>
                 <SetRaster raster="F"/>
                 <Wait duration="4"/>
@@ -916,7 +916,7 @@
             </Component>
         </Animation>
         <Animation name="ArmsCrossed">
-            <Component name="Comp_5" xyz="8,-10,0">
+            <Component name="Comp_5" xyz="8,-14,0">
                 <Label name="Start"/>
                 <SetRaster raster="0"/>
                 <Wait duration="2"/>

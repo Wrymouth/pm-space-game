@@ -78,15 +78,19 @@ EvtScript N(NpcDefeat_KoopaBrosShip) = {
         EVT_ADD(LVar0, LVar3)
         EVT_ADD(LVar1, LVar4)
         EVT_IF_GT(LVar0, MapXRight)
+            EVT_CALL(PlaySound, SOUND_2129)
             EVT_MUL(LVar3, -1)
         EVT_END_IF
         EVT_IF_LT(LVar0, MapXLeft)
+            EVT_CALL(PlaySound, SOUND_2129)
             EVT_MUL(LVar3, -1)
         EVT_END_IF
         EVT_IF_GT(LVar1, MapYTop)
+            EVT_CALL(PlaySound, SOUND_2129)
             EVT_MUL(LVar4, -1)
         EVT_END_IF
         EVT_IF_LT(LVar1, MapYBottom)
+            EVT_CALL(PlaySound, SOUND_2129)
             EVT_MUL(LVar4, -1)
         EVT_END_IF
         EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)

@@ -162,7 +162,7 @@ EvtScript N(NpcIdle_HammerBroShip) = {
         EVT_END_IF
         EVT_ADD(MV_HammerTimer, 1)
         EVT_IF_GT(MV_BattlePhase, 1)
-            EVT_IF_EQ(MV_ShotTimer, 50)
+            EVT_IF_EQ(MV_ShotTimer, 48)
                 EVT_CALL(PlaySound, SOUND_20EB)
                 EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_LEFT)
                 EVT_SET(MV_ShotTimer, 0)

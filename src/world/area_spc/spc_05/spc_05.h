@@ -23,6 +23,7 @@ enum {
     MV_BattlePhase = MapVar(2),
     MV_EggsTimer = MapVar(3),
     MV_SummonTimer = MapVar(4),
+    MV_SummonMax = MapVar(5),
 };
 
 #define NAMESPACE spc_05

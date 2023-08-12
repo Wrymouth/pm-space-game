@@ -88,9 +88,9 @@
 	Contributors to the Paper Mario[BR]
 	decomp.[BR]
 	[Wait][Next]
-	They helped me with things[BR]
-	like importing custom maps,[BR]
-	icons, and audio.[BR]
+	They helped me with things like[BR]
+	importing custom maps, icons, and[BR]
+	audio.[BR]
 	[Wait][Next]
 	Enjoy![Wait][End]
 }
@@ -192,8 +192,8 @@
 }
 
 #message:2F:(Space_SettingsExplain_Speed) {
-	[Style Inspect]This setting changes the speed[BR]
-	of your spaceship.[BR]
+	[Style Inspect]This setting changes the speed of[BR]
+	your spaceship.[BR]
 	[Wait][Next]
 	Project64 handles the ship speed[BR]
 	slightly differently for some[BR]
@@ -236,7 +236,7 @@
 	a few seconds before repairing[BR]
 	itself.[BR]
 	[Wait][Next]
-	Then, it will climb back up to your[BR]
+	Then, it will climb back up to its[BR]
 	previous HP, minus the actual[BR]
 	damage you took.[BR]
 	[Wait][Next]
@@ -525,11 +525,12 @@
 
 #message:2F:(Space_Bowser_Phase1) {
 	[Style Tattle][InputOff][Color 0x0]
-	Hmmm, it seems my     [BR]
-	minions have    [BR]
+	Hmmm, it seems       [BR]
+	my minions have      [BR]
 	failed yet again.    [BR][Pause 60][Next]
-	Guess it's my     [BR]
-	turn, then!     [BR][Pause 60][Next]
+	I suppose that       [BR]
+	means it's my        [BR]
+	turn!     [BR][Pause 60][Next]
 	Let's see you     [BR]
 	handle this,     [BR]
 	Mario!     [Pause 60][End]
@@ -537,8 +538,8 @@
 
 #message:2F:(Space_Bowser_Phase2) {
 	[Style Tattle][InputOff][Color 0x0]
-	Very good, but I'm     [BR]
-	just getting     [BR]
+	Very good, but     [BR]
+	I'm just getting     [BR]
 	started!     [Pause 60][End]
 }
 
@@ -550,11 +551,10 @@
 
 #message:2F:(Space_Bowser_Phase4) {
 	[Style Tattle][InputOff][Color 0x0]
-	My ship might've     [BR]
-	been destroyed,     [BR]
-	but I have one     [BR][Pause 20][Next]
-	more trick up     [BR]
-	my sleeve!     [Pause 60][End]
+	My ship might be     [BR]
+	destroyed...    [BR][Pause 20][Next]
+	but I'm not done     [BR]
+	fighting yet!     [Pause 60][End]
 }
 
 #message:2F:(Space_Bowser_Defeat) {
@@ -567,9 +567,9 @@
 #message:2F:(Space_Bowser_Win) {
 	[Style Tattle][InputOff][Color 0x0]
 	How could I lose?     [BR][Pause 20][Next]
-	Well, Mario,     [BR]
-	I'll see you     [BR]
-	very soon...     [Pause 20][End]
+	Well, Mario, I'll     [BR]
+	see you very     [BR]
+	soon...     [Pause 20][End]
 }
 
 #message:2F:(Space_EldstarTalk1) {
@@ -622,7 +622,7 @@
 	idk[Wait][End]
 }
 
-#message:2f:(Space_ThanksForPlaying) {
+#message:2F:(Space_ThanksForPlaying) {
 	[Style Inspect]I hope you enjoyed this mod![BR]
 	[Wait][Next]
 	Please check out my other Paper[BR]

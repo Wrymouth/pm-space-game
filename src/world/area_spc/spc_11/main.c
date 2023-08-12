@@ -10,6 +10,14 @@ s32 N(map_init)(void) {
     return FALSE;
 }
 
+API_CALLABLE(N(HealPlayer)) {
+    gPlayerData.curHP = gPlayerData.curMaxHP;
+    gPlayerData.repairHP = gPlayerData.curHP;
+    gPlayerStatus.repairTimer = 0;
+    gPlayerData.specialBarsFilled = 0x0000;
+    return ApiStatus_DONE2;
+}
+
 MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
@@ -19,6 +27,7 @@ MapSettings N(settings) = {
 };
 
 EvtScript N(BadEnding) = {
+    EVT_CALL(N(HealPlayer))
     EVT_CALL(ShowMessageAtScreenPos, MSG_Space_BadEnding, 160, 40)
     EVT_CALL(GotoMap, EVT_PTR("spc_01"), 0)
     EVT_RETURN

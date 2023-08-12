@@ -114,7 +114,7 @@
             </Component>
         </Animation>
         <Animation name="Idle">
-            <Component name="Comp_0" xyz="-4,0,0">
+            <Component name="Comp_0" xyz="0,0,0">
                 <SetRaster raster="1" />
                 <Wait duration="8" />
                 <SetRaster raster="0" />
@@ -342,7 +342,7 @@
             </Component>
         </Animation>
         <Animation name="Talk">
-            <Component name="Comp_0" xyz="-4,0,0">
+            <Component name="Comp_0" xyz="0,0,0">
                 <SetRaster raster="15" />
                 <Wait duration="6" />
                 <SetRaster raster="16" />

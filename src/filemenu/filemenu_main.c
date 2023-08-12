@@ -997,7 +997,7 @@ void filemenu_main_handle_input(MenuPanel* menu) {
                 }
 
                 if (menu->selected == 6) {
-                    sfx_play_sound(0x42);
+                    sfx_play_sound(SOUND_22B);
                     break;
                     set_window_update(WINDOW_ID_FILEMENU_STEREO, (s32)filemenu_update_hidden_options_left);
                     set_window_update(WINDOW_ID_FILEMENU_MONO, (s32)filemenu_update_hidden_options_right);

@@ -195,6 +195,7 @@ s32* N(UnknownLists)[] = {
 
 EvtScript N(EVS_Scene_BeginGame) = {
     EVT_CALL(DisablePlayerInput, TRUE)
+    EVT_CALL(StopSound, SOUND_22B)
     EVT_CALL(GotoMap, "spc_02", 0)
     EVT_THREAD
         EVT_WAIT(5 * DT)

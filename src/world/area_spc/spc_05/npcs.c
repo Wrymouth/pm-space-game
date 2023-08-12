@@ -68,6 +68,9 @@ EvtScript N(PhaseTransitions) = {
     EVT_END_IF
     EVT_ADD(MV_BattlePhase, 1)
     EVT_IF_EQ(MV_BattlePhase, 2)
+        EVT_CALL(RandInt, 20, LVar0)
+        EVT_ADD(LVar0, 50)
+        EVT_SET(MV_SummonMax, LVar0)
         EVT_SET(LVar0, 4)
         EVT_SET(LVar1, ANIM_JrTroopa_Talk)
         EVT_SET(LVar2, ANIM_JrTroopa_Idle)
@@ -114,10 +117,13 @@ EvtScript N(NpcIdle_JrTroopa) = {
             EVT_END_IF
             EVT_ADD(MV_EggsTimer, 1)
             EVT_IF_EQ(MV_BattlePhase, 2)
-                EVT_IF_EQ(MV_SummonTimer, 60)
+                EVT_IF_EQ(MV_SummonTimer, MV_SummonMax)
                     EVT_CALL(PlaySound, SOUND_SPELL_CAST1)
                     EVT_CALL(N(DoAttack), ENEMY_ATTACK_TYPE_SUMMON)
                     EVT_SET(MV_SummonTimer, 0)
+                    EVT_CALL(RandInt, 20, LVar0)
+                    EVT_ADD(LVar0, 50)
+                    EVT_SET(MV_SummonMax, LVar0)
                 EVT_END_IF
                 EVT_ADD(MV_SummonTimer, 1)
             EVT_END_IF
